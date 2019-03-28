@@ -22,7 +22,7 @@ $dataPanel  = $userRow['sys_role_panel_color'];
 $dataHome   = $userRow['sys_role_home'];
 
 if($userRow['sys_role_template']=='O'){
-    $dataClose1 = 'class="page-header-fixed page-sidebar-closed-hide-logo page-content-white"';
+    $dataClose1 = 'class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-fixed"';
 }else{
     $dataClose1 = 'class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-closed"';
 }
