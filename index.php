@@ -76,7 +76,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING |E_DEPRECATED));
           <a data-toggle="dropdown" href="javascript:;"><i class="fa fa-database"></i> Supporting <i class="fa fa-angle-down"></i></a>
           <ul class="dropdown-menu pull-left">
             <li><a href="?page=<?php echo base64_encode(sec) ?>"> Education Center </a></li>
-            <li><a href="?page=<?php echo base64_encode(ithelpdesk) ?>" class="disabled"> IT Ticketing </a></li>
+            <li><a href="?page=<?php echo base64_encode(ithelpdesk) ?>"> IT Ticketing </a></li>
             <li><a href="?page=<?php echo base64_encode(bookmeetingroomdata) ?>"> Book Meeting Room</a></li>
             <li><a href="http://192.168.2.17" target="_BLANK"> ERP System </a></li>
             <li><a href="http://192.168.2.9:9090/electrical" target="_BLANK"> Electrical System </a></li>

@@ -1,5 +1,6 @@
 
 <?php
+session_start();
 	$pg=$_GET['page'];
 		if($pg==base64_encode(homeload)){ include"modul/homeload.php"; }
 		elseif($pg==base64_encode(home)){ include"modul/home.php"; }
@@ -139,6 +140,7 @@
 		elseif($pg==base64_encode(docreportperubahandoc)){ include"modul/ms_report/doc_report_perubahan_dokumen.php"; }
 
 	// FRONTEND
+
 		elseif($pg==base64_encode(ithelpdesk)){ include"ithelpdesk.php"; }
 		elseif($pg==base64_encode(standardglobal)){ include"standard_global.php"; }
 		elseif($pg==base64_encode(standardglobalview)){ include"standard_global_view.php"; }

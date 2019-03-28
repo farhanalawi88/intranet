@@ -33,7 +33,7 @@
 	<div class="portlet box <?php echo $dataPanel; ?>">
 	    <div class="portlet-title">
 	        <div class="caption">
-	            <span class="caption-subject uppercase bold">Data Master Document</span>
+	            <span class="caption-subject uppercase">Data Master Document</span>
 	        </div>
 	        <div class="actions">
 				<a href="?page=<?php echo base64_encode(docaddmsdoc) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA </a>
