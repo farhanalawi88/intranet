@@ -26,6 +26,13 @@ if($userRow['sys_role_template']=='O'){
 }else{
     $dataClose1 = 'class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-closed"';
 }
+
+$mnSql    = "SELECT a.sys_menu_nama FROM sys_menu a
+                inner join sys_submenu b on b.sys_menu_id=a.sys_menu_id
+                where b.sys_submenu_link='".base64_decode($_GET['page'])."'";
+$mnQry    = mysqli_query($koneksidb, $mnSql)  or die ("Query session user salah : ".mysqli_errors());
+$mnRow    = mysqli_fetch_array($mnQry);
+
   
 ?>
 <!DOCTYPE html>
@@ -154,9 +161,15 @@ if($userRow['sys_role_template']=='O'){
                                                 ORDER BY sys_menu_urutan ASC";
                                 $menuQry    = mysqli_query($koneksidb, $menuSql) or die ("Query menu salah : ".mysqli_errors());              
                                 while ($menuShow    = mysqli_fetch_array($menuQry)) {
+
+                                    if($mnRow['sys_menu_nama']=$menuShow['sys_menu_nama']){
+                                        $dataActive ='active';
+                                    }else{
+                                        $dataActive ='';
+                                    }
                                     
                             ?>
-                            <li class="nav-item  ">
+                            <li class="nav-item ">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                     <i class="<?php echo $menuShow['sys_menu_icon'] ?>"></i>
                                     <span class="title"><?php echo $menuShow['sys_menu_nama'] ?></span>
@@ -174,7 +187,7 @@ if($userRow['sys_role_template']=='O'){
                                         $submenulink    =$submenuShow['sys_submenu_link'];
                                         $submenunama    =$submenuShow['sys_submenu_nama'];
                                     ?>
-                                    <li class="nav-item  ">
+                                    <li class="nav-item ">
                                         <a href="?page=<?php echo base64_encode($submenulink) ?>" class="nav-link ">
                                             <span class="title"><?php echo $submenunama ?></span>
                                         </a>
