@@ -65,7 +65,7 @@ if($showRow['doc_tr_usul_jns']==1){
 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off">
     <div class="portlet box <?php echo $dataPanel; ?>">
         <div class="portlet-title">
-            <div class="caption"><span class="caption-subject uppercase bold">Form View Document & Comment </span></div>
+            <div class="caption"><span class="caption-subject uppercase">Form View Document & Comment </span></div>
             <div class="tools">
                 <a href="javascript:;" class="collapse"> </a>
                 <a href="javascript:;" class="reload"> </a>

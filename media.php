@@ -162,14 +162,14 @@ $mnRow    = mysqli_fetch_array($mnQry);
                                 $menuQry    = mysqli_query($koneksidb, $menuSql) or die ("Query menu salah : ".mysqli_errors());              
                                 while ($menuShow    = mysqli_fetch_array($menuQry)) {
 
-                                    if($mnRow['sys_menu_nama']=$menuShow['sys_menu_nama']){
-                                        $dataActive ='active';
-                                    }else{
+                                    if($mnRow['sys_menu_nama']!=$menuShow['sys_menu_nama']){
                                         $dataActive ='';
+                                    }else{
+                                        $dataActive ='active';
                                     }
                                     
                             ?>
-                            <li class="nav-item ">
+                            <li class="nav-item">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                     <i class="<?php echo $menuShow['sys_menu_icon'] ?>"></i>
                                     <span class="title"><?php echo $menuShow['sys_menu_nama'] ?></span>
@@ -181,7 +181,7 @@ $mnRow    = mysqli_fetch_array($mnQry);
                                                             WHERE sys_menu_id='$menuShow[sys_menu_id]' AND sys_submenu_id IN (SELECT b.sys_submenu_id FROM sys_akses a 
                                                                                         INNER JOIN sys_submenu b ON a.sys_submenu_id=b.sys_submenu_id
                                                                                         WHERE a.sys_group_id='".$userRow['sys_group_id']."')
-                                                            ORDER BY sys_submenu_nama,sys_submenu_urutan ASC";
+                                                            ORDER BY sys_submenu_urutan ASC";
                                         $submenuQry     = mysqli_query($koneksidb, $submenuSql) or die ("Query petugas salah : ".mysqli_errors());                
                                         while ($submenuShow = mysqli_fetch_array($submenuQry)) {
                                         $submenulink    =$submenuShow['sys_submenu_link'];

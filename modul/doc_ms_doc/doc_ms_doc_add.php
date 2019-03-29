@@ -132,7 +132,7 @@
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Data Master Document</span>
+            <span class="caption-subject uppercase">Form Data Master Document</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>

@@ -1,18 +1,36 @@
 <?php
 	// Menghapus Data
 	if(isset($_POST['btnHapus'])){
+		$message = array();
+		if (empty($_POST['txtID'])) {
+			$message[] = "<b>Menu</b> belum ada yang dipilih !";		
+		}
+
 		$txtID 		= $_POST['txtID'];
-		foreach ($txtID as $id_key) {
-				
-			$hapus=mysqli_query($koneksidb,"DELETE FROM doc_ms_kat_doc WHERE doc_ms_kat_doc_id='$id_key'") 
-				or die ("Gagal kosongkan tmp".mysqli_errors());
-			if($hapus){
-				$_SESSION['info'] = 'success';
-	            $_SESSION['pesan'] = 'Data jabatan berhasil dihapus';
-	            echo '<script>window.location="?page='.base64_encode(docdtmskatdoc).'"</script>';
-          	}
-		
-        }
+
+		if(count($message)==0){
+			foreach ($txtID as $id_key) {
+					
+				$hapus=mysqli_query($koneksidb,"DELETE FROM sys_menu WHERE sys_menu_id='$id_key'") 
+					or die ("Gagal kosongkan tmp".mysqli_errors());
+				if($hapus){
+					$_SESSION['info'] = 'success';
+		            $_SESSION['pesan'] = 'Data menu utama berhasil dihapus';
+		            echo '<script>window.location="?page='.base64_encode(dtmenu).'"</script>';
+	          	}
+			
+	        }
+	    }
+        if (! count($message)==0 ){
+			echo "<div class='alert alert-danger alert-dismissable'>
+                      <button type='button' class='close' data-dismiss='alert' aria-hidden='true'></button>";
+				$Num=0;
+				foreach ($message as $indeks=>$pesan_tampil) { 
+				$Num++;
+					echo "&nbsp;&nbsp;$Num. $pesan_tampil<br>";	
+				} 
+			echo "</div>"; 
+		}
 	}	
 	
 	
@@ -21,10 +39,10 @@
 	<div class="portlet box <?php echo $dataPanel; ?>">
 	    <div class="portlet-title">
 	        <div class="caption">
-	            <span class="caption-subject uppercase">Data Kategori Dokumen</span>
+	            <span class="caption-subject uppercase">Data Main Menu</span>
 	        </div>
 	        <div class="actions">
-				<a href="?page=<?php echo base64_encode(docaddmskatdoc) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA </a>
+				<a href="?page=<?php echo base64_encode(addmenu) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA </a>
 				<button class="btn <?php echo $dataPanel; ?> active" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin menghapus data penting ini !!')"><i class="icon-trash"></i> DELETE DATA</button>
 			</div>
 		</div>
@@ -39,29 +57,21 @@
                             </label>
                         </th>
 						<th width="5%"><div align="center">NO</div></th>
-						<th width="5%"><div align="center">KODE</div></th>
-                        <th width="30%">KATEGORI DOKUMEN</th>
-                        <th width="30%">KETERANGAN</th>
-                        <th width="30%">DIBUAT OLEH</th>
-				  	  	<th width="10%"><div align="center">STATUS</div></th>
-				  	  	<th width="10%"><div align="center">ACTION</div></th>
+                        <th width="50%">NAMA MENU</th>
+                        <th width="30%">MENU ICON</th>
+						<th width="10%"><div align="center">URUTAN</div></th>
+				  	  	<th width="5%"><div align="center">ACTION</div></th>
                     </tr>
 				</thead>
 				<tbody>
                <?php
-						$dataSql = "SELECT * FROM doc_ms_kat_doc a
-									INNER JOIN sys_role b ON a.doc_ms_kat_doc_createdby=b.sys_role_id
-									ORDER BY a.doc_ms_kat_doc_id DESC";
+						$dataSql = "SELECT * FROM sys_menu a
+									ORDER BY a.sys_menu_id ASC";
 						$dataQry = mysqli_query($koneksidb, $dataSql);
 						$nomor  = 0; 
 						while ($data = mysqli_fetch_array($dataQry)) {
 						$nomor++;
-						$Kode = $data['doc_ms_kat_doc_id'];
-						if($data ['doc_ms_kat_doc_sts']=='Y'){
-							$dataStatus= "<span class='badge badge-success badge-roundless'>ACTIVE</span>";
-						}else{
-							$dataStatus= "<span class='badge badge-danger badge-roundless'>NON ACTIVE</span>";
-						}
+						$Kode = $data['sys_menu_id'];
 				?>
                     <tr class="odd gradeX">
                         <td>
@@ -71,12 +81,13 @@
                             </label>
                         </td>
 						<td><div align="center"><?php echo $nomor ?></div></td>
-						<td><div align="center"><?php echo $data ['doc_ms_kat_doc_kd']; ?></div></td>
-						<td><?php echo $data['doc_ms_kat_doc_nm']; ?></td>
-						<td><?php echo $data['doc_ms_kat_doc_ket']; ?></td>
-						<td><?php echo strtoupper($data['sys_role_nama']); ?></td>
-						<td><div align="center"><?php echo $dataStatus; ?></div></td>
-						<td><div align="center"><a href="?page=<?php echo base64_encode(docedtmskatdoc) ?>&amp;id=<?php echo base64_encode($Kode); ?>" class="btn btn-xs <?php echo $dataPanel; ?>"><i class="fa fa-pencil"></i></a></div></td>
+						<td><?php echo $data ['sys_menu_nama']; ?></td>
+						<td><?php echo $data['sys_menu_icon']; ?></td>
+						<td>
+						  <div align="center">
+						    <?php echo $data ['sys_menu_urutan'] ?>						
+				        </div></td>
+						<td><div align="center"><a href="?page=<?php echo base64_encode(edtmenu) ?>&amp;id=<?php echo base64_encode($Kode); ?>" class="btn btn-xs <?php echo $dataPanel; ?>"><i class="fa fa-pencil"></i></a></div></td>
                     </tr>
                     <?php
                         

@@ -80,7 +80,7 @@ $dataLevel			= isset($_POST['cmbLevel']) ? $_POST['cmbLevel'] : $beliRow['sys_gr
 ?>
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Form Perubahan Group</span></div>
+		<div class="caption"><span class="caption-subject uppercase">Form Perubahan Group</span></div>
 		<div class="tools">
 			<a href="javascript:;" class="collapse"></a>
 			<a href="javascript:;" class="reload"></a>

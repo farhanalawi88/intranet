@@ -18,6 +18,10 @@ session_start();
 		elseif($pg==base64_encode(dtgroup)){ include"modul/sys_group/sys_group_data.php"; }
 		elseif($pg==base64_encode(addgroup)){ include"modul/sys_group/sys_group_tambah.php"; }
 		elseif($pg==base64_encode(edtgroup)){ include"modul/sys_group/sys_group_ubah.php"; }
+	// DATA MAIN MENU
+		elseif($pg==base64_encode(dtmenu)){ include"modul/as_sys_menu/as_sys_menu_data.php"; }
+		elseif($pg==base64_encode(addmenu)){ include"modul/as_sys_menu/as_sys_menu_add.php"; }
+		elseif($pg==base64_encode(edtmenu)){ include"modul/as_sys_menu/as_sys_menu_edit.php"; }
 	// DATA EDUCATION CENTER
 		elseif($pg==base64_encode(dtsec)){ include"modul/as_ms_sec/as_ms_sec_data.php"; }
 		elseif($pg==base64_encode(addsec)){ include"modul/as_ms_sec/as_ms_sec_add.php"; }

@@ -293,7 +293,7 @@
 <div class="portlet box <?php echo $dataPanel; ?>">
     <div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Proses Perubahan Document</span>
+            <span class="caption-subject uppercase">Form Proses Perubahan Document</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>

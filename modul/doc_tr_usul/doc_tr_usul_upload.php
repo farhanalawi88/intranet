@@ -91,7 +91,7 @@
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Upload Dokumen Usulan</span>
+            <span class="caption-subject uppercase">Form Upload Document Registration</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
