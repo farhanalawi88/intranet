@@ -243,8 +243,7 @@
                             a.sys_bagian_id,
                             b.sys_bagian_nm,
                             a.doc_tr_usul_jns,
-                            a.doc_ms_jns_doc_id,
-                            c.doc_ms_jns_doc_nm,
+                            a.doc_tr_usul_subject,
                             a.doc_ms_kat_doc_id,
                             d.doc_ms_kat_doc_nm,
                             a.doc_tr_usul_isi,
@@ -254,7 +253,6 @@
                             e.doc_ms_doc_kd
                             FROM doc_tr_usul a
                             INNER JOIN sys_bagian b ON a.sys_bagian_id=a.sys_bagian_id
-                            INNER JOIN doc_ms_jns_doc c ON a.doc_ms_jns_doc_id=c.doc_ms_jns_doc_id
                             INNER JOIN doc_ms_kat_doc d ON a.doc_ms_kat_doc_id=d.doc_ms_kat_doc_id
                             LEFT JOIN doc_ms_doc e ON a.doc_ms_doc_id=e.doc_ms_doc_id
                             WHERE a.doc_tr_usul_id='$KodeEdit'";
@@ -272,11 +270,11 @@
 
     $dataTanggal        = isset($_POST['txtTanggal']) ? $_POST['txtTanggal'] : '';
     $dataKategori       = isset($_POST['cmbKategori']) ? $_POST['cmbKategori'] : $showRow['doc_ms_kat_doc_id']; 
-    $dataJenis          = isset($_POST['cmbJenis']) ? $_POST['cmbJenis'] : $showRow['doc_ms_jns_doc_id']; 
+    $dataJenis          = isset($_POST['cmbJenis']) ? $_POST['cmbJenis'] : $showRow['doc_tr_usul_subject']; 
     $dataBagian         = isset($_POST['cmbBagian']) ? $_POST['cmbBagian'] : $showRow['sys_bagian_id']; 
     $dataNomor          = isset($_POST['txtNomor']) ? $_POST['txtNomor'] : $showRow['doc_ms_doc_kd']; 
 
-    $revSql             = "SELECT ISNULL(SUM(doc_ms_doc_rev), 0) as doc_ms_doc_rev FROM doc_ms_doc WHERE doc_ms_doc_id='$txtIDDoc'";
+    $revSql             = "SELECT IFNULL(SUM(doc_ms_doc_rev), 0) as doc_ms_doc_rev FROM doc_ms_doc WHERE doc_ms_doc_id='$txtIDDoc'";
     $revQry             = mysqli_query($koneksidb, $revSql) or die ("Gagal cek value".mysqli_errors()); 
     $revRow             = mysqli_fetch_array($revQry);
     // APABILA REVISI MENCAPAI 8 AKAN KEMBALI KE 0
@@ -293,11 +291,10 @@
 <div class="portlet box <?php echo $dataPanel; ?>">
     <div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase">Form Proses Perubahan Document</span>
+            <span class="caption-subject uppercase">Form Document Request Process</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
-            <a href="#portlet-config" data-toggle="modal" class="config"> </a>
             <a href="" class="reload"> </a>
             <a href="" class="remove"> </a>
         </div>
@@ -350,18 +347,16 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Jenis Dokumen :</label>
                     <div class="col-md-4">
-                        <select name="cmbJenis" data-placeholder="Select Type" class="select2 form-control">
-                            <option value=""></option> 
+                        <select class="form-control select2" data-placeholder="Select Subject" name="cmbJenis">
+                            <option value=""></option>
                             <?php
-                                  $dataSql = "SELECT * FROM doc_ms_jns_doc WHERE doc_ms_jns_doc_sts='Y' ORDER BY doc_ms_jns_doc_id DESC";
-                                  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-                                  while ($dataRow = mysqli_fetch_array($dataQry)) {
-                                    if ($dataJenis == $dataRow['doc_ms_jns_doc_id']) {
-                                        $cek = " selected";
-                                    } else { $cek=""; }
-                                    echo "<option value='$dataRow[doc_ms_jns_doc_id]' $cek>$dataRow[doc_ms_jns_doc_kd] - $dataRow[doc_ms_jns_doc_nm]</option>";
-                                  }
-                                  $sqlData ="";
+                              $pilihan  = array("PEDOMAN MUTU", "PROSEDUR","INSTRUKSI KERJA","RENCANA MUTU","STANDAR MUTU","FORMAT STANDAR");
+                              foreach ($pilihan as $nilai) {
+                                if ($dataJenis==$nilai) {
+                                    $cek=" selected";
+                                } else { $cek = ""; }
+                                echo "<option value='$nilai' $cek>$nilai</option>";
+                              }
                             ?>
                         </select>
                     </div>

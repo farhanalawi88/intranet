@@ -31,7 +31,7 @@
 
 		if(count($message)==0){
 			// GET KODE JENIS
-			$sqlSave="UPDATE doc_tr_usul SET doc_ms_jns_doc_id='$cmbSubject',
+			$sqlSave="UPDATE doc_tr_usul SET doc_tr_usul_subject='$cmbSubject',
 											doc_ms_kat_doc_id='$cmbKategori',
 											doc_ms_doc_id='$txtDokumen',
 											doc_tr_usul_jns='$cmbJenis',
@@ -65,9 +65,9 @@
 	$sqlShow			= "SELECT 
 							a.doc_tr_usul_id,
 							a.doc_tr_usul_no,
-							CONVERT(CHAR,a.doc_tr_usul_tgl,105) as doc_tr_usul_tgl,
+							a.doc_tr_usul_tgl,
 							a.doc_ms_kat_doc_id,
-							a.doc_ms_jns_doc_id,
+							a.doc_tr_usul_subject,
 							a.doc_tr_usul_isi,
 							a.doc_ms_doc_id,
 							a.doc_tr_usul_jns,
@@ -88,7 +88,7 @@
 	$dataNoDoc			= isset($_POST['txtNoDoc']) ? $_POST['txtNoDoc'] : $dataShow['doc_ms_doc_kd'];
 	$dataIsi			= isset($_POST['txtIsi']) ? $_POST['txtIsi'] : $dataShow['doc_tr_usul_isi'];
 	$dataKategori		= isset($_POST['cmbKategori']) ? $_POST['cmbKategori'] : $dataShow['doc_ms_kat_doc_id']; 
-	$dataSubject		= isset($_POST['cmbSubject']) ? $_POST['cmbSubject'] : $dataShow['doc_ms_jns_doc_id']; 
+	$dataSubject		= isset($_POST['cmbSubject']) ? $_POST['cmbSubject'] : $dataShow['doc_tr_usul_subject']; 
 	$dataUsulan			= isset($_POST['txtUsulan']) ? $_POST['txtUsulan'] : $dataShow['doc_tr_usul_usulan']; 
 	$dataAlasan			= isset($_POST['txtAlasan']) ? $_POST['txtAlasan'] : $dataShow['doc_tr_usul_alasan']; 
 ?>
@@ -100,7 +100,7 @@ function submitform() {
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Data Usulan Perubahan</span>
+            <span class="caption-subject uppercase">Form Data Document Registration</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
@@ -149,20 +149,18 @@ function submitform() {
 				<div class="form-group">
 					<label class="col-md-2 control-label">Subjek Dokumen :</label>
 					<div class="col-md-4">
-						<select name="cmbSubject" data-placeholder="Select Subject" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM doc_ms_jns_doc WHERE doc_ms_jns_doc_sts='Y' ORDER BY doc_ms_jns_doc_id DESC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataSubject == $dataRow['doc_ms_jns_doc_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[doc_ms_jns_doc_id]' $cek>$dataRow[doc_ms_jns_doc_nm]</option>";
-								  }
-								  $sqlData ="";
+						<select class="form-control select2" data-placeholder="Select Subject" name="cmbSubject">
+		                	<option value=""></option>
+		               		<?php
+							  $pilihan	= array("PEDOMAN MUTU", "PROSEDUR","INSTRUKSI KERJA","RENCANA MUTU","STANDAR MUTU","FORMAT STANDAR");
+							  foreach ($pilihan as $nilai) {
+								if ($dataSubject==$nilai) {
+									$cek=" selected";
+								} else { $cek = ""; }
+								echo "<option value='$nilai' $cek>$nilai</option>";
+							  }
 							?>
-						</select>
+		              	</select>
 					</div>
 				</div>
 				<div class="form-group">
