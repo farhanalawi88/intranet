@@ -100,7 +100,7 @@
 					<div class="col-lg-3">
 						<select name="cmbPanel" class="form-control select2">
 							<?php
-								$namaBulan = array("green" => "Green", "yellow" => "Yellow", "red" => "Red", "blue" => "blue", "grey" => "Grey", "dark" => "Dark", "purple" => "Purple", "blue-ebonyclay" => "Blue Ebonyclay", "green-jungle" => "Green Jungle", "blue-steel" => "Blue Steel", "blue-hoki" => "Blue Hoki", "grey-cascade" => "Grey Cascade");
+								$namaBulan = array("green" => "Green", "yellow" => "Yellow", "red" => "Red", "blue" => "blue", "grey" => "Grey", "dark" => "Dark", "purple" => "Purple", "blue-ebonyclay" => "Blue Ebonyclay", "green-jungle" => "Green Jungle", "blue-steel" => "Blue Steel", "blue-hoki" => "Blue Hoki", "grey-cascade" => "Grey Cascade", "blue-chambray" => "Blue Chambray");
 								foreach($namaBulan as $bulanKe => $bulanNM) {
 									if ($bulanKe == $dataPan) {
 										$cek = " selected";

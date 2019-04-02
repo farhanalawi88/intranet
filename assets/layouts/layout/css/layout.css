@@ -78,7 +78,7 @@ Page Header
       float: left; }
     .page-header.navbar .page-logo .logo-default {
       margin: 2px 0 0 0;
-      width: 180px; }
+      width: 190px; }
     .page-header.navbar .page-logo .logo-mini {
       display: none;
       margin-left: 5px; }
@@ -1480,7 +1480,7 @@ Page content
 /* Page title */
 .page-title {
   padding: 0px;
-  font-size: 28px;
+  font-size: 14px;
   letter-spacing: -1px;
   display: block;
   color: #666;

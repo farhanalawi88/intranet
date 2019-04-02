@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-6">
-        <div class="portlet box grey-cascade">
+        <div class="portlet box blue-chambray">
             <div class="portlet-title">
                 <div class="caption">
                     <span class="caption-subject uppercase">Document Statistic</span>
@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="portlet box grey-cascade">
+        <div class="portlet box blue-chambray">
             <div class="portlet-title">
                 <div class="caption">
                     <span class="caption-subject uppercase">Ticketing Chart</span>
@@ -34,12 +34,55 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box blue-chambray">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject uppercase">Agenda Meeting</span>
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="reload"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <div id='calendar'></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="./assets/scripts/jquery.min.js" type="text/javascript"></script>
 <script src="./assets/scripts/highcharts.js" type="text/javascript"></script>
 <script src="./assets/scripts/highcharts-3d.js" type="text/javascript"></script>
 <script src="./assets/scripts/exporting.js"></script>
+<script>
+    $(document).ready(function() {  
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            allDayDefault: true,
+            editable: false,
+            events: {
+                url: '../get-events.php',
+                error: function() {
+                    $('#script-warning').show();
+                }
+            },
+            loading: function(bool) {
+                $('#loading').toggle(bool);
+            }
+        });
+        
+    });
 
+</script>
 <script type="text/javascript">
 
 Highcharts.chart('order_2', {

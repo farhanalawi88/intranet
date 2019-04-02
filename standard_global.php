@@ -1,5 +1,5 @@
 
-<div class="portlet box grey-cascade">
+<div class="portlet box blue-chambray">
     <div class="portlet-title">
         <div class="caption"><span class="caption-subject uppercase">Standard Global</span></div>
         <div class="tools">
