@@ -380,7 +380,6 @@ hr.fc-divider {
 
 .fc th {
 	text-align: center;
-	text-transform: uppercase;
 }
 
 .fc th,
@@ -510,7 +509,7 @@ temporary rendered events).
 .fc-event {
 	position: relative; /* for resize handle and other inner positioning */
 	display: block; /* make the <a> tag block */
-	font-size: .25em;
+	font-size: .85em;
 	line-height: 1.3;
 	border-radius: 3px;
 	border: 1px solid #3a87ad; /* default BORDER color */
@@ -645,7 +644,7 @@ be a descendant of the grid when it is being dragged.
 
 a.fc-more {
 	margin: 1px 3px;
-	font-size: .25em;
+	font-size: .85em;
 	cursor: pointer;
 	text-decoration: none;
 }
@@ -708,9 +707,9 @@ a.fc-more:hover {
 
 .fc-toolbar h2 {
 	margin: 0;
-	font-size: 15px;
-	font-weight: bold;
+	font-size: 16px;
 	text-transform: uppercase;
+	font-weight: bold;
 }
 
 /* button layering (for border precedence) */
@@ -1018,7 +1017,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .fc-time-grid-event .fc-time {
-	font-size: .15em;
+	font-size: .85em;
 	white-space: nowrap;
 }
 
@@ -1049,7 +1048,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .fc-time-grid-event.fc-short .fc-title {
-	font-size: .25em; /* make the title text the same size as the time */
+	font-size: .85em; /* make the title text the same size as the time */
 	padding: 0; /* undo padding from above */
 }
 

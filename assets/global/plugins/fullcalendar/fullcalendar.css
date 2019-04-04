@@ -293,7 +293,6 @@ previous button's border...
 
 .fc-popover .fc-header .fc-title {
 	margin: 0 2px;
-	font-size: 14px;
 }
 
 .fc-popover .fc-header .fc-close {
@@ -645,7 +644,7 @@ be a descendant of the grid when it is being dragged.
 
 a.fc-more {
 	margin: 1px 3px;
-	font-size: .25em;
+	font-size: .85em;
 	cursor: pointer;
 	text-decoration: none;
 }
@@ -1015,7 +1014,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .fc-time-grid-event .fc-time {
-	font-size: .15em;
+	font-size: .85em;
 	white-space: nowrap;
 }
 
@@ -1046,7 +1045,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .fc-time-grid-event.fc-short .fc-title {
-	font-size: .25em; /* make the title text the same size as the time */
+	font-size: .85em; /* make the title text the same size as the time */
 	padding: 0; /* undo padding from above */
 }
 

@@ -144,7 +144,6 @@ session_start();
 		elseif($pg==base64_encode(docreportperubahandoc)){ include"modul/ms_report/doc_report_perubahan_dokumen.php"; }
 
 	// FRONTEND
-
 		elseif($pg==base64_encode(ithelpdesk)){ include"ithelpdesk.php"; }
 		elseif($pg==base64_encode(standardglobal)){ include"standard_global.php"; }
 		elseif($pg==base64_encode(standardglobalview)){ include"standard_global_view.php"; }
@@ -152,6 +151,7 @@ session_start();
 		elseif($pg==base64_encode(standarddepartemenview)){ include"standard_bagian_view.php"; }
 		elseif($pg==base64_encode(sec)){ include"sec.php"; }
 		elseif($pg==base64_encode(secview)){ include"sec_view.php"; }
+		elseif($pg==base64_encode(meetingschedule)){ include"meeting_schedule.php"; }
 	// DATA MASTER ROOM
 		elseif($pg==base64_encode(masterroomadd)){ include"modul/as_ms_room/as_ms_room_add.php"; }
 		elseif($pg==base64_encode(masterroomdata)){ include"modul/as_ms_room/as_ms_room_data.php"; }

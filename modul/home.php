@@ -70,7 +70,7 @@
             allDayDefault: true,
             editable: false,
             events: {
-                url: '../get-events.php',
+                url: './get-events.php',
                 error: function() {
                     $('#script-warning').show();
                 }

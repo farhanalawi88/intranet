@@ -54,7 +54,7 @@
 ?>
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Form Modul & Ticket</span></div>
+		<div class="caption"><span class="caption-subject uppercase bold">Form type Ticket</span></div>
 		<div class="tools">
 			<a href="javascript:;" class="collapse"></a>
 			<a href="javascript:;" class="reload"></a>
