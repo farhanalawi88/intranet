@@ -7,7 +7,7 @@ use Jaspersoft\Client\Client;
 date_default_timezone_set('Asia/Jakarta');
 error_reporting(E_ALL ^ (E_NOTICE | E_WARNING |E_DEPRECATED));
 
-if(!isset($_SESSION['sys_role_id'])){
+if(!isset($_SESSION['sys_role_id']) OR !isset($_SESSION['sys_role_id']) ){
   $_SESSION['pesan'] = 'Session anda terhapus, silahkan login kembali';
     header("Location:index.php"); 
 }
@@ -111,11 +111,7 @@ $mnRow    = mysqli_fetch_array($mnQry);
                             <!-- END USER LOGIN DROPDOWN -->
                             <!-- BEGIN QUICK SIDEBAR TOGGLER -->
                             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                            <li class="dropdown dropdown-quick-sidebar-toggler">
-                                <a href="keluar.php" class="dropdown-toggle">
-                                    <i class="icon-logout"></i>
-                                </a>
-                            </li>
+                            
                             <!-- END QUICK SIDEBAR TOGGLER -->
                         </ul>
                     </div>

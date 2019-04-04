@@ -16,6 +16,7 @@ include "config/inc.connection.php";
 	if(mysqli_num_rows($cekLogin)==1){
 		$login = mysqli_fetch_array($cekLogin);
 		$_SESSION['sys_role_id'] 		= $login['sys_role_id'];
+		$_SESSION['sys_org_id'] 		= $login['sys_org_id'];
 		
 		echo '<script>window.location="media.php"</script>';
 		

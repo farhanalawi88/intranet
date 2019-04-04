@@ -248,7 +248,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING |E_DEPRECATED));
                                       <a href="" class="nav-link "><span class="title">Ticketing</span></a>
                                     </li>
                                     <li class="nav-item start ">
-                                      <a href="?page=<?php echo base64_encode(bookmeetingroomdata) ?>" class="nav-link "><span class="title">Book Meeting Room</span></a>
+                                      <a href="?page=<?php echo base64_encode(bookmeetingroomdata) ?>" class="nav-link "><span class="title">Meeting Schedule</span></a>
                                     </li>
                                     <li class="nav-item start ">
                                       <a href="http://192.168.2.17" target="_BLANK" class="nav-link "><span class="title">ERP System</span></a>

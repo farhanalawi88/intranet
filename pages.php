@@ -152,14 +152,15 @@ session_start();
 		elseif($pg==base64_encode(standarddepartemenview)){ include"standard_bagian_view.php"; }
 		elseif($pg==base64_encode(sec)){ include"sec.php"; }
 		elseif($pg==base64_encode(secview)){ include"sec_view.php"; }
-			// DATA MASTER ROOM
-		elseif($pg==base64_encode(masterroomadd)){ include"modul/book_master_room/master_room_add.php"; }
-		elseif($pg==base64_encode(masterroomdata)){ include"modul/book_master_room/master_room_data.php"; }
-		elseif($pg==base64_encode(masterroomedit)){ include"modul/book_master_room/master_room_edit.php"; }
-	// DATA BOOKING MEETING ROOM
-		elseif($pg==base64_encode(bookmeetingroomadd)){ include"modul/book_meeting_room/meeting_room_add.php"; }
-		elseif($pg==base64_encode(bookmeetingroomdata)){ include"modul/book_meeting_room/meeting_room_data.php"; }
-		elseif($pg==base64_encode(bookmeetingroomedit)){ include"modul/book_meeting_room/meeting_room_edit.php"; }
+	// DATA MASTER ROOM
+		elseif($pg==base64_encode(masterroomadd)){ include"modul/as_ms_room/as_ms_room_add.php"; }
+		elseif($pg==base64_encode(masterroomdata)){ include"modul/as_ms_room/as_ms_room_data.php"; }
+		elseif($pg==base64_encode(masterroomedit)){ include"modul/as_ms_room/as_ms_room_edit.php"; }
+	// DATA MEETING SCHEDULE
+		elseif($pg==base64_encode(addtrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_add.php"; }
+		elseif($pg==base64_encode(dttrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_data.php"; }
+		elseif($pg==base64_encode(edttrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_edit.php"; }
+		elseif($pg==base64_encode(notulentrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_notulen.php"; }
 		else {
 		echo "<div class='alert alert-dismissable alert-danger'><i class='fa fa-times'></i> Belum ada modul / dalam tahap pengembangan</div>";
 		}
