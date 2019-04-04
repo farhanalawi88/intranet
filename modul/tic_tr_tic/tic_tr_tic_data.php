@@ -19,7 +19,7 @@
 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
 	<div class="portlet box <?php echo $dataPanel; ?>">
 		<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Data Ticket</span></div>
+		<div class="caption"><span class="caption-subject uppercase">Data Ticket</span></div>
 			<div class="actions">
 				<a href="?page=<?php echo base64_encode(ticaddtic) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA</a>	
 				<button class="btn <?php echo $dataPanel; ?> active" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin membatalkan data penting ini !!')"><i class="icon-trash"></i> DELETE DATA</button>
@@ -87,8 +87,7 @@
 						<td><div align="center"><?php echo $dataStatus; ?></div></td>
 						<td><div align="center">
 							<div class="btn-group">
-								<a href="?page=<?php echo base64_encode(ticedttic) ?>&amp;id=<?php echo $Kode; ?>" class="btn <?php echo $dataPanel; ?> btn-xs <?php echo $disabled ?>"><i class="fa fa-pencil"></i></a>
-								<a href="./output/rpt_form_ba.php?id=<?php echo $Kode; ?>" target="_BANK" class="btn <?php echo $dataPanel; ?> btn-xs <?php echo $disabled ?>"><i class="fa fa-print"></i></a>
+								<a href="?page=<?php echo base64_encode(ticedttic) ?>&amp;id=<?php echo base64_encode($Kode); ?>" class="btn <?php echo $dataPanel; ?> btn-xs <?php echo $disabled ?>"><i class="fa fa-pencil"></i></a>
 							</div>
 							</div>
 						</td>

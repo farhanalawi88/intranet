@@ -1,35 +1,16 @@
 <?php
 	if(isset($_POST['btnSave'])){
 		$message = array();
-		if (trim($_POST['cmbModul'])=="") {
-			$message[] = "Nama modul tidak boleh kosong!";		
-		}
-		if (trim($_POST['cmbKategori'])=="") {
-			$message[] = "Kategori tidak boleh kosong!";		
-		}
 		if (trim($_POST['txtSolve'])=="") {
 			$message[] = "Deskripsi penyelesaian tidak boleh kosong!";		
 		}
-		if (trim($_POST['txtProblem'])=="") {
-			$message[] = "Data perubahan tidak boleh kosong!";		
-		}
 				
-		$cmbModul		= $_POST['cmbModul'];
-		$txtProblem		= $_POST['txtProblem'];
-		$txtDiminta		= $_POST['txtDiminta'];
-		$cmbKategori	= $_POST['cmbKategori'];
 		$txtKode		= $_POST['txtKode'];
 		$txtSolve		= $_POST['txtSolve'];
-		$txtDeskripsi	= $_POST['txtDeskripsi'];
 		
 		if(count($message)==0){		
 
-			$sqlSave	= "UPDATE tic_tr_ticket SET tic_tr_ticket_problem='$txtProblem',
-													tic_ms_kat_id='$cmbKategori',
-													tic_ms_modul_id='$cmbModul',
-													tic_tr_ticket_description='$txtDeskripsi',
-													tic_tr_ticket_sts='Y',
-													tic_tr_ticket_diminta='$txtDiminta',
+			$sqlSave	= "UPDATE tic_tr_ticket SET tic_tr_ticket_sts='Y',
 													tic_tr_ticket_tgl_finish='".date('Y-m-d H:i:s')."',
 													tic_tr_ticket_solvedby='".$_SESSION['sys_role_id']."',
 													tic_tr_ticket_solved='$txtSolve'
@@ -71,7 +52,7 @@
 ?>
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Form Proses Ticket</span></div>
+		<div class="caption"><span class="caption-subject uppercase">Form Proses Ticket</span></div>
 		<div class="tools">
 			<a href="javascript:;" class="collapse"></a>
 			<a href="javascript:;" class="reload"></a>
@@ -88,54 +69,11 @@
 	                    <input class="form-control" type="hidden" value="<?php echo $dataKode ?>" name="txtKode"/>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Kategori :</label>
-					<div class="col-md-3">
-						<select name="cmbKategori" data-placeholder="- Pilih Kategori -" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM tic_ms_kat ORDER BY tic_ms_kat_id DESC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataKategori == $dataRow['tic_ms_kat_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[tic_ms_kat_id]' $cek>$dataRow[tic_ms_kat_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Diminta Oleh :</label>
-					<div class="col-md-3">
-	                    <input class="form-control" type="text" value="<?php echo $dataDiminta ?>" name="txtDiminta" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Ticket & Modul :</label>
-					<div class="col-md-4">
-						<select name="cmbModul" data-placeholder="- Pilih Modul -" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM tic_ms_modul ORDER BY tic_ms_modul_id DESC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataModul == $dataRow['tic_ms_modul_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[tic_ms_modul_id]' $cek>$dataRow[tic_ms_modul_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>
+				
 				<div class="form-group">
 					<label class="col-md-2 control-label">Subject :</label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" name="txtProblem" onkeyup="javascript:this.value=this.value.toUpperCase();" value="<?php echo $dataProblem ?>">
+						<input type="text" class="form-control" disabled value="<?php echo $dataProblem ?>">
 					</div>
 				</div>
 				<div class="form-group">

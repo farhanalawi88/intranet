@@ -28,35 +28,44 @@
 				
 		
 		if(count($message)==0){		
-
+			// INISIAL KODE ORG
 			$orgSql 		= "SELECT sys_org_kd FROM sys_org WHERE sys_org_id='".$userRow['sys_org_id']."'";
 			$orgQry			= mysqli_query($koneksidb, $orgSql) or die ("gagal select org".mysqli_errors());
 			$orgRow 		= mysqli_fetch_array($orgQry);	
+			// INISIAL KODE BAGIAN
+			$depSql 		= "SELECT sys_bagian_kd FROM sys_bagian WHERE sys_bagian_id='".$userRow['sys_bagian_id']."'";
+			$depQry			= mysqli_query($koneksidb, $depSql) or die ("gagal select bagian".mysqli_errors());
+			$depRow 		= mysqli_fetch_array($depQry);	
 
 			$bulan			= substr($txtTanggal,5,2);
 			$romawi 		= getRomawi($bulan);
 			$tahun			= substr($txtTanggal,2,2);
 			$tahun2			= substr($txtTanggal,0,4);
-			$nomorTrans		= "/".$orgRow['sys_org_kd']."/".$romawi."/".$tahun;
-			$queryTrans		= "SELECT max(tic_tr_ticket_no) as maxKode FROM tic_tr_ticket WHERE CONVERT(CHAR(4),tic_tr_ticket_tgl_start,112)='$tahun2' AND sys_bagian_id='".$userRow['sys_bagian_id']."' AND sys_org_id='".$userRow['sys_org_id']."'";
+			$nomorTrans		= "/".$orgRow['sys_org_kd']."/".$depRow['sys_bagian_kd']."/".$romawi."/".$tahun;
+			$queryTrans		= "SELECT 
+									max(tic_tr_ticket_no) as maxKode 
+								FROM tic_tr_ticket 
+								WHERE YEAR(tic_tr_ticket_tgl_start)='$tahun2' 
+								AND sys_bagian_id='".$userRow['sys_bagian_id']."' 
+								AND sys_org_id='".$userRow['sys_org_id']."'";
 			$hasilTrans		= mysqli_query($koneksidb, $queryTrans);
 			$dataTrans		= mysqli_fetch_array($hasilTrans);
 			$noTrans		= $dataTrans['maxKode'];
 			$noUrutTrans	= $noTrans + 1;
 			$IDTrans		=  sprintf("%03s", $noUrutTrans);
 			$kodeTrans		= $IDTrans.$nomorTrans;
-			$tgl         = date('ymdhis');
-            if (! empty($_FILES['txtFile']['tmp_name'])) {
-                $file_upload_pdf    = $_FILES['txtFile']['name'];
-                $file_upload_pdf    = stripslashes($file_upload_pdf);
-                $file_upload_pdf    = str_replace("'","",$file_upload_pdf);
-                $txtExtPDF          = pathinfo($file_upload_pdf, PATHINFO_EXTENSION);
-                $file_upload_pdf    = $tgl.".".$txtExtPDF;
-                copy($_FILES['txtFile']['tmp_name'],"file/".$file_upload_pdf);
-            }
-            else {
-                $file_upload_pdf    = "";
-            }   
+			$tgl 		 = date('ymdhis');
+			if (! empty($_FILES['txtFilePDF']['tmp_name'])) {
+				$file_upload_pdf 	= $_FILES['txtFilePDF']['name'];
+				$file_upload_pdf 	= stripslashes($file_upload_pdf);
+				$file_upload_pdf 	= str_replace("'","",$file_upload_pdf);
+				$txtExtPDF			= pathinfo($file_upload_pdf, PATHINFO_EXTENSION);
+				$file_upload_pdf	= $tgl."_".$_POST['txtProblem'].".".$txtExtPDF;
+				copy($_FILES['txtFilePDF']['tmp_name'],"file/".$file_upload_pdf);
+			}
+			else {
+				$file_upload_pdf 	= "";
+			}	
 
 			$sqlSave	= "INSERT INTO tic_tr_ticket (tic_tr_ticket_no,
 													tic_tr_ticket_tgl_start,
@@ -127,7 +136,7 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" name="frmadd" class="form-horizontal form-bordered" autocomplete="off">
+		<form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" name="frmadd" class="form-horizontal form-bordered" autocomplete="off" enctype="multipart/form-data">
 			<div class="form-body">
 				<div class="form-group">
 					<label class="col-md-2 control-label">Ticket Untuk :</label>
@@ -203,27 +212,23 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label">Deskripsi :</label>
 					<div class="col-md-10">
-						<textarea class="form-control ckeditor" name="txtDeskripsi" onkeyup="javascript:this.value=this.value.toUpperCase();"><?php echo $dataDeskripsi ?></textarea>
+						<textarea class="form-control ckeditor" name="txtDeskripsi"><?php echo $dataDeskripsi ?></textarea>
 					</div>
 				</div>
 				<div class="form-group last">
-                    <label class="control-label col-md-2">Upload File</label>
-                    <div class="col-md-3">
-                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                            <div class="input-group">
-                                <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
-                                    <i class="fa fa-file fileinput-exists"></i>&nbsp;
-                                    <span class="fileinput-filename"> </span>
-                                </div>
-                                <span class="input-group-addon btn default btn-file">
-                                    <span class="fileinput-new"><i class="fa fa-folder-open"></i></span>
-                                    <span class="fileinput-exists"><i class="fa fa-folder"></i></span>
-                                    <input type="file" name="txtFile"> </span>
-                                    <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> <i class="fa fa-close"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+					<label class="control-label col-md-2">Upload File :</label>
+					<div class="col-md-9">
+						<div class="fileinput fileinput-new" data-provides="fileinput">
+							<span class="btn default btn-file">
+								<span class="fileinput-new">Select file</span>
+								<span class="fileinput-exists">Change</span>
+								<input type="file" name="txtFilePDF">
+							</span>
+							<span class="fileinput-filename"></span>&nbsp;
+							<a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none"></a>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="form-actions">
 			    <div class="row">
