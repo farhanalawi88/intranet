@@ -11,7 +11,7 @@
 		if(count($message)==0){		
 
 			$sqlSave	= "UPDATE tic_tr_ticket SET tic_tr_ticket_sts='Y',
-													tic_tr_ticket_tgl_finish='".date('Y-m-d H:i:s')."',
+													tic_tr_ticket_tgl_finished='".date('Y-m-d H:i:s')."',
 													tic_tr_ticket_solvedby='".$_SESSION['sys_role_id']."',
 													tic_tr_ticket_solved='$txtSolve'
 												WHERE tic_tr_ticket_id='$txtKode'";

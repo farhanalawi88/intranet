@@ -18,6 +18,7 @@
 					<th width="15%">ROOM</th>
 					<th width="40%">AGENDA MEETING</th>
                     <th width="30%"><div align="center">WAKTU MEETING</div></th>
+			  	  	<th width="5%"><div align="center">STATUS</div></th>
                 </tr>
 			</thead>
 			<tbody>
@@ -40,6 +41,11 @@
 				while ($data = mysqli_fetch_array($dataQry)) {
 				$nomor++;
 				$ID = $data['as_trx_meet_sch_id'];
+				if($data ['as_trx_meet_sch_status']=='N'){
+					$dataStatus= "<label class='badge badge-warning badge-roundless'>OPEN</label>";
+				}elseif($data ['as_trx_meet_sch_status']=='Y'){
+					$dataStatus= "<label class='badge badge-success badge-roundless'>CLOSE</label>";
+				}
 			?>
                 <tr class="odd gradeX">
 					<td>
@@ -53,6 +59,7 @@
 					<td><?php echo $data ['as_ms_room_nama']; ?></td>
 					<td><?php echo $data ['as_trx_meet_sch_agenda']; ?></td>
 					<td><div align="center"><?php echo $data['as_trx_meet_sch_start']; ?> s/d <?php echo $data['as_trx_meet_sch_end']; ?></div></td>
+					<td><div align="center"><?php echo $dataStatus; ?></div></td>
                 </tr>
                 <?php } ?>
 			</tbody>

@@ -201,16 +201,19 @@ Highcharts.chart('order_2', {
                 <?php
                     $tmp2Sql ="SELECT
                                     a.sys_bagian_nm,
+                                    a.sys_bagian_id,
                                     COUNT( b.sys_bagian_id ) AS jml 
                                 FROM
                                     sys_bagian a
                                     LEFT JOIN doc_ms_doc b ON b.sys_bagian_id= a.sys_bagian_id 
                                 GROUP BY
+                                    a.sys_bagian_id,
                                     a.sys_bagian_nm";
                     $tmp2Qry = mysqli_query($koneksidb, $tmp2Sql) or die ("Gagal Query Tmp".mysqli_errors()); 
-                    while($tmp2Row = mysqli_fetch_array($tmp2Qry)) {    
+                    while($tmp2Row = mysqli_fetch_array($tmp2Qry)) {
+                    $Kode = $tmp2Row['sys_bagian_id'];    
                 ?>
-                    ['<?php echo $tmp2Row['sys_bagian_nm'] ?>',<?php echo $tmp2Row['jml'] ?>],
+                    ['<a href="?page=<?php echo base64_encode(standarddepartemen) ?>&id=<?php echo base64_encode($Kode); ?>"><?php echo $tmp2Row['sys_bagian_nm'] ?></a>',<?php echo $tmp2Row['jml'] ?>],
                
                 <?php } ?>
                 
