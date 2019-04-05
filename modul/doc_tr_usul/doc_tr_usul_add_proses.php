@@ -42,9 +42,6 @@
         if(count($message)==0){
             // CEK JENIS USULAN
             if($txtJnsUsul==2){
-                // UBAH STATUS DOKUMEN
-                $sqlupd     = "UPDATE doc_ms_file SET doc_ms_file_masa='A' WHERE doc_ms_doc_id='$txtIDDoc'";
-                $qryupd     = mysqli_query($koneksidb, $sqlupd) or die ("gagal insert". mysqli_errors());
 
                 if (! empty($_FILES['txtFileAsli']['tmp_name'])) {
                     $tgl            = date('ymdhis');
@@ -55,23 +52,7 @@
                     $file_asli      = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtAsli;
                     copy($_FILES['txtFileAsli']['tmp_name'],"file/".$file_asli);
 
-
-                    // INSERT FILE ASLI
-                    $sqlAsli        = "INSERT INTO doc_ms_file (doc_ms_file_upload,
-                                                                doc_ms_file_type,
-                                                                doc_ms_doc_id,
-                                                                doc_ms_file_created,
-                                                                doc_ms_file_createdby,
-                                                                doc_ms_file_sts,
-                                                                doc_ms_file_masa)
-                                                        VALUES('$file_asli',
-                                                                '$txtExtAsli',
-                                                                '$txtIDDoc',
-                                                                '".date('Y-m-d H:i:s')."',
-                                                                '".$_SESSION['sys_role_id']."',
-                                                                'Y',
-                                                                'B')";
-                    $qryAsli        = mysqli_query($koneksidb, $sqlAsli) or die ("gagal insert file asli". mysqli_errors());
+                   
                 }
                 if (! empty($_FILES['txtFilePDF']['tmp_name'])) {
                     $tgl            = date('ymdhis');
@@ -81,29 +62,12 @@
                     $txtExtPDF      = pathinfo($file_pdf, PATHINFO_EXTENSION);
                     $file_pdf       = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtPDF;
                     copy($_FILES['txtFilePDF']['tmp_name'],"file/".$file_pdf);
-
-
-                    // INSERT FILE ASLI
-                    $sqlPDF         = "INSERT INTO doc_ms_file (doc_ms_file_upload,
-                                                                doc_ms_file_type,
-                                                                doc_ms_doc_id,
-                                                                doc_ms_file_created,
-                                                                doc_ms_file_createdby,
-                                                                doc_ms_file_sts,
-                                                                doc_ms_file_masa)
-                                                        VALUES('$file_pdf',
-                                                                '$txtExtPDF',
-                                                                '$txtIDDoc',
-                                                                '".date('Y-m-d H:i:s')."',
-                                                                '".$_SESSION['sys_role_id']."',
-                                                                'Y',
-                                                                'B')";
-                    $qryPDF         = mysqli_query($koneksidb, $sqlPDF) or die ("gagal insert file PDF". mysqli_errors());
+                    
                 }
 
                 $sqlSave="UPDATE doc_ms_doc SET doc_ms_doc_nm='$txtNama',
                                             doc_ms_doc_rev='$txtRevisi',
-                                            doc_ms_jns_doc_id='$cmbJenis',
+                                            doc_tr_usul_jns='$cmbJenis',
                                             sys_bagian_id='$cmbBagian',
                                             doc_ms_doc_tgl='$txtTanggal',
                                             doc_ms_kat_doc_id='$cmbKategori',
@@ -127,7 +91,7 @@
                 $sqlSave="INSERT INTO doc_ms_doc (doc_ms_doc_nm,
                                                     doc_ms_doc_kd,
                                                     doc_ms_doc_rev,
-                                                    doc_ms_jns_doc_id,
+                                                    doc_tr_usul_jns,
                                                     sys_bagian_id,
                                                     doc_ms_doc_sts,
                                                     doc_ms_kat_doc_id,
@@ -146,65 +110,6 @@
                                                     '$txtTanggal')";
                 $qrySave    = mysqli_query($koneksidb, $sqlSave) or die ("gagal insert". mysqli_errors());
                 if($qrySave){
-                    $sqlCek         = "SELECT MAX(doc_ms_doc_id) as id_doc FROM doc_ms_doc WHERE doc_ms_doc_createdby='".$_SESSION['sys_role_id']."'";
-                    $qryCek         = mysqli_query($koneksidb, $sqlCek) or die ("Gagal cek value".mysqli_errors()); 
-                    $qryRow         = mysqli_fetch_array($qryCek);
-                    $dataID         = $qryRow['id_doc'];
-
-                    if (! empty($_FILES['txtFileAsli']['tmp_name'])) {
-                        $tgl            = date('ymdhis');
-                        $file_asli      = $_FILES['txtFileAsli']['name'];
-                        $file_asli      = stripslashes($file_asli);
-                        $file_asli      = str_replace("'","",$file_asli);
-                        $txtExtAsli     = pathinfo($file_asli, PATHINFO_EXTENSION);
-                        $file_asli      = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtAsli;
-                        copy($_FILES['txtFileAsli']['tmp_name'],"file/".$file_asli);
-
-
-                        // INSERT FILE ASLI
-                        $sqlAsli        = "INSERT INTO doc_ms_file (doc_ms_file_upload,
-                                                                    doc_ms_file_type,
-                                                                    doc_ms_doc_id,
-                                                                    doc_ms_file_created,
-                                                                    doc_ms_file_createdby,
-                                                                    doc_ms_file_sts,
-                                                                    doc_ms_file_masa)
-                                                            VALUES('$file_asli',
-                                                                    '$txtExtAsli',
-                                                                    '$dataID',
-                                                                    '".date('Y-m-d H:i:s')."',
-                                                                    '".$_SESSION['sys_role_id']."',
-                                                                    'Y',
-                                                                    'B')";
-                        $qryAsli        = mysqli_query($koneksidb, $sqlAsli) or die ("gagal insert file asli". mysqli_errors());
-                    }
-                    if (! empty($_FILES['txtFilePDF']['tmp_name'])) {
-                        $tgl            = date('ymdhis');
-                        $file_pdf       = $_FILES['txtFilePDF']['name'];
-                        $file_pdf       = stripslashes($file_pdf);
-                        $file_pdf       = str_replace("'","",$file_pdf);
-                        $txtExtPDF      = pathinfo($file_pdf, PATHINFO_EXTENSION);
-                        $file_pdf       = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtPDF;
-                        copy($_FILES['txtFilePDF']['tmp_name'],"file/".$file_pdf);
-
-
-                        // INSERT FILE ASLI
-                        $sqlPDF         = "INSERT INTO doc_ms_file (doc_ms_file_upload,
-                                                                    doc_ms_file_type,
-                                                                    doc_ms_doc_id,
-                                                                    doc_ms_file_created,
-                                                                    doc_ms_file_createdby,
-                                                                    doc_ms_file_sts,
-                                                                    doc_ms_file_masa)
-                                                            VALUES('$file_pdf',
-                                                                    '$txtExtPDF',
-                                                                    '$dataID',
-                                                                    '".date('Y-m-d H:i:s')."',
-                                                                    '".$_SESSION['sys_role_id']."',
-                                                                    'Y',
-                                                                    'B')";
-                        $qryPDF         = mysqli_query($koneksidb, $sqlPDF) or die ("gagal insert file PDF". mysqli_errors());
-                    }
 
                     $sqlupdate  ="UPDATE doc_tr_usul SET doc_tr_usul_sts='C',
                                                         doc_tr_usul_updated='".date('Y-m-d H:i:s')."',

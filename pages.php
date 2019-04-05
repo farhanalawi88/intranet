@@ -154,6 +154,7 @@ session_start();
 		elseif($pg==base64_encode(meetingscheduleview)){ include"meeting_schedule_view.php"; }
 		elseif($pg==base64_encode(ticketing)){ include"ticketing.php"; }
 		elseif($pg==base64_encode(ticketingview)){ include"ticketing_view.php"; }
+		elseif($pg==base64_encode(extention)){ include"extention.php"; }
 	// DATA MASTER ROOM
 		elseif($pg==base64_encode(masterroomadd)){ include"modul/as_ms_room/as_ms_room_add.php"; }
 		elseif($pg==base64_encode(masterroomdata)){ include"modul/as_ms_room/as_ms_room_data.php"; }
@@ -163,6 +164,18 @@ session_start();
 		elseif($pg==base64_encode(dttrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_data.php"; }
 		elseif($pg==base64_encode(edttrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_edit.php"; }
 		elseif($pg==base64_encode(notulentrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_notulen.php"; }
+	// DATA MASTER EMPLOYEE
+		elseif($pg==base64_encode(masteremployeeadd)){ include"modul/sys_master_employee/master_employee_add.php"; }
+		elseif($pg==base64_encode(masteremployeedata)){ include"modul/sys_master_employee/master_employee_data.php"; }
+		elseif($pg==base64_encode(masteremployeeedit)){ include"modul/sys_master_employee/master_employee_edit.php"; }
+	// DATA EXTENTION NUMBER
+		elseif($pg==base64_encode(extentionnumberadd)){ include"modul/extention_number/extention_number_add.php"; }
+		elseif($pg==base64_encode(extentionnumberdata)){ include"modul/extention_number/extention_number_data.php"; }
+		elseif($pg==base64_encode(extentionnumberedit)){ include"modul/extention_number/extention_number_edit.php"; }
+	// DATA IT NOTE
+		elseif($pg==base64_encode(itnoteadd)){ include"modul/it_note/it_note_add.php"; }
+		elseif($pg==base64_encode(itnotedata)){ include"modul/it_note/it_note_data.php"; }
+		elseif($pg==base64_encode(itnoteedit)){ include"modul/it_note/it_note_edit.php"; }
 		else {
 		echo "<div class='alert alert-dismissable alert-danger'><i class='fa fa-times'></i> Belum ada modul / dalam tahap pengembangan</div>";
 		}

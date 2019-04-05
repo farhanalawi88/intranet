@@ -97,7 +97,7 @@ $dataAgenda		= $dataShow['as_trx_meet_sch_agenda'];
 		    	<div class="row">
 		      		<div class="col-lg-12">
 		        		<div class="form-group">
-		          		<label class="form-control-label">Notulen & Point Meeting :</label>
+		          		<label class="form-control-label">Uraian Pembahasan & Point Meeting :</label>
 		          		<input class="form-control" type="text" name="txtNotulen" placeholder="Masukkan Notulen" onkeyup="javascript:this.value=this.value.toUpperCase();">
 		          		<input type="hidden" name="txtKode" value="<?php echo $dataKode ?>">
 		          		</div>
