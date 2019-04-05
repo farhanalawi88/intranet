@@ -18,14 +18,14 @@
 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
 	<div class="portlet box <?php echo $dataPanel; ?>">
 		<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Data Masuk Kendaraan</span></div>
+		<div class="caption"><span class="caption-subject uppercase">Data Masuk Kendaraan & Tamu</span></div>
 			<div class="actions">
 				<a href="?page=<?php echo base64_encode(loadaddtrmasuk) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA</a>	
 				<button class="btn <?php echo $dataPanel; ?> active" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin menghapus data penting ini !!')"><i class="icon-trash"></i> DELETE DATA</button>
 			</div>
 		</div>
 		<div class="portlet-body">
-			<table class="table table-bordered table-hover table-checkable order-column" id="sample_2">
+			<table class="table table-hover table-checkable order-column" id="sample_2">
 				<thead>
                     <tr class="active">
        	  	  	  	  	<th class="table-checkbox" width="3%">
@@ -47,18 +47,17 @@
 				<tbody>
                     <?php
 						$dataSql = "SELECT 
-									convert(char(10),a.load_tr_inout_tgl_masuk,103) as load_tr_inout_tgl_masuk,
-									convert(char(10),a.load_tr_inout_tgl_masuk,108) as load_tr_inout_jam_masuk,
+									a.load_tr_inout_tgl_masuk,
 									b.load_ms_jns_kend_nm,
-									c.load_ms_petugas_nm,
+									c.load_ms_identitas_nm,
 									a.load_tr_inout_reg,
 									a.load_tr_inout_nopol,
 									a.load_tr_inout_sts,
 									a.load_tr_inout_id,
 									a.load_tr_inout_card
 									FROM load_tr_inout a 
-									INNER JOIN load_ms_jns_kend b ON a.load_ms_jns_kend_id=b.load_ms_jns_kend_id
-									LEFT JOIN load_ms_petugas c ON a.load_ms_petugas_id=c.load_ms_petugas_id
+									LEFT JOIN load_ms_jns_kend b ON a.load_ms_jns_kend_id=b.load_ms_jns_kend_id
+									LEFT JOIN load_ms_identitas c ON a.load_ms_identitas_id=c.load_ms_identitas_id
 									ORDER BY a.load_tr_inout_id DESC";
 						$dataQry = mysqli_query($koneksidb, $dataSql);
 						$nomor  = 0; 
@@ -81,7 +80,7 @@
 						<td><div align="center"><?php echo $nomor; ?></div></td>
 						<td><div align="center"><?php echo $data['load_tr_inout_reg']; ?></div></td>
 						<td><div align="center"><?php echo $data['load_tr_inout_card']; ?></div></td>
-						<td><div align="center"><?php echo $data['load_tr_inout_tgl_masuk']; ?> <?php echo $data['load_tr_inout_jam_masuk']; ?></div></td>
+						<td><div align="center"><?php echo date('d/m/Y H:i', strtotime($data['load_tr_inout_tgl_masuk'])) ?></div></td>
 						<td><?php echo $data ['load_ms_jns_kend_nm']; ?></td>
 						<td><?php echo $data ['load_tr_inout_nopol']; ?></td>
 						<td><div align="center"><?php echo $dataStatus; ?></div></td>

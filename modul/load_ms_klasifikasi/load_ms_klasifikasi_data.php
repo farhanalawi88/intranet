@@ -18,14 +18,14 @@
 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
 	<div class="portlet box <?php echo $dataPanel; ?>">
 		<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Data Klasifikasi Muatan</span></div>
+		<div class="caption"><span class="caption-subject uppercase">Data Klasifikasi</span></div>
 			<div class="actions">
 				<a href="?page=<?php echo base64_encode(loadaddmsklasifikasi) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA</a>	
 				<button class="btn <?php echo $dataPanel; ?> active" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin menghapus data penting ini !!')"><i class="icon-trash"></i> DELETE DATA</button>
 			</div>
 		</div>
 		<div class="portlet-body">
-			<table class="table table-bordered table-hover table-checkable order-column" id="sample_2">
+			<table class="table table-hover table-checkable order-column" id="sample_2">
 				<thead>
                     <tr class="active">
        	  	  	  	  	<th class="table-checkbox" width="3%">

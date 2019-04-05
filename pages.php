@@ -70,9 +70,9 @@ session_start();
 		elseif($pg==base64_encode(loadaddmsjnskend)){ include"modul/load_ms_jns_kend/load_ms_jns_kend_add.php"; }
 		elseif($pg==base64_encode(loadedtmsjnskend)){ include"modul/load_ms_jns_kend/load_ms_jns_kend_edit.php"; }
 	// DATA PETUGAS
-		elseif($pg==base64_encode(loaddtmspetugas)){ include"modul/load_ms_petugas/load_ms_petugas_data.php"; }
-		elseif($pg==base64_encode(loadaddmspetugas)){ include"modul/load_ms_petugas/load_ms_petugas_add.php"; }
-		elseif($pg==base64_encode(loadedtmspetugas)){ include"modul/load_ms_petugas/load_ms_petugas_edit.php"; }
+		elseif($pg==base64_encode(loaddtmspetugas)){ include"modul/load_ms_identitas/load_ms_identitas_data.php"; }
+		elseif($pg==base64_encode(loadaddmspetugas)){ include"modul/load_ms_identitas/load_ms_identitas_add.php"; }
+		elseif($pg==base64_encode(loadedtmspetugas)){ include"modul/load_ms_identitas/load_ms_identitas_edit.php"; }
 	// DATA STANDARD
 		elseif($pg==base64_encode(loaddtmsklasifikasi)){ include"modul/load_ms_klasifikasi/load_ms_klasifikasi_data.php"; }
 		elseif($pg==base64_encode(loadaddmsklasifikasi)){ include"modul/load_ms_klasifikasi/load_ms_klasifikasi_add.php"; }
