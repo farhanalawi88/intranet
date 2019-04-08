@@ -2,6 +2,9 @@
 	
 	if(isset($_POST['btnSave'])){
 		$message = array();
+		if (trim($_POST['cmbJenis'])=="") {
+			$message[] = "<b>Jenis</b> tidak boleh kosong !";		
+		}
 		if (trim($_POST['txtTanggal'])=="") {
 			$message[] = "<b>Tanggal</b> tidak boleh kosong !";		
 		}
@@ -38,31 +41,44 @@
 		$txtReferensi	= $_POST['txtReferensi'];
 		$txtDokumen		= $_POST['txtDokumen'];
 		$txtMasalah		= $_POST['txtMasalah'];
+		$cmbJenis		= $_POST['cmbJenis'];
 
 		if(count($message)==0){
 			// MENGAMBIL KODE BAGIAN
-			$sqlBag			= "SELECT LTRIM(RTRIM(sys_bagian_kd)) as sys_bagian_kd FROM sys_bagian WHERE sys_bagian_id='$cmbBagian'";
-			$qryBag 		= mysqli_query($koneksidb,$sqlBag) or die ("gagal get kode bagian".mysqli_errors());
-			$rowBag			= mysqli_fetch_array($qryBag);
-			// GET FORMAT PENOMORAN
-			$bulan			= substr($txtTanggal,5,2);
-			$romawi 		= getRomawi($bulan);
-			$tahun			= substr($txtTanggal,2,2);
-			$tahun2			= substr($txtTanggal,0,4);
-			$nomorTrans		= "/".$rowBag['sys_bagian_kd']."/".$romawi."/".$tahun;
-			$queryTrans		= "SELECT max(ptkp_tr_ptkp_no) as maxKode 
-								FROM ptkp_tr_ptkp 
-								WHERE YEAR(ptkp_tr_ptkp_tgl)='$tahun2' 
-								AND sys_bagian_id='$cmbBagian'";
-			$hasilTrans		= mysqli_query($koneksidb, $queryTrans) or die ("Gagal select nomor".mysqli_errors());
-			$dataTrans		= mysqli_fetch_array($hasilTrans);
-			$noTrans		= $dataTrans['maxKode'];
-			$noUrutTrans	= $noTrans + 1;
-			$IDTrans		=  sprintf("%03s", $noUrutTrans);
-			$kodeTrans		= $IDTrans.$nomorTrans;
+				$sqlBag			= "SELECT 
+										LTRIM(RTRIM(sys_bagian_kd)) as sys_bagian_kd 
+									FROM sys_bagian 
+									WHERE sys_bagian_id='$cmbBagian'";
+				$qryBag 		= mysqli_query($koneksidb,$sqlBag) or die ("gagal get kode bagian".mysqli_errors());
+				$rowBag			= mysqli_fetch_array($qryBag);
+				// MENGAMBIL KODE SUMBER
+				$sqlSum			= "SELECT 
+										LTRIM(RTRIM(ptkp_ms_sumber_kd)) as ptkp_ms_sumber_kd 
+									FROM ptkp_ms_sumber 
+									WHERE ptkp_ms_sumber_id='$cmbSumber'";
+				$qrySum 		= mysqli_query($koneksidb,$sqlSum) or die ("gagal get kode sumber".mysqli_errors());
+				$rowSum			= mysqli_fetch_array($qrySum);
+				// GET FORMAT PENOMORAN
+				$bulan			= substr($txtTanggal,5,2);
+				$romawi 		= getRomawi($bulan);
+				$tahun			= substr($txtTanggal,2,2);
+				$tahun2			= substr($txtTanggal,0,4);
+				$nomorTrans		= "/".$rowSum['ptkp_ms_sumber_kd']."/".$rowBag['sys_bagian_kd']."/".$romawi."/".$tahun;
+				$queryTrans		= "SELECT max(ptkp_tr_ptkp_no) as maxKode 
+									FROM ptkp_tr_ptkp 
+									WHERE YEAR(ptkp_tr_ptkp_tgl)='$tahun2' 
+									AND sys_bagian_id='$cmbBagian'";
+				$hasilTrans		= mysqli_query($koneksidb, $queryTrans) or die ("Gagal select nomor".mysqli_errors());
+				$dataTrans		= mysqli_fetch_array($hasilTrans);
+				$noTrans		= $dataTrans['maxKode'];
+				$noUrutTrans	= $noTrans + 1;
+				$IDTrans		=  sprintf("%03s", $noUrutTrans);
+				$kodeTrans		= $IDTrans.$nomorTrans;
+			
 			// INSERT DATA PTKP
 			$sqlSave="INSERT INTO ptkp_tr_ptkp (ptkp_tr_ptkp_tgl,
 												ptkp_tr_ptkp_no,
+												ptkp_tr_ptkp_type,
 												ptkp_ms_sumber_id,
 												sys_bagian_id,
 												ptkp_ms_dampak_id,
@@ -77,9 +93,11 @@
 												ptkp_tr_ptkp_bag,
 												ptkp_tr_ptkp_masalah,
 												ptkp_tr_ptkp_created,
-												ptkp_tr_ptkp_createdby)
+												ptkp_tr_ptkp_createdby,
+												ptkp_tr_ptkp_type)
 										VALUES('$txtTanggal',
 												'$kodeTrans',
+												'$cmbJenis',
 												'$cmbSumber', 
 												'$cmbBagian',
 												'$cmbDampak',
@@ -94,7 +112,8 @@
 												'".$userRow['sys_bagian_id']."',
 												'$txtMasalah',
 												'".date('Y-m-d H:i:s')."',
-												'".$_SESSION['sys_role_id']."')";
+												'".$_SESSION['sys_role_id']."',
+												'$cmbJenis')";
 			$qrySave	= mysqli_query($koneksidb, $sqlSave) or die ("gagal insert ptkp ". mysqli_errors());
 			if($qrySave){
 				$_SESSION['info'] = 'success';
@@ -116,6 +135,7 @@
 		}
 	} 
 	
+	$dataJenis			= isset($_POST['cmbJenis']) ? $_POST['cmbJenis'] : '';
 	$dataTanggal		= isset($_POST['txtTanggal']) ? $_POST['txtTanggal'] : '';
 	$dataSumber			= isset($_POST['cmbSumber']) ? $_POST['cmbSumber'] : '';
 	$dataBagian			= isset($_POST['cmbBagian']) ? $_POST['cmbBagian'] : ''; 
@@ -136,7 +156,7 @@ function submitform() {
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Pembuatan PTKP</span>
+            <span class="caption-subject uppercase">Form Pembuatan PTKP</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
@@ -148,6 +168,23 @@ function submitform() {
 	<div class="portlet-body form">
         <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" class="form-horizontal form-bordered" autocomplete="off" name="form1">
         	<div class="form-body">
+        		<div class="form-group">
+					<label class="col-md-2 control-label">Jenis :</label>
+					<div class="col-md-3">
+						<select class="form-control select2" data-placeholder="Select Status" name="cmbJenis">
+		                	<option value=""></option>
+		               		<?php
+							  $pilihan	= array("PTKP", "NON PTKP");
+							  foreach ($pilihan as $nilai) {
+								if ($dataJenis==$nilai) {
+									$cek=" selected";
+								} else { $cek = ""; }
+								echo "<option value='$nilai' $cek>$nilai</option>";
+							  }
+							?>
+		              	</select>
+					</div>
+				</div>
 		        <div class="form-group">
 					<label class="col-lg-2 control-label">Tanggal :</label>
 					<div class="col-lg-3">
@@ -298,7 +335,7 @@ function submitform() {
                 <h4 class="modal-title">DAFTAR DOKUMEN</h4>
             </div>
             <div class="modal-body"> 
-            	<table class="table table-hover table-bordered table-striped table-condensed" width="100%" id="sample_2">
+            	<table class="table table-hover table-condensed table-striped table-condensed" width="100%" id="sample_2">
 		            <thead>
 		                <tr class="active">
 		                  	<th width="5%"><div align="center">NO</div></th>

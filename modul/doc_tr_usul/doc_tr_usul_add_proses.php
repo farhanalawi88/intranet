@@ -19,10 +19,10 @@
         if (trim($_POST['txtTanggal'])=="") {
             $message[] = "<b>Tgl. Pengesahan</b> tidak boleh kosong !";     
         }
-        if (empty($_FILES['txtFileAsli']['tmp_name'])) {
+        if (empty($_FILES['txtWord']['tmp_name'])) {
             $message[] = "<b>File Asli</b> tidak boleh kosong !";     
         }
-        if (empty($_FILES['txtFilePDF']['tmp_name'])) {
+        if (empty($_FILES['txtPDF']['tmp_name'])) {
             $message[] = "<b>File PDF</b> tidak boleh kosong !";     
         }
         
@@ -43,26 +43,42 @@
             // CEK JENIS USULAN
             if($txtJnsUsul==2){
 
-                if (! empty($_FILES['txtFileAsli']['tmp_name'])) {
-                    $tgl            = date('ymdhis');
-                    $file_asli      = $_FILES['txtFileAsli']['name'];
-                    $file_asli      = stripslashes($file_asli);
-                    $file_asli      = str_replace("'","",$file_asli);
-                    $txtExtAsli     = pathinfo($file_asli, PATHINFO_EXTENSION);
-                    $file_asli      = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtAsli;
-                    copy($_FILES['txtFileAsli']['tmp_name'],"file/".$file_asli);
-
-                   
+                $tgl         = date('ymdhis');
+                // UPLOAD FILE PDF
+                if (empty($_FILES['txtPDF']['tmp_name'])) {
+                    $file_pdf = $_POST['txtPDFLama'];
                 }
-                if (! empty($_FILES['txtFilePDF']['tmp_name'])) {
-                    $tgl            = date('ymdhis');
-                    $file_pdf       = $_FILES['txtFilePDF']['name'];
-                    $file_pdf       = stripslashes($file_pdf);
-                    $file_pdf       = str_replace("'","",$file_pdf);
-                    $txtExtPDF      = pathinfo($file_pdf, PATHINFO_EXTENSION);
-                    $file_pdf       = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtPDF;
-                    copy($_FILES['txtFilePDF']['tmp_name'],"file/".$file_pdf);
+                else  {
+                    if(! $_POST['txtPDFLama']=="") {
+                        if(file_exists("file/".$_POST['txtPDFLama'])) {
+                            unlink("file/".$_POST['txtPDFLama']);   
+                        }
+                    }
+
+                    $file_pdf = $_FILES['txtPDF']['name'];
+                    $file_pdf = stripslashes($file_pdf);
+                    $file_pdf = str_replace("'","",$file_pdf);
                     
+                    $file_pdf = $tgl.".".$file_pdf;
+                    copy($_FILES['txtPDF']['tmp_name'],"file/".$file_pdf);                  
+                }
+                // UPLOAD FILE WORD
+                if (empty($_FILES['txtWord']['tmp_name'])) {
+                    $file_word = $_POST['txtWordLama'];
+                }
+                else  {
+                    if(! $_POST['txtWordLama']=="") {
+                        if(file_exists("file/".$_POST['txtWordLama'])) {
+                            unlink("file/".$_POST['txtWordLama']);  
+                        }
+                    }
+
+                    $file_word = $_FILES['txtWord']['name'];
+                    $file_word = stripslashes($file_word);
+                    $file_word = str_replace("'","",$file_word);
+                    
+                    $file_word = $tgl.".".$file_word;
+                    copy($_FILES['txtWord']['tmp_name'],"file/".$file_word);                    
                 }
 
                 $sqlSave="UPDATE doc_ms_doc SET doc_ms_doc_nm='$txtNama',
@@ -88,16 +104,42 @@
                 exit;
 
             }elseif($txtJnsUsul==1){
+                // GET KODE JENIS
+                $tgl         = date('ymdhis');
+                if (! empty($_FILES['txtPDF']['tmp_name'])) {
+                    $file_upload_pdf    = $_FILES['txtPDF']['name'];
+                    $file_upload_pdf    = stripslashes($file_upload_pdf);
+                    $file_upload_pdf    = str_replace("'","",$file_upload_pdf);
+                    $txtExtPDF          = pathinfo($file_upload_pdf, PATHINFO_EXTENSION);
+                    $file_upload_pdf    = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtPDF;
+                    copy($_FILES['txtPDF']['tmp_name'],"file/".$file_upload_pdf);
+                }
+                else {
+                    $file_upload_pdf    = "";
+                }   
+                if (! empty($_FILES['txtWord']['tmp_name'])) {
+                    $file_upload_word   = $_FILES['txtWord']['name'];
+                    $file_upload_word   = stripslashes($file_upload_word);
+                    $file_upload_word   = str_replace("'","",$file_upload_word);
+                    $txtExtWord         = pathinfo($file_upload_word, PATHINFO_EXTENSION);
+                    $file_upload_word   = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtWord;
+                    copy($_FILES['txtWord']['tmp_name'],"file/".$file_upload_word);
+                }
+                else {
+                    $file_upload_word   = "";
+                }   
                 $sqlSave="INSERT INTO doc_ms_doc (doc_ms_doc_nm,
                                                     doc_ms_doc_kd,
                                                     doc_ms_doc_rev,
-                                                    doc_tr_usul_jns,
+                                                    doc_ms_doc_type,
                                                     sys_bagian_id,
                                                     doc_ms_doc_sts,
                                                     doc_ms_kat_doc_id,
                                                     doc_ms_doc_created,
                                                     doc_ms_doc_createdby,
-                                                    doc_ms_doc_tgl)
+                                                    doc_ms_doc_tgl,
+                                                    doc_ms_doc_pdf,
+                                                    doc_ms_doc_word)
                                             VALUES('$txtNama',
                                                     '$txtNomor',
                                                     '$txtRevisi',
@@ -107,7 +149,9 @@
                                                     '$cmbKategori',
                                                     '".date('Y-m-d H:i:s')."',
                                                     '".$_SESSION['sys_role_id']."',
-                                                    '$txtTanggal')";
+                                                    '$txtTanggal',
+                                                    '$file_upload_pdf',
+                                                    '$file_upload_word')";
                 $qrySave    = mysqli_query($koneksidb, $sqlSave) or die ("gagal insert". mysqli_errors());
                 if($qrySave){
 
@@ -155,7 +199,9 @@
                             a.doc_tr_usul_alasan,
                             a.doc_tr_usul_usulan,
                             a.doc_ms_doc_id,
-                            e.doc_ms_doc_kd
+                            e.doc_ms_doc_kd,
+                            e.doc_ms_doc_pdf,
+                            e.doc_ms_doc_word
                             FROM doc_tr_usul a
                             INNER JOIN sys_bagian b ON a.sys_bagian_id=a.sys_bagian_id
                             INNER JOIN doc_ms_kat_doc d ON a.doc_ms_kat_doc_id=d.doc_ms_kat_doc_id
@@ -304,51 +350,37 @@
                      </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-2">Dokumen Asli :</label>
+                    <label class="control-label col-md-2">Upload PDF :</label>
                     <div class="col-md-9">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
                             <span class="btn default btn-file">
-                                <span class="fileinput-new">
-                                     Select file
-                                </span>
-                                <span class="fileinput-exists">
-                                     Change
-                                </span>
-                                <input type="file" name="txtFileAsli">
+                                <span class="fileinput-new">Select file</span>
+                                <span class="fileinput-exists">Change</span>
+                                <input type="file" name="txtPDF">
+                                <input name="txtPDFLama" type="hidden" value="<?php echo $showRow['doc_ms_doc_pdf']; ?>" />
                             </span>
-                            <span class="fileinput-filename">
-                            </span>
-                             &nbsp;
+                            <span class="fileinput-filename"></span>&nbsp;
                             <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none"></a>
-
-                            
                         </div>
-                        
+                        <?php echo $showRow['doc_ms_doc_pdf']; ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-2">Dokumen PDF :</label>
+                    <label class="control-label col-md-2">Upload MS Word :</label>
                     <div class="col-md-9">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
                             <span class="btn default btn-file">
-                                <span class="fileinput-new">
-                                     Select file
-                                </span>
-                                <span class="fileinput-exists">
-                                     Change
-                                </span>
-                                <input type="file" name="txtFilePDF">
+                                <span class="fileinput-new">Select file</span>
+                                <span class="fileinput-exists">Change</span>
+                                <input type="file" name="txtWord">
+                                <input name="txtWordLama" type="hidden" value="<?php echo $showRow['doc_ms_doc_word']; ?>" />
                             </span>
-                            <span class="fileinput-filename">
-                            </span>
-                             &nbsp;
+                            <span class="fileinput-filename"></span>&nbsp;
                             <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none"></a>
-
-                            
                         </div>
-                        
+                        <?php echo $showRow['doc_ms_doc_word']; ?>
                     </div>
-                </div>
+                </div>  
             </div>
             <div class="form-actions">
                 <div class="row">

@@ -28,7 +28,7 @@
 			</div>
 		</div>
     	<div class="portlet-body">
-           <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_2">
+           <table class="table table-striped table-hover table-checkable order-column" id="sample_2">
 				<thead>
                     <tr class="active">
        	  	  	  	  	<th class="table-checkbox">
@@ -42,8 +42,6 @@
                         <th width="15%">PASSWORD</th>
                         <th width="10%">IP ADDRESS</th>
                         <th width="20%">KETERANGAN</th>
-                        <th width="10%">DIBUAT OLEH</th>
-				  	  	<th width="5%"><div align="center">STATUS</div></th>
 				  	  	<th width="5%"><div align="center">ACTION</div></th>
                     </tr>
 				</thead>
@@ -75,8 +73,6 @@
 						<td><?php echo $data['password']; ?></td>
 						<td><?php echo $data['ip_address']; ?></td>
 						<td><?php echo $data['keterangan']; ?></td>
-						<td><?php echo strtoupper($data['sys_role_nama']); ?></td>
-						<td><div align="center"><?php echo $dataStatus; ?></div></td>
 						<td><div align="center"><a href="?page=<?php echo base64_encode(itnoteedit) ?>&amp;id=<?php echo base64_encode($Kode); ?>" class="btn btn-xs <?php echo $dataPanel; ?>"><i class="fa fa-pencil"></i></a></div></td>
                     </tr>
                     <?php

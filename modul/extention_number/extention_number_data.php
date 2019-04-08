@@ -17,18 +17,18 @@
 	
 ?>
 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
-	<div class="portlet box blue">
+	<div class="portlet box <?php echo $dataPanel; ?>">
 	    <div class="portlet-title">
 	        <div class="caption">
-	            <span class="caption-subject uppercase bold">Data Pembuatan Ext Telepon</span>
+	            <span class="caption-subject uppercase">Data Pembuatan Ext Telepon</span>
 	        </div>
 	        <div class="actions">
-				<a href="?page=<?php echo base64_encode(extentionnumberadd) ?>" class="btn blue active"><i class="icon-plus"></i> ADD DATA </a>
-				<button class="btn blue active" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin menghapus data penting ini !!')"><i class="icon-trash"></i> DELETE DATA</button>
+				<a href="?page=<?php echo base64_encode(extentionnumberadd) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA </a>
+				<button class="btn <?php echo $dataPanel; ?> active" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin menghapus data penting ini !!')"><i class="icon-trash"></i> DELETE DATA</button>
 			</div>
 		</div>
     	<div class="portlet-body">
-           <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_2">
+           <table class="table table-striped table-hover table-checkable order-column" id="sample_2">
 				<thead>
                     <tr class="active">
        	  	  	  	  	<th class="table-checkbox">

@@ -67,7 +67,7 @@
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Ext Telepon</span>
+            <span class="caption-subject uppercase">Form Ext Telepon</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
@@ -128,8 +128,8 @@
 	    	<div class="form-actions">
                 <div class="row">
                     <div class="col-md-offset-2 col-md-10">
-		                <button type="submit" name="btnSave" class="btn blue"><i class="fa fa-save"></i> Simpan Data</button>
-		                <a href="?page=<?php echo base64_encode(extentionnumberdata) ?>" class="btn blue"><i class="fa fa-undo"></i> Batalkan</a>
+		                <button type="submit" name="btnSave" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Simpan Data</button>
+		                <a href="?page=<?php echo base64_encode(extentionnumberdata) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Batalkan</a>
 			        </div>
 			    </div>
 			</div>
