@@ -35,17 +35,24 @@ if(isset($_POST['btnInput'])){
 	}
 
 	$txtNotulen		= $_POST['txtNotulen'];
-	$txtKode		= $_POST['txtKode'];
-	
-	
+	$txtAction		= $_POST['txtAction'];
+	$txtUser		= $_POST['txtUser'];
+	$txtFinished	= $_POST['txtFinished'];
+	$txtKode		= $_POST['txtKode'];	
 			
 	if(count($message)==0){		
 		$qrySave		= mysqli_query($koneksidb, "INSERT INTO as_trx_notulen (as_trx_notulen_point,
 																				as_trx_meet_sch_id,
+																				as_trx_notulen_action,
+																				as_trx_notulen_user,
+																				as_trx_notulen_finished,
 																				as_trx_notulen_created,
 																				as_trx_notulen_createdby)
 																		VALUES ('$txtNotulen',
 																				'$txtKode',
+																				'$txtAction',
+																				'$txtUser',
+																				'$txtFinished',
 																				'".date('Y-m-d H:i:s')."',
 																				'".$_SESSION['sys_role_id']."')") 
 							  or die ("Gagal query".mysqli_errors());
@@ -80,7 +87,11 @@ $qryShow 		= mysqli_query($koneksidb, $sqlShow)
 					or die ("Query ambil data department salah : ".mysqli_errors());
 $dataShow		= mysqli_fetch_array($qryShow);
 $dataKode 		= $dataShow['as_trx_meet_sch_id'];
+
 $dataAgenda		= $dataShow['as_trx_meet_sch_agenda'];
+$dataAction		= isset($_POST['txtAction']) ? $_POST['txtAction'] : $dataShow['as_trx_notulen_action'];
+$dataUser		= isset($_POST['txtUser']) ? $_POST['txtUser'] : $dataShow['as_trx_notulen_user'];
+$dataFinished	= isset($_POST['txtFinished']) ? $_POST['txtFinished'] : $dataShow['as_trx_notulen_finished'];
 ?>	
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
@@ -95,7 +106,7 @@ $dataAgenda		= $dataShow['as_trx_meet_sch_agenda'];
 		<form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" name="frmadd" autocomplete='off'>
 			<div class="form-body">
 		    	<div class="row">
-		      		<div class="col-lg-12">
+		      		<div class="col-lg-4">
 		        		<div class="form-group">
 		          		<label class="form-control-label">Uraian Pembahasan & Point Meeting :</label>
 		          		<input class="form-control" type="text" name="txtNotulen" placeholder="Masukkan Notulen" onkeyup="javascript:this.value=this.value.toUpperCase();">
@@ -103,7 +114,24 @@ $dataAgenda		= $dataShow['as_trx_meet_sch_agenda'];
 		          		</div>
 		          		<button type="submit" name="btnInput" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Input Data</button>
 		        	</div>
-				    
+		        	<div class="col-lg-4">
+		        		<div class="form-group">
+		          		<label class="form-control-label">Action Plan :</label>
+		          		<input class="form-control" type="text" name="txtAction" placeholder="Masukkan Action Plan" onkeyup="javascript:this.value=this.value.toUpperCase();">
+		          		</div>
+		        	</div>
+		        	<div class="col-lg-2">
+		        		<div class="form-group">
+		          		<label class="form-control-label">Penanggung Jawab :</label>
+		          		<input class="form-control" type="text" name="txtUser" placeholder="Masukkan Penanggung Jawab" onkeyup="javascript:this.value=this.value.toUpperCase();">
+		          		</div>
+		        	</div>
+		        	<div class="col-lg-2">
+		        		<div class="form-group">
+		          		<label class="form-control-label">Penyelesaian :</label>
+		          		<input class="form-control" type="text" name="txtFinished" placeholder="Masukkan Penyelesaian" onkeyup="javascript:this.value=this.value.toUpperCase();">
+		          		</div>
+		        	</div>				    
 				</div>
 				<hr>
 			    <div class="row">
@@ -113,7 +141,10 @@ $dataAgenda		= $dataShow['as_trx_meet_sch_agenda'];
 		                    <tr class="active">
 		       	  	  	  	  	<th width="5%"><div align="center">ACTION</div></th>
 							  	<th width="5%"><div align="center">NO</div></th>
-								<th width="90%">NOTULEN & POINT MEETING</th>
+								<th width="35%">NOTULEN & POINT MEETING</th>
+								<th width="35%">ACTION PLAN</th>
+								<th width="10%">PENANGGUNG JAWAB</th>
+								<th width="10%">PENYELESAIAN</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -137,6 +168,9 @@ $dataAgenda		= $dataShow['as_trx_meet_sch_agenda'];
 		                        </td>
 								<td><div align="center"><?php echo $nomor; ?></div></td>
 								<td><?php echo $data ['as_trx_notulen_point']; ?></td>
+								<td><?php echo $data ['as_trx_notulen_action']; ?></td>
+								<td><?php echo $data ['as_trx_notulen_user']; ?></td>
+								<td><?php echo $data ['as_trx_notulen_finished']; ?></td>
 							</tr>
 							<?php } ?>
 						</tbody>

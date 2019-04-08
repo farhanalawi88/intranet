@@ -20,6 +20,9 @@
 		if (trim($_POST['cmbTerkait'])=="") {
 			$message[] = "<b>Keterkaitan Temuan</b> tidak boleh kosong !";		
 		}
+		if (trim($_POST['cmbJenis'])=="") {
+			$message[] = "<b>Jenis</b> tidak boleh kosong !";		
+		}
 		
 		$cmbSumber		= $_POST['cmbSumber'];
 		$cmbKategori	= $_POST['cmbKategori'];
@@ -31,12 +34,14 @@
 		$txtDokumen		= $_POST['txtDokumen'];
 		$txtKode		= $_POST['txtKode'];
 		$txtMasalah		= $_POST['txtMasalah'];
+		$cmbJenis		= $_POST['cmbJenis'];
 
 		if(count($message)==0){
 			$sqlSave="UPDATE ptkp_tr_ptkp SET ptkp_ms_sumber_id='$cmbSumber', 
 													ptkp_ms_dampak_id='$cmbDampak',
 													ptkp_ms_kategori_id='$cmbKategori',
 													ptkp_ms_terkait_id='$cmbTerkait',
+													ptkp_tr_ptkp_type='$cmbJenis',
 													ptkp_tr_ptkp_kegiatan='$txtKegiatan',
 													ptkp_tr_ptkp_deskripsi='$txtDeskripsi',
 													ptkp_tr_ptkp_referensi='$txtReferensi',
@@ -81,7 +86,8 @@
 							a.doc_ms_doc_id,
 							b.doc_ms_doc_kd,
 							a.ptkp_tr_ptkp_id,
-							a.ptkp_tr_ptkp_masalah
+							a.ptkp_tr_ptkp_masalah,
+							a.ptkp_tr_ptkp_type
 							FROM ptkp_tr_ptkp a
 							LEFT JOIN doc_ms_doc b ON a.doc_ms_doc_id=b.doc_ms_doc_id
 							WHERE a.ptkp_tr_ptkp_id='$KodeEdit'";
@@ -92,6 +98,7 @@
 	$dataNomor 			= $dataShow['ptkp_tr_ptkp_no'];
 	$dataTanggal		= $dataShow['ptkp_tr_ptkp_tgl'];
 	$dataSumber			= isset($_POST['cmbSumber']) ? $_POST['cmbSumber'] : $dataShow['ptkp_ms_sumber_id'];
+	$dataJenis			= isset($_POST['cmbJenis']) ? $_POST['cmbJenis'] : $dataShow['ptkp_tr_ptkp_type'];
 	$dataBagian			= $dataShow['sys_bagian_id']; 
 	$dataKegiatan		= isset($_POST['txtKegiatan']) ? $_POST['txtKegiatan'] : $dataShow['ptkp_tr_ptkp_kegiatan'];  
 	$dataKategori		= isset($_POST['cmbKategori']) ? $_POST['cmbKategori'] : $dataShow['ptkp_ms_kategori_id'];  
@@ -117,12 +124,23 @@
 	<div class="portlet-body form">
         <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" class="form-horizontal form-bordered" autocomplete="off" name="form1">
         	<div class="form-body">
-		        <div class="form-group">
-					<label class="col-lg-2 control-label">No. PTKP :</label>
-					<div class="col-lg-2">
-						<input type="text" value="<?php echo $dataNomor; ?>" class="form-control" disabled/>
-						<input type="hidden" value="<?php echo $dataKode; ?>" name="txtKode"/>
-		             </div>
+				<input type="hidden" value="<?php echo $dataKode; ?>" name="txtKode"/>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Jenis :</label>
+					<div class="col-md-3">
+						<select class="form-control select2" data-placeholder="Select Status" name="cmbJenis">
+		                	<option value=""></option>
+		               		<?php
+							  $pilihan	= array("PTKP", "NON PTKP");
+							  foreach ($pilihan as $nilai) {
+								if ($dataJenis==$nilai) {
+									$cek=" selected";
+								} else { $cek = ""; }
+								echo "<option value='$nilai' $cek>$nilai</option>";
+							  }
+							?>
+		              	</select>
+					</div>
 				</div>
 		        <div class="form-group">
 					<label class="col-lg-2 control-label">Tanggal :</label>

@@ -72,7 +72,7 @@
         <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" class="form-horizontal form-bordered" autocomplete="off">
         	<div class="form-body">
 		        <div class="form-group">
-					<label class="col-lg-2 control-label">Kode Urut :</label>
+					<label class="col-lg-2 control-label">Kode :</label>
 					<div class="col-lg-2">
 						<input type="text" name="txtKode" value="<?php echo $dataKode; ?>" class="form-control" placeholder="Enter Code" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
 		             </div>

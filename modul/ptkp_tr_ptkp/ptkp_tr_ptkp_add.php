@@ -45,6 +45,7 @@
 
 		if(count($message)==0){
 			// MENGAMBIL KODE BAGIAN
+			if($cmbJenis=='PTKP'){
 				$sqlBag			= "SELECT 
 										LTRIM(RTRIM(sys_bagian_kd)) as sys_bagian_kd 
 									FROM sys_bagian 
@@ -74,7 +75,9 @@
 				$noUrutTrans	= $noTrans + 1;
 				$IDTrans		=  sprintf("%03s", $noUrutTrans);
 				$kodeTrans		= $IDTrans.$nomorTrans;
-			
+			}else{
+				$kodeTrans		= '';
+			}
 			// INSERT DATA PTKP
 			$sqlSave="INSERT INTO ptkp_tr_ptkp (ptkp_tr_ptkp_tgl,
 												ptkp_tr_ptkp_no,
@@ -93,8 +96,7 @@
 												ptkp_tr_ptkp_bag,
 												ptkp_tr_ptkp_masalah,
 												ptkp_tr_ptkp_created,
-												ptkp_tr_ptkp_createdby,
-												ptkp_tr_ptkp_type)
+												ptkp_tr_ptkp_createdby)
 										VALUES('$txtTanggal',
 												'$kodeTrans',
 												'$cmbJenis',
@@ -112,8 +114,7 @@
 												'".$userRow['sys_bagian_id']."',
 												'$txtMasalah',
 												'".date('Y-m-d H:i:s')."',
-												'".$_SESSION['sys_role_id']."',
-												'$cmbJenis')";
+												'".$_SESSION['sys_role_id']."')";
 			$qrySave	= mysqli_query($koneksidb, $sqlSave) or die ("gagal insert ptkp ". mysqli_errors());
 			if($qrySave){
 				$_SESSION['info'] = 'success';
@@ -392,7 +393,6 @@ function submitform() {
     <!-- /.modal-dialog -->
 </div>
 
-<script src="./assets/scripts/jquery-1.11.2.min.js"></script>
 <script src="./assets/scripts/bootstrap.js"></script>
 <script type="text/javascript">
     $(document).on('click', '.pilihBarang', function (e) {

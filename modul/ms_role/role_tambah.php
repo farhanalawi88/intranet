@@ -40,6 +40,15 @@
 		$cmbBagian		= $_POST['cmbBagian'];
 		$cmbJab			= $_POST['cmbJab'];
 
+		if(empty($cmbID)){
+			$txtPassword	= $_POST['txtPassword'];
+			$toutf8 		= utf8_encode($txtPassword);
+		  	$var 			= sha1($txtPassword,true);
+		  	$password       = base64_encode($var);
+		}else{
+			$password		= $_POST['txtPassword'];
+		}
+
 		
 		if(count($message)==0){					
 			$sqlSave="INSERT INTO sys_role (ad_user_id,
@@ -69,7 +78,7 @@
 											'$cmbJab',
 											'$cmbBagian',
 											'$cmbOrg',
-											'$txtPassword')";
+											'$password')";
 			$qrySave=mysqli_query($koneksidb, $sqlSave) or die ("Gagal query".mysqli_errors());
 			if($qrySave){
 				$_SESSION['info'] = 'success';
@@ -356,7 +365,6 @@
     <!-- /.modal-dialog -->
 </div>
 
-<script src="./assets/scripts/jquery-1.11.2.min.js"></script>
 <script src="./assets/scripts/bootstrap.js"></script>
 <script type="text/javascript">
     $(document).on('click', '.pilihUser', function (e) {
