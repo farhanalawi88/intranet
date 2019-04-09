@@ -5724,7 +5724,20 @@ Custom color buttons
 
 .form-control.focus-green-steel:focus {
   border-color: #29b4b6; }
-
+.batas {
+  border-bottom: 1px solid #ddd; 
+  margin-top: 20px; 
+  margin-bottom: 20px; 
+  margin-left: -20px; 
+  margin-right: -20px
+}
+.batas2 {
+  border-bottom: 1px solid #efefef; 
+  margin-top: 20px; 
+  margin-bottom: 20px; 
+  margin-left: -10px; 
+  margin-right: -10px
+}
 .form-control.grey {
   border-color: #E5E5E5; }
   .form-control.grey:focus {

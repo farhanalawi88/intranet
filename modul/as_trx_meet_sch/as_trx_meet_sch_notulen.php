@@ -112,7 +112,6 @@ $dataFinished	= isset($_POST['txtFinished']) ? $_POST['txtFinished'] : $dataShow
 		          		<input class="form-control" type="text" name="txtNotulen" placeholder="Masukkan Notulen" onkeyup="javascript:this.value=this.value.toUpperCase();">
 		          		<input type="hidden" name="txtKode" value="<?php echo $dataKode ?>">
 		          		</div>
-		          		<button type="submit" name="btnInput" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Input Data</button>
 		        	</div>
 		        	<div class="col-lg-4">
 		        		<div class="form-group">
@@ -131,20 +130,23 @@ $dataFinished	= isset($_POST['txtFinished']) ? $_POST['txtFinished'] : $dataShow
 		          		<label class="form-control-label">Penyelesaian :</label>
 		          		<input class="form-control" type="text" name="txtFinished" placeholder="Masukkan Penyelesaian" onkeyup="javascript:this.value=this.value.toUpperCase();">
 		          		</div>
-		        	</div>				    
+		        	</div>	
+
 				</div>
-				<hr>
+
+		        <button type="submit" name="btnInput" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Input Data</button>
+				<div class="batas"></div>
 			    <div class="row">
 			     	<div class="col-lg-12">    	
 		            <table class="table table-striped table-condensed table-hover" id="sample_1">
 						<thead>
 		                    <tr class="active">
-		       	  	  	  	  	<th width="5%"><div align="center">ACTION</div></th>
+		       	  	  	  	  	<th width="10%"><div align="center">ACTION</div></th>
 							  	<th width="5%"><div align="center">NO</div></th>
 								<th width="35%">NOTULEN & POINT MEETING</th>
 								<th width="35%">ACTION PLAN</th>
 								<th width="10%">PENANGGUNG JAWAB</th>
-								<th width="10%">PENYELESAIAN</th>
+								<th width="5%">PENYELESAIAN</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -163,6 +165,7 @@ $dataFinished	= isset($_POST['txtFinished']) ? $_POST['txtFinished'] : $dataShow
 		                        	<div align="center">
 		                        		<div class="btn-group">
 		                        			<button type="submit" value="<?php echo $Kode ?>" name="btnHapus" class="btn btn-xs <?php echo $dataPanel; ?>"><i class="fa fa-trash"></i></button>
+		                        			<a href="?page=<?php echo base64_encode(edtnotulentrxmeetsch) ?>&amp;id=<?php echo base64_encode($Kode); ?>" value="<?php echo $Kode ?>" class="btn btn-xs <?php echo $dataPanel; ?>"><i class="fa fa-edit"></i></a>
 		                        		</div>
 		                        	</div>
 		                        </td>

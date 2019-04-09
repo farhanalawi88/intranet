@@ -164,6 +164,7 @@ session_start();
 		elseif($pg==base64_encode(dttrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_data.php"; }
 		elseif($pg==base64_encode(edttrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_edit.php"; }
 		elseif($pg==base64_encode(notulentrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_notulen.php"; }
+		elseif($pg==base64_encode(edtnotulentrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_notulen_edit.php"; }
 	// DATA MASTER EMPLOYEE
 		elseif($pg==base64_encode(masteremployeeadd)){ include"modul/sys_master_employee/master_employee_add.php"; }
 		elseif($pg==base64_encode(masteremployeedata)){ include"modul/sys_master_employee/master_employee_data.php"; }
