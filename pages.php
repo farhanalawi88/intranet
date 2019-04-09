@@ -177,6 +177,10 @@ session_start();
 		elseif($pg==base64_encode(itnoteadd)){ include"modul/it_note/it_note_add.php"; }
 		elseif($pg==base64_encode(itnotedata)){ include"modul/it_note/it_note_data.php"; }
 		elseif($pg==base64_encode(itnoteedit)){ include"modul/it_note/it_note_edit.php"; }
+	// DATA PEMERIKSAAN
+		elseif($pg==base64_encode(dttrperiksa)){ include"modul/as_trx_periksa/as_trx_periksa_data.php"; }
+		elseif($pg==base64_encode(addtrperiksa)){ include"modul/as_trx_periksa/as_trx_periksa_add.php"; }
+		elseif($pg==base64_encode(edttrperiksa)){ include"modul/as_trx_periksa/as_trx_periksa_edit.php"; }
 		else {
 		echo "<div class='alert alert-dismissable alert-danger'><i class='fa fa-times'></i> Belum ada modul / dalam tahap pengembangan</div>";
 		}

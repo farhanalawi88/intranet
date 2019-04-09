@@ -5,112 +5,55 @@
 		if (trim($_POST['txtTanggal'])=="") {
 			$message[] = "<b>Tanggal</b> tidak boleh kosong !";		
 		}
-		if (trim($_POST['cmbSumber'])=="") {
-			$message[] = "<b>Sumber</b> tidak boleh kosong !";		
+		if (trim($_POST['cmbOrg'])=="") {
+			$message[] = "<b>Organisasi</b> tidak boleh kosong !";		
 		}
 		if (trim($_POST['cmbBagian'])=="") {
 			$message[] = "<b>Bagian</b> tidak boleh kosong !";		
 		}
-		if (trim($_POST['cmbKategori'])=="") {
-			$message[] = "<b>Kategori</b> tidak boleh kosong !";		
+		if (trim($_POST['cmbJenis'])=="") {
+			$message[] = "<b>Jenis</b> tidak boleh kosong !";		
 		}
-		if (trim($_POST['txtKegiatan'])=="") {
-			$message[] = "<b>Kegiatan/proses</b> tidak boleh kosong !";		
+		if (trim($_POST['txtItem'])=="") {
+			$message[] = "<b>Item pemeriksaan</b> tidak boleh kosong !";		
 		}
 		if (trim($_POST['txtDeskripsi'])=="") {
 			$message[] = "<b>Deskripsi</b> tidak boleh kosong !";		
 		}
-		if (trim($_POST['cmbDampak'])=="") {
-			$message[] = "<b>Dampak</b> tidak boleh kosong !";		
-		}
-		if (trim($_POST['cmbTerkait'])=="") {
-			$message[] = "<b>Keterkaitan Temuan</b> tidak boleh kosong !";		
+		if (trim($_POST['txtAuditor'])=="") {
+			$message[] = "<b>Nama auditor</b> tidak boleh kosong !";		
 		}
 		
 		$txtTanggal		= InggrisTgl($_POST['txtTanggal']);
-		$cmbSumber		= $_POST['cmbSumber'];
+		$cmbOrg			= $_POST['cmbOrg'];
 		$cmbBagian		= $_POST['cmbBagian'];
-		$cmbKategori	= $_POST['cmbKategori'];
-		$txtKegiatan	= $_POST['txtKegiatan'];
+		$cmbJenis		= $_POST['cmbJenis'];
+		$txtItem		= $_POST['txtItem'];
 		$txtDeskripsi	= $_POST['txtDeskripsi'];
-		$cmbDampak		= $_POST['cmbDampak'];
-		$cmbTerkait		= $_POST['cmbTerkait'];
+		$txtAuditor		= $_POST['txtAuditor'];
 		$txtReferensi	= $_POST['txtReferensi'];
 		$txtDokumen		= $_POST['txtDokumen'];
-		$txtMasalah		= $_POST['txtMasalah'];
+		$txtKode		= $_POST['txtKode'];
 
 		if(count($message)==0){
-			// MENGAMBIL KODE BAGIAN
-			$sqlBag			= "SELECT 
-									LTRIM(RTRIM(sys_bagian_kd)) as sys_bagian_kd 
-								FROM sys_bagian 
-								WHERE sys_bagian_id='$cmbBagian'";
-			$qryBag 		= mysqli_query($koneksidb,$sqlBag) or die ("gagal get kode bagian".mysqli_errors());
-			$rowBag			= mysqli_fetch_array($qryBag);
-			// MENGAMBIL KODE SUMBER
-			$sqlSum			= "SELECT 
-									LTRIM(RTRIM(ptkp_ms_sumber_kd)) as ptkp_ms_sumber_kd 
-								FROM ptkp_ms_sumber 
-								WHERE ptkp_ms_sumber_id='$cmbSumber'";
-			$qrySum 		= mysqli_query($koneksidb,$sqlSum) or die ("gagal get kode sumber".mysqli_errors());
-			$rowSum			= mysqli_fetch_array($qrySum);
-			// GET FORMAT PENOMORAN
-			$bulan			= substr($txtTanggal,5,2);
-			$romawi 		= getRomawi($bulan);
-			$tahun			= substr($txtTanggal,2,2);
-			$tahun2			= substr($txtTanggal,0,4);
-			$nomorTrans		= "/".$rowSum['ptkp_ms_sumber_kd']."/".$rowBag['sys_bagian_kd']."/".$romawi."/".$tahun;
-			$queryTrans		= "SELECT max(ptkp_tr_ptkp_no) as maxKode 
-								FROM ptkp_tr_ptkp 
-								WHERE YEAR(ptkp_tr_ptkp_tgl)='$tahun2' 
-								AND sys_bagian_id='$cmbBagian'";
-			$hasilTrans		= mysqli_query($koneksidb, $queryTrans) or die ("Gagal select nomor".mysqli_errors());
-			$dataTrans		= mysqli_fetch_array($hasilTrans);
-			$noTrans		= $dataTrans['maxKode'];
-			$noUrutTrans	= $noTrans + 1;
-			$IDTrans		=  sprintf("%03s", $noUrutTrans);
-			$kodeTrans		= $IDTrans.$nomorTrans;
 		
-			// INSERT DATA PTKP
-			$sqlSave="INSERT INTO ptkp_tr_ptkp (ptkp_tr_ptkp_tgl,
-												ptkp_tr_ptkp_no,
-												ptkp_ms_sumber_id,
-												sys_bagian_id,
-												ptkp_ms_dampak_id,
-												ptkp_ms_kategori_id,
-												ptkp_ms_terkait_id,
-												ptkp_tr_ptkp_kegiatan,
-												ptkp_tr_ptkp_deskripsi,
-												ptkp_tr_ptkp_referensi,
-												ptkp_tr_ptkp_sts,
-												ptkp_tr_ptkp_tindakan,
-												doc_ms_doc_id,
-												ptkp_tr_ptkp_bag,
-												ptkp_tr_ptkp_masalah,
-												ptkp_tr_ptkp_created,
-												ptkp_tr_ptkp_createdby)
-										VALUES('$txtTanggal',
-												'$kodeTrans',
-												'$cmbSumber', 
-												'$cmbBagian',
-												'$cmbDampak',
-												'$cmbKategori',
-												'$cmbTerkait',
-												'$txtKegiatan',
-												'$txtDeskripsi',
-												'$txtReferensi',
-												'N',
-												'N',
-												'$txtDokumen',
-												'".$userRow['sys_bagian_id']."',
-												'$txtMasalah',
-												'".date('Y-m-d H:i:s')."',
-												'".$_SESSION['sys_role_id']."')";
+			// INSERT PERIKSAAN
+			$sqlSave="UPDATE as_trx_periksa SET as_trx_periksa_tgl='$txtTanggal',
+												as_trx_periksa_jenis='$cmbJenis',
+												as_trx_periksa_uraian='$txtDeskripsi',
+												sys_bagian_id='$cmbBagian',
+												as_trx_periksa_updated='".date('Y-m-d H:i:s')."',
+												as_trx_periksa_updatedby='".$_SESSION['sys_role_id']."',
+												doc_ms_doc_id='$txtDokumen',
+												sys_org_id='$cmbOrg',
+												as_trx_periksa_item='$txtItem',
+												as_trx_periksa_auditor='$txtAuditor'
+											WHERE as_trx_periksa_id='$txtKode'";
 			$qrySave	= mysqli_query($koneksidb, $sqlSave) or die ("gagal insert ptkp ". mysqli_errors());
 			if($qrySave){
 				$_SESSION['info'] = 'success';
-				$_SESSION['pesan'] = 'Data pembuatan ptkp berhasil ditambahkan';
-				echo '<script>window.location="?page='.base64_encode(ptkpdttrptkp).'"</script>';
+				$_SESSION['pesan'] = 'Data pemeriksaan berhasil diperbahrui';
+				echo '<script>window.location="?page='.base64_encode(dttrperiksa).'"</script>';
 			}
 			exit;
 		}	
@@ -126,18 +69,35 @@
 			echo "</div>"; 
 		}
 	} 
+	$KodeEdit			= isset($_GET['id']) ?  $_GET['id'] : $_POST['txtKode']; 
+	$sqlShow 			= "SELECT 
+							a.as_trx_periksa_id,
+							a.as_trx_periksa_tgl,
+							a.sys_org_id,
+							a.sys_bagian_id,
+							a.as_trx_periksa_jenis,
+							a.as_trx_periksa_item,
+							a.as_trx_periksa_uraian,
+							a.as_trx_periksa_auditor,
+							b.doc_ms_doc_kd,
+							a.doc_ms_doc_id
+							FROM as_trx_periksa a
+							LEFT JOIN doc_ms_doc b ON a.doc_ms_doc_id=b.doc_ms_doc_id
+							WHERE a.as_trx_periksa_id='".base64_decode($KodeEdit)."'";
+	$qryShow 			= mysqli_query($koneksidb, $sqlShow)  or die ("Query ambil data libur salah : ".mysqli_errors());
+	$dataShow 			= mysqli_fetch_array($qryShow);		
 	
-	$dataTanggal		= isset($_POST['txtTanggal']) ? $_POST['txtTanggal'] : '';
-	$dataSumber			= isset($_POST['cmbSumber']) ? $_POST['cmbSumber'] : '';
-	$dataBagian			= isset($_POST['cmbBagian']) ? $_POST['cmbBagian'] : ''; 
-	$dataKegiatan		= isset($_POST['txtKegiatan']) ? $_POST['txtKegiatan'] : ''; 
-	$dataKategori		= isset($_POST['cmbKategori']) ? $_POST['cmbKategori'] : ''; 
-	$dataDeskripsi		= isset($_POST['txtDeskripsi']) ? $_POST['txtDeskripsi'] : ''; 
-	$dataDampak			= isset($_POST['cmbDampak']) ? $_POST['cmbDampak'] : ''; 
-	$dataTerkait		= isset($_POST['cmbTerkait']) ? $_POST['cmbTerkait'] : ''; 
-	$dataReferensi		= isset($_POST['txtReferensi']) ? $_POST['txtReferensi'] : ''; 
-	$dataMasalah		= isset($_POST['txtMasalah']) ? $_POST['txtMasalah'] : ''; 
-	$dataDokumen		= isset($_POST['txtDokumen']) ? $_POST['txtDokumen'] : ''; 
+	$dataKode			= $dataShow['as_trx_periksa_id'];
+	
+	$dataTanggal		= isset($_POST['txtTanggal']) ? $_POST['txtTanggal'] : IndonesiaTgl($dataShow['as_trx_periksa_tgl']);
+	$dataOrg			= isset($_POST['cmbOrg']) ? $_POST['cmbOrg'] : $dataShow['sys_org_id'];
+	$dataBagian			= isset($_POST['cmbBagian']) ? $_POST['cmbBagian'] : $dataShow['sys_bagian_id']; 
+	$dataJenis			= isset($_POST['cmbJenis']) ? $_POST['cmbJenis'] : $dataShow['as_trx_periksa_jenis']; 
+	$dataItem			= isset($_POST['txtItem']) ? $_POST['txtItem'] : $dataShow['as_trx_periksa_item']; 
+	$dataDeskripsi		= isset($_POST['txtDeskripsi']) ? $_POST['txtDeskripsi'] : $dataShow['as_trx_periksa_uraian']; 
+	$dataAuditor		= isset($_POST['txtAuditor']) ? $_POST['txtAuditor'] : $dataShow['as_trx_periksa_auditor']; 
+	$dataReferensi		= isset($_POST['txtReferensi']) ? $_POST['txtReferensi'] : $dataShow['doc_ms_doc_kd']; 
+	$dataDokumen		= isset($_POST['txtDokumen']) ? $_POST['txtDokumen'] : $dataShow['doc_ms_doc_id']; 
 ?>
 <SCRIPT language="JavaScript">
 function submitform() {
@@ -147,7 +107,7 @@ function submitform() {
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase">Form Pembuatan Temuan & PTKP</span>
+            <span class="caption-subject uppercase">Form Pembuatan Pemerikaan</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
@@ -162,23 +122,24 @@ function submitform() {
 		       <div class="row">
 	        		<div class="col-lg-3">
 	        			<div class="form-group">
-							<label class="control-label">Tgl. Pembuatan :</label>
+							<label class="control-label">Tgl. Pemeriksaan : :</label>
 							<input type="text" name="txtTanggal" value="<?php echo $dataTanggal; ?>" data-date-format="dd-mm-yyyy" class="form-control date-picker" placeholder="Pilih Tanggal"/>
+							<input type="hidden" name="txtKode" value="<?php echo $dataKode ?>">
 						</div>
 	        		</div>
 	        		<div class="col-lg-3">
 	        			<div class="form-group">
-							<label class="control-label">Sumber :</label>
-							<select name="cmbSumber" data-placeholder="Pilih Sumber" class="select2 form-control">
+							<label class="control-label">Nama Organisasi :</label>
+							<select name="cmbOrg" data-placeholder="Pilih Organisasi" class="select2 form-control">
 								<option value=""></option> 
 								<?php
-									  $dataSql = "SELECT * FROM ptkp_ms_sumber WHERE ptkp_ms_sumber_sts='Y' ORDER BY ptkp_ms_sumber_id ASC";
+									  $dataSql = "SELECT * FROM sys_org WHERE sys_org_sts='Y' ORDER BY sys_org_id ASC";
 									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
 									  while ($dataRow = mysqli_fetch_array($dataQry)) {
-										if ($dataSumber == $dataRow['ptkp_ms_sumber_id']) {
+										if ($dataOrg == $dataRow['sys_org_id']) {
 											$cek = " selected";
 										} else { $cek=""; }
-										echo "<option value='$dataRow[ptkp_ms_sumber_id]' $cek>$dataRow[ptkp_ms_sumber_nm]</option>";
+										echo "<option value='$dataRow[sys_org_id]' $cek>$dataRow[sys_org_nm]</option>";
 									  }
 									  $sqlData ="";
 								?>
@@ -209,74 +170,40 @@ function submitform() {
 	        		</div>
 	        		<div class="col-lg-3">
 	        			<div class="form-group">
-							<label class="control-label">Kategori Temuan :</label>
-							<select name="cmbKategori" data-placeholder="Pilih Kategori" class="select2 form-control">
-								<option value=""></option> 
-								<?php
-									  $dataSql = "SELECT * FROM ptkp_ms_kategori WHERE ptkp_ms_kategori_sts='Y' ORDER BY ptkp_ms_kategori_id ASC";
-									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-									  while ($dataRow = mysqli_fetch_array($dataQry)) {
-										if ($dataKategori == $dataRow['ptkp_ms_kategori_id']) {
-											$cek = " selected";
-										} else { $cek=""; }
-										echo "<option value='$dataRow[ptkp_ms_kategori_id]' $cek>$dataRow[ptkp_ms_kategori_nm]</option>";
-									  }
-									  $sqlData ="";
+							<label class="control-label">Jenis Pemeriksaan :</label>
+							<select class="form-control select2" data-placeholder="Pilih Jenis" name="cmbJenis">
+			                	<option value=""></option>
+			               		<?php
+								  $pilihan	= array("AUDIT INTERNAL HARIAN", "AUDIT INTERNAL BULANAN");
+								  foreach ($pilihan as $nilai) {
+									if ($dataJenis==$nilai) {
+										$cek=" selected";
+									} else { $cek = ""; }
+									echo "<option value='$nilai' $cek>$nilai</option>";
+								  }
 								?>
-							</select>
+			              	</select>
 						</div>	
 	        		</div>
 	        	</div> 
 				<div class="row">
-	        		<div class="col-lg-3">
+	        		<div class="col-lg-6">
 	        			<div class="form-group">
-							<label class="control-label">Dampak Temuan :</label>
-							<select name="cmbDampak" data-placeholder="Pilih Dampak" class="select2 form-control">
-								<option value=""></option> 
-								<?php
-									  $dataSql = "SELECT * FROM ptkp_ms_dampak WHERE ptkp_ms_dampak_sts='Y' ORDER BY ptkp_ms_dampak_id ASC";
-									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-									  while ($dataRow = mysqli_fetch_array($dataQry)) {
-										if ($dataDampak == $dataRow['ptkp_ms_dampak_id']) {
-											$cek = " selected";
-										} else { $cek=""; }
-										echo "<option value='$dataRow[ptkp_ms_dampak_id]' $cek>$dataRow[ptkp_ms_dampak_nm]</option>";
-									  }
-									  $sqlData ="";
-								?>
-							</select>
-						</div>	
-	        		</div>
-	        		<div class="col-lg-3">
-	        			<div class="form-group">
-							<label class="control-label">Keterkaitan Temuan :</label>
-							<select name="cmbTerkait" data-placeholder="Pilih Keterkaitan" class="select2 form-control">
-								<option value=""></option> 
-								<?php
-									  $dataSql = "SELECT * FROM ptkp_ms_terkait WHERE ptkp_ms_terkait_sts='Y' ORDER BY ptkp_ms_terkait_id ASC";
-									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-									  while ($dataRow = mysqli_fetch_array($dataQry)) {
-										if ($dataTerkait == $dataRow['ptkp_ms_terkait_id']) {
-											$cek = " selected";
-										} else { $cek=""; }
-										echo "<option value='$dataRow[ptkp_ms_terkait_id]' $cek>$dataRow[ptkp_ms_terkait_nm]</option>";
-									  }
-									  $sqlData ="";
-								?>
-							</select>
+							<label class="control-label">Item Pemeriksaan :</label>
+							<input type="text" name="txtItem" value="<?php echo $dataItem; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" placeholder="Input Item Pemeriksaan"/>
 						</div>	
 	        		</div>
 	        		<div class="col-lg-6">
-	        			<div class="form-group">
-							<label class="control-label">Kegiatan / Proses :</label>
-							<input type="text" name="txtKegiatan" value="<?php echo $dataKegiatan; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" placeholder="Input Kegiatan"/>
-						</div>
+	        			<div class="form-group last">
+							<label class="control-label">Auditor / Inisiator :</label>
+							<input type="text" name="txtAuditor" value="<?php echo $dataAuditor; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" placeholder="Input Auditor"/>
+						</div>	
 	        		</div>
 	        	</div>
 				<div class="row">
 	        		<div class="col-lg-12">
 	        			<div class="form-group">
-							<label class="control-label">Deskripsi :</label>
+							<label class="control-label">Uraian Temuan & Bukti Audit :</label>
 							<textarea type="text" name="txtDeskripsi" rows="4" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control ckeditor" placeholder="Input Deskripsi Temuan"><?php echo $dataDeskripsi; ?></textarea>
 						</div>
 	        		</div>
@@ -298,12 +225,11 @@ function submitform() {
 			</div>
 	    	<div class="form-actions">
                 <button type="submit" name="btnSave" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Simpan Data</button>
-                <a href="?page=<?php echo base64_encode(ptkpdttrptkp) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Batalkan</a>
+                <a href="?page=<?php echo base64_encode(dttrperiksa) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Batalkan</a>
 			</div>
 		</form>
 	</div>
 </div>
-		
 <div class="modal fade bs-modal-lg" id="barang" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -346,7 +272,7 @@ function submitform() {
 		                    ?>
 		                    <tr class="pilihBarang" data-dismiss="modal" aria-hidden="true" 
 								data-kode="<?php echo $data['doc_ms_doc_id']; ?>"
-								data-nomor="<?php echo $data['doc_ms_doc_kd']; ?>">
+								data-no="<?php echo $data['doc_ms_doc_kd']; ?>">
 		                        <td><div align="center"><?php echo $nomor ?></div></td>
 								<td><div align="center"><?php echo $data ['doc_ms_doc_kd']; ?></div></td>
 								<td><?php echo $data['sys_bagian_nm']; ?></td>
@@ -374,6 +300,6 @@ function submitform() {
 <script type="text/javascript">
     $(document).on('click', '.pilihBarang', function (e) {
         document.getElementById("doc_ms_doc_id").value = $(this).attr('data-kode');
-		document.getElementById("doc_ms_doc_kd").value = $(this).attr('data-nomor');
+		document.getElementById("doc_ms_doc_kd").value = $(this).attr('data-no');
     });
-</script>	
+</script>
