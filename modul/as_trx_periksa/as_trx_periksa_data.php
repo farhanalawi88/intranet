@@ -57,11 +57,14 @@
 						$nomor++;
 						$Kode = $data['as_trx_periksa_id'];
 						if($data ['as_trx_periksa_sts']=='N'){
-							$dataStatus= "<label class='badge badge-info badge-roundless'>PEMERIKSAAN</label>";
+							$dataStatus	= "<label class='badge badge-info badge-roundless'>PEMERIKSAAN</label>";
+							$disabled 	= "";
 						}elseif($data ['as_trx_periksa_sts']=='Y'){
 							$dataStatus= "<label class='badge badge-warning badge-roundless'>PTKP</label>";
+							$disabled 	= "";
 						}elseif($data ['as_trx_periksa_sts']=='C'){
 							$dataStatus= "<label class='badge badge-danger badge-roundless'>CANCEL</label>";
+							$disabled 	= "disabled";
 						}
 
 						
