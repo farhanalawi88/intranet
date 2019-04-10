@@ -17,13 +17,13 @@
 	}
  ?>
 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
-	<div class="portlet box <?php echo $dataPanel; ?>">
+	<div class="portlet light portlet-fit portlet-datatable bordered">
 		<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase">Data Item Pemeriksaan</span></div>
+		<div class="caption"><span class="caption-subject uppercase bold">Data Item Pemeriksaan</span></div>
 			<div class="actions">
-				<a href="?page=<?php echo base64_encode(addtrperiksa) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA</a>	
-				<button class="btn <?php echo $dataPanel; ?> active" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin membatalkan data penting ini !!')"><i class="icon-trash"></i> BATALKAN</button>
-			</div>
+                <a href="?page=<?php echo base64_encode(addtrperiksa) ?>" class="btn btn-default btn-sm"><i class="fa fa-plus-circle"></i></a>
+                <button class="btn btn-default btn-sm" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin membatalkan data penting ini !!')"><i class="fa fa-trash"></i></button>
+            </div>
 		</div>
 		<div class="portlet-body">
 		<table class="table table-striped table-hover table-checkable order-column" id="sample_2">

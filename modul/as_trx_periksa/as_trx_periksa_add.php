@@ -95,25 +95,23 @@ function submitform() {
 	document.form1.submit();
 }
 </SCRIPT>
-<div class="portlet box <?php echo $dataPanel; ?>">
-	<div class="portlet-title">
-        <div class="caption">
-            <span class="caption-subject uppercase">Form Pembuatan Pemerikaan</span>
-        </div>
-        <div class="tools">
-            <a href="" class="collapse"> </a>
-            <a href="#portlet-config" data-toggle="modal" class="config"> </a>
-            <a href="" class="reload"> </a>
-            <a href="" class="remove"> </a>
-        </div>
-    </div>
-	<div class="portlet-body form">
-        <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off" name="form1">
+<form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off" name="form1">
+	<div class="portlet light portlet-fit portlet-datatable bordered">
+		<div class="portlet-title">
+	        <div class="caption">
+	            <span class="caption-subject uppercase bold">Form Pembuatan Pemerikaan</span>
+	        </div>
+	        <div class="actions">
+				<button type="submit" name="btnSave" class="btn btn-default btn-sm"><i class="fa fa-save"></i></button>
+				<a href="?page=<?php echo base64_encode(dttrperiksa) ?>" class="btn btn-default btn-sm"><i class="fa fa-close"></i></a>
+			</div>
+	    </div>
+		<div class="portlet-body ">
         	<div class="form-body">
 		       <div class="row">
 	        		<div class="col-lg-3">
-	        			<div class="form-group">
-							<label class="control-label">Tgl. Pemeriksaan : :</label>
+	        			<div class="form-group ">
+							<label class="control-label">Tgl. Pemeriksaan :</label>
 							<input type="text" name="txtTanggal" value="<?php echo $dataTanggal; ?>" data-date-format="dd-mm-yyyy" class="form-control date-picker" placeholder="Pilih Tanggal"/>
 						</div>
 	        		</div>
@@ -213,13 +211,9 @@ function submitform() {
 		        	</div>
 		        </div>
 			</div>
-	    	<div class="form-actions">
-                <button type="submit" name="btnSave" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Simpan Data</button>
-                <a href="?page=<?php echo base64_encode(ptkpdttrptkp) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Batalkan</a>
-			</div>
-		</form>
+		</div>
 	</div>
-</div>
+</form>
 <div class="modal fade bs-modal-lg" id="barang" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

@@ -36,7 +36,7 @@
                             </label>
                         </th>
                         <th width="2%"><div align="center">NO</div></th>
-                        <th width="10%"><div align="center">TICKET NO</div></th>
+                        <th width="10%"><div align="center">NOMOR TICKET</div></th>
                         <th width="15%"><div align="center">TICKET DATE</div></th>
 						<th width="15%">REQUESTER</th>
 						<th width="20%">CATEGORY</th>
@@ -80,7 +80,8 @@
                         </td>
 						<td><div align="center"><?php echo $nomor; ?></div></td>
 						<td><div align="center"><?php echo $data ['tic_tr_ticket_no']; ?></div></td>
-						<td><div align="center"><?php echo ($data ['tic_tr_ticket_tgl_start']); ?> <?php echo ($data ['tic_tr_ticket_jam_start']); ?></div></td>
+
+						<td><div align="center"><?php echo date('d/m/Y H:i',strtotime($data ['tic_tr_ticket_tgl_start'])); ?></div></td>
 						<td><?php echo $data ['tic_tr_ticket_diminta']; ?></td>
 						<td><?php echo $data ['tic_ms_kat_nm']; ?></td>
 						<td><?php echo $data ['tic_ms_modul_nm']; ?></td>

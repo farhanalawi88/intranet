@@ -7428,8 +7428,8 @@ Portlets
 
     }
   .portlet.light.portlet-datatable.portlet-fit > .portlet-body {
-    padding-top: 5px;
-    padding-bottom: 5px; }
+    padding-top: 2px;
+    padding-bottom: 2px; }
 
 .tab-pane > p:last-child {
   margin-bottom: 0px; }
