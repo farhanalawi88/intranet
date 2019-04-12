@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		<div class="portlet-body">
-			<table class="table table-bordered table-hover table-checkable order-column" id="sample_2">
+			<table class="table table-striped table-hover table-checkable order-column" id="sample_2">
 				<thead>
                     <tr class="active">
        	  	  	  	  	<th class="table-checkbox" width="3%">
@@ -59,7 +59,7 @@
 						<td><div align="center"><?php echo $nomor; ?></div></td>
 						<td><?php echo $data ['tic_ms_kat_nm']; ?></td>
 						<td><div align="center"><?php echo $data ['tic_ms_kat_sts']; ?></div></td>
-                        <td><div align="center"><a href="?page=<?php echo base64_encode(ticedtktgr) ?>&amp;id=<?php echo $Kode; ?>" class="btn green btn-xs"><i class="icon-book-open"></i></a></div></td>
+                        <td><div align="center"><a href="?page=<?php echo base64_encode(ticedtktgr) ?>&amp;id=<?php echo $Kode; ?>" class="btn <?php echo $dataPanel; ?> btn-xs"><i class="fa fa-pencil"></i></a></div></td>
                     </tr>
                     <?php } ?>
 				</tbody>

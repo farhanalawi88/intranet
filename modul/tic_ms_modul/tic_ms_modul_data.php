@@ -18,14 +18,14 @@
 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
 	<div class="portlet box <?php echo $dataPanel; ?>">
 		<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Data Modul & Ticket</span></div>
+		<div class="caption"><span class="caption-subject uppercase bold">Data Type Ticket</span></div>
 			<div class="actions">
 				<a href="?page=<?php echo base64_encode(ticaddmodul) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA</a>	
 				<button class="btn <?php echo $dataPanel; ?> active" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin menghapus data penting ini !!')"><i class="icon-trash"></i> DELETE DATA</button>
 			</div>
 		</div>
 		<div class="portlet-body">
-			<table class="table table-bordered table-hover table-checkable order-column" id="sample_2">
+			<table class="table table-striped table-hover table-checkable order-column" id="sample_2">
 				<thead>
                     <tr class="active">
        	  	  	  	  	<th class="table-checkbox" width="3%">
@@ -35,7 +35,7 @@
                             </label>
                         </th>
                         <th width="5%"><div align="center">NO</div></th>
-                        <th width="60%">NAMA MODUL & TICKET</th>
+                        <th width="60%">NAMA TYPE TICKET</th>
 						<th width="10%"><div align="center">STATUS</div></th>
 			  	  	  	<th width="10%"><div align="center">AKSI</div></th>
                     </tr>
@@ -59,7 +59,7 @@
 						<td><div align="center"><?php echo $nomor; ?></div></td>
 						<td><?php echo $data ['tic_ms_modul_nm']; ?></td>
 						<td><div align="center"><?php echo $data ['tic_ms_modul_sts']; ?></div></td>
-                        <td><div align="center"><a href="?page=<?php echo base64_encode(ticedtmodul) ?>&amp;id=<?php echo $Kode; ?>" class="btn green btn-xs"><i class="icon-book-open"></i></a></div></td>
+                        <td><div align="center"><a href="?page=<?php echo base64_encode(ticedtmodul) ?>&amp;id=<?php echo $Kode; ?>" class="btn <?php echo $dataPanel; ?> btn-xs"><i class="icon-book-open"></i></a></div></td>
                     </tr>
                     <?php } ?>
 				</tbody>

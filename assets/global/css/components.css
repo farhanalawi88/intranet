@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Abel';
-    src: url('../fonts/Inconsolata-Regular.ttf');
+    src: url('../fonts/K2D-Regular.ttf');
 }
 /*********************************
  METRONIC SQUARE STYLE COMPONENTS 
@@ -5539,14 +5539,14 @@ Form Layouts
   margin-bottom: 20px; 
   margin-left: -20px; 
   margin-right: -20px
-   }
-  .batas2 {
+}
+.batas2 {
   border-bottom: 1px solid #efefef; 
   margin-top: 20px; 
   margin-bottom: 20px; 
   margin-left: -10px; 
   margin-right: -10px
-   }
+}
   .form .form-row-seperated .form-group.last {
     border-bottom: 0;
     margin-bottom: 0;
@@ -7428,8 +7428,8 @@ Portlets
 
     }
   .portlet.light.portlet-datatable.portlet-fit > .portlet-body {
-    padding-top: 5px;
-    padding-bottom: 5px; }
+    padding-top: 2px;
+    padding-bottom: 2px; }
 
 .tab-pane > p:last-child {
   margin-bottom: 0px; }

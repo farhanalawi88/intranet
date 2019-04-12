@@ -9,32 +9,29 @@
 			$message[] = "<b>Status</b> tidak boleh kosong !";		
 		}
 		
-		$txtNamaRuangMeeting		= $_POST['txtNama'];		
+		$txtID						= $_POST['txtID'];
+		$txtNamaRuangMeeting		= $_POST['txtNama'];
 		$txtKeterangan				= $_POST['txtKeterangan'];
 		$cmbStatus					= $_POST['cmbStatus'];
-
+		
 		if(count($message)==0){
-			$sqlSave="INSERT INTO book_master_room (nama_ruang_meeting,
-												 keterangan,
-												 status,
-												 created,
-												 createdby)
-										VALUES ('$txtNamaRuangMeeting',
-												'$txtKeterangan', 
-												'$cmbStatus',
-												'".date('Y-m-d H:i:s')."',
-												'".$_SESSION['sys_role_id']."')";
+			$sqlSave	= "UPDATE as_ms_room SET as_ms_room_nama='$txtNamaRuangMeeting', 
+													as_ms_room_keterangan='$txtKeterangan', 
+													as_ms_room_status='$cmbStatus',
+													as_ms_room_updated='".date('Y-m-d H:i:s')."',
+													as_ms_room_updatedby='".$_SESSION['sys_role_id']."'
+										WHERE as_ms_room_id='$txtID'";
 			$qrySave	= mysqli_query($koneksidb, $sqlSave) or die ("gagal insert". mysqli_errors());
 			if($qrySave){
 				$_SESSION['info'] = 'success';
-				$_SESSION['pesan'] = 'Data Meeting Room Berhasil Ditambahkan';
+				$_SESSION['pesan'] = 'Data Meeting Room Berhasil Diperbaharui';
 				echo '<script>window.location="?page='.base64_encode(masterroomdata).'"</script>';
 			}
 			exit;
 		}	
 		
 		if (! count($message)==0 ){
-			echo "<div class='alert alert-danger alert-dismissable'>
+			echo "<div class='alert note note-warning'>
                       <button type='button' class='close' data-dismiss='alert' aria-hidden='true'></button>";
 				$Num=0;
 				foreach ($message as $indeks=>$pesan_tampil) { 
@@ -44,16 +41,20 @@
 			echo "</div>"; 
 		}
 	} 
+	$KodeEdit			= isset($_GET['id']) ?  base64_decode($_GET['id']) : $_POST['txtKode']; 
+	$sqlShow			= "SELECT * FROM as_ms_room WHERE as_ms_room_id='$KodeEdit'";
+	$qryShow 			= mysqli_query($koneksidb, $sqlShow)  or die ("Query ambil data department salah : ".mysqli_errors());
+	$dataShow			= mysqli_fetch_array($qryShow);
 	
-	$dataKode		= isset($_POST['txtKode']) ? $_POST['txtKode'] : '';
-	$dataNama		= isset($_POST['txtNama']) ? $_POST['txtNama'] : '';
-	$dataKeterangan	= isset($_POST['txtKeterangan']) ? $_POST['txtKeterangan'] : ''; 
-	$dataStatus		= isset($_POST['cmbStatus']) ? $_POST['cmbStatus'] : ''; 
+	$dataID				= $dataShow['as_ms_room_id'];
+	$dataNama			= isset($_POST['txtNama']) ? $_POST['txtNama'] : $dataShow['as_ms_room_nama'];
+	$dataKeterangan		= isset($_POST['txtKeterangan']) ? $_POST['txtKeterangan'] : $dataShow['as_ms_room_keterangan'];
+	$dataStatus			= isset($_POST['cmbStatus']) ? $_POST['cmbStatus'] : $dataShow['as_ms_room_status'];
 ?>
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Meeting Room</span>
+            <span class="caption-subject uppercase">Form Meeting Room</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
@@ -65,8 +66,9 @@
 	<div class="portlet-body form">
         <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" class="form-horizontal form-bordered" autocomplete="off">
         	<div class="form-body">
+				<input type="hidden" name="txtID" value="<?php echo $dataID ?>">
 		        <div class="form-group">
-					<label class="col-lg-2 control-label">Nama Ruang Meeting :</label>
+					<label class="col-lg-2 control-label">Nama Ruangan :</label>
 					<div class="col-lg-4">
 						<input type="text" name="txtNama" value="<?php echo $dataNama; ?>" class="form-control" placeholder="Enter Name" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
 		             </div>
@@ -94,7 +96,7 @@
 		              	</select>
 					</div>
 				</div>
-			</div>
+    		</div>
 	    	<div class="form-actions">
                 <div class="row">
                     <div class="col-md-offset-2 col-md-10">

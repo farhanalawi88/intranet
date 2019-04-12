@@ -1,4 +1,4 @@
-<div class="portlet box grey-cascade">
+<div class="portlet box blue-chambray">
     <div class="portlet-title">
         <div class="caption">
             <span class="caption-subject uppercase">Standard Departemen</span>
@@ -10,7 +10,7 @@
         </div>
 	</div>
 	<div class="portlet-body">
-       <table class="table table-striped table-condensed table-hover" id="sample_2">
+       <table class="table table-striped table-condensed table-hover" id="sample_1">
 			<thead>
                 <tr class="active">
 			  	  	<th width="5%"><div align="center">LIHAT</div></th>
@@ -23,6 +23,13 @@
 			</thead>
 			<tbody>
            <?php
+
+           	if(isset($_GET['id'])){
+           		$filter	= "AND a.sys_bagian_id='".base64_decode($_GET['id'])."'";
+           	}else{
+           		$filter = "";
+           	}
+
 					$dataSql = "SELECT 
 									a.doc_ms_doc_kd,
 									a.doc_ms_doc_id,
@@ -35,6 +42,7 @@
 								INNER JOIN doc_ms_kat_doc b ON a.doc_ms_kat_doc_id=b.doc_ms_kat_doc_id
 								INNER JOIN sys_bagian d ON a.sys_bagian_id=d.sys_bagian_id
 								WHERE NOT a.doc_ms_doc_sts='D'
+								$filter
 								ORDER BY a.doc_ms_doc_id ASC";
 					$dataQry = mysqli_query($koneksidb, $dataSql);
 					$nomor  = 0; 

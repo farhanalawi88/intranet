@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Abel';
-    src: url('../fonts/Inconsolata-Regular.ttf');
+    src: url('../fonts/OpenSansCondensed-Light.ttf');
 }
 /*********************************
  METRONIC ROUNDED STYLE COMPONENTS 
@@ -5724,7 +5724,20 @@ Custom color buttons
 
 .form-control.focus-green-steel:focus {
   border-color: #29b4b6; }
-
+.batas {
+  border-bottom: 1px solid #ddd; 
+  margin-top: 20px; 
+  margin-bottom: 20px; 
+  margin-left: -20px; 
+  margin-right: -20px
+}
+.batas2 {
+  border-bottom: 1px solid #ddd; 
+  margin-top: 20px; 
+  margin-bottom: 20px; 
+  margin-left: -15px; 
+  margin-right: -15px
+}
 .form-control.grey {
   border-color: #E5E5E5; }
   .form-control.grey:focus {
@@ -7245,9 +7258,9 @@ Portlets
   padding: 12px 20px 15px 20px;
   background-color: #fff; }
   .portlet.light.bordered {
-    border: 1px solid #e7ecf1 !important; }
+    border: 1px solid #ddd !important; }
     .portlet.light.bordered > .portlet-title {
-      border-bottom: 1px solid #eef1f5; }
+      border-bottom: 1px solid #ddd; }
   .portlet.light.bg-inverse {
     background: #f1f4f7; }
   .portlet.light > .portlet-title {
@@ -7255,9 +7268,9 @@ Portlets
     min-height: 48px; }
     .portlet.light > .portlet-title > .caption {
       color: #666;
-      padding: 10px 0; }
+      padding: 5px 0; }
       .portlet.light > .portlet-title > .caption > .caption-subject {
-        font-size: 16px; }
+        font-size: 15px; }
       .portlet.light > .portlet-title > .caption > i {
         color: #777;
         font-size: 15px;
@@ -7268,7 +7281,7 @@ Portlets
       .portlet.light > .portlet-title > .caption.caption-md > i {
         font-size: 14px; }
     .portlet.light > .portlet-title > .actions {
-      padding: 6px 0 14px 0; }
+      padding: 0px 0 0px 0; }
       .portlet.light > .portlet-title > .actions .btn-default {
         color: #666; }
       .portlet.light > .portlet-title > .actions .btn-icon-only {

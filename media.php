@@ -7,7 +7,7 @@ use Jaspersoft\Client\Client;
 date_default_timezone_set('Asia/Jakarta');
 error_reporting(E_ALL ^ (E_NOTICE | E_WARNING |E_DEPRECATED));
 
-if(!isset($_SESSION['sys_role_id'])){
+if(!isset($_SESSION['sys_role_id']) OR !isset($_SESSION['sys_role_id']) ){
   $_SESSION['pesan'] = 'Session anda terhapus, silahkan login kembali';
     header("Location:index.php"); 
 }
@@ -22,10 +22,17 @@ $dataPanel  = $userRow['sys_role_panel_color'];
 $dataHome   = $userRow['sys_role_home'];
 
 if($userRow['sys_role_template']=='O'){
-    $dataClose1 = 'class="page-header-fixed page-sidebar-closed-hide-logo page-content-white"';
+    $dataClose1 = 'class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-fixed"';
 }else{
     $dataClose1 = 'class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-closed"';
 }
+
+$mnSql    = "SELECT a.sys_menu_nama FROM sys_menu a
+                inner join sys_submenu b on b.sys_menu_id=a.sys_menu_id
+                where b.sys_submenu_link='".base64_decode($_GET['page'])."'";
+$mnQry    = mysqli_query($koneksidb, $mnSql)  or die ("Query session user salah : ".mysqli_errors());
+$mnRow    = mysqli_fetch_array($mnQry);
+
   
 ?>
 <!DOCTYPE html>
@@ -91,6 +98,13 @@ if($userRow['sys_role_template']=='O'){
                             <!-- BEGIN USER LOGIN DROPDOWN -->
                             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                             <li class="dropdown dropdown-user">
+                                <a href="index.php" class="dropdown-toggle" target="_blank">
+                                    <i class="icon-pointer"></i>
+                                    <span class="username uppercase"> Frontend </span>
+                                    &nbsp;
+                                </a>
+                            </li>
+                            <li class="dropdown dropdown-user">
                                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                     <i class="icon-user"></i>
                                     <span class="username uppercase"> <?php echo $userRow['sys_role_nama'] ?></span>
@@ -101,14 +115,11 @@ if($userRow['sys_role_template']=='O'){
                                     <li><a href="keluar.php"><i class="icon-power"></i> Log Out </a></li>
                                 </ul>
                             </li>
+
                             <!-- END USER LOGIN DROPDOWN -->
                             <!-- BEGIN QUICK SIDEBAR TOGGLER -->
                             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                            <li class="dropdown dropdown-quick-sidebar-toggler">
-                                <a href="keluar.php" class="dropdown-toggle">
-                                    <i class="icon-logout"></i>
-                                </a>
-                            </li>
+                            
                             <!-- END QUICK SIDEBAR TOGGLER -->
                         </ul>
                     </div>
@@ -154,9 +165,15 @@ if($userRow['sys_role_template']=='O'){
                                                 ORDER BY sys_menu_urutan ASC";
                                 $menuQry    = mysqli_query($koneksidb, $menuSql) or die ("Query menu salah : ".mysqli_errors());              
                                 while ($menuShow    = mysqli_fetch_array($menuQry)) {
+
+                                    if($mnRow['sys_menu_nama']!=$menuShow['sys_menu_nama']){
+                                        $dataActive ='';
+                                    }else{
+                                        $dataActive ='active';
+                                    }
                                     
                             ?>
-                            <li class="nav-item  ">
+                            <li class="nav-item">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                     <i class="<?php echo $menuShow['sys_menu_icon'] ?>"></i>
                                     <span class="title"><?php echo $menuShow['sys_menu_nama'] ?></span>
@@ -168,13 +185,13 @@ if($userRow['sys_role_template']=='O'){
                                                             WHERE sys_menu_id='$menuShow[sys_menu_id]' AND sys_submenu_id IN (SELECT b.sys_submenu_id FROM sys_akses a 
                                                                                         INNER JOIN sys_submenu b ON a.sys_submenu_id=b.sys_submenu_id
                                                                                         WHERE a.sys_group_id='".$userRow['sys_group_id']."')
-                                                            ORDER BY sys_submenu_nama,sys_submenu_urutan ASC";
+                                                            ORDER BY sys_submenu_urutan ASC";
                                         $submenuQry     = mysqli_query($koneksidb, $submenuSql) or die ("Query petugas salah : ".mysqli_errors());                
                                         while ($submenuShow = mysqli_fetch_array($submenuQry)) {
                                         $submenulink    =$submenuShow['sys_submenu_link'];
                                         $submenunama    =$submenuShow['sys_submenu_nama'];
                                     ?>
-                                    <li class="nav-item  ">
+                                    <li class="nav-item ">
                                         <a href="?page=<?php echo base64_encode($submenulink) ?>" class="nav-link ">
                                             <span class="title"><?php echo $submenunama ?></span>
                                         </a>

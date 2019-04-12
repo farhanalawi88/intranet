@@ -21,7 +21,7 @@
 	<div class="portlet box <?php echo $dataPanel; ?>">
 	    <div class="portlet-title">
 	        <div class="caption">
-	            <span class="caption-subject uppercase bold">Data Pembuatan PTKP</span>
+	            <span class="caption-subject uppercase">Data Pembuatan PTKP</span>
 	        </div>
 	        <div class="actions">
 				<a href="?page=<?php echo base64_encode(ptkpaddtrptkp) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA </a>
@@ -29,7 +29,7 @@
 			</div>
 		</div>
     	<div class="portlet-body">
-           <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_2">
+           <table class="table table-striped table-hover table-checkable order-column" id="sample_2">
 				<thead>
                     <tr class="active">
        	  	  	  	  	<th class="table-checkbox">
@@ -39,7 +39,7 @@
                             </label>
                         </th>
 						<th width="5%"><div align="center">NO</div></th>
-                        <th width="13%"><div align="center">NO. PTKP</div></th>
+                        <th width="13%"><div align="center">NOMOR</div></th>
 						<th width="5%"><div align="center">TGL. PTKP</div></th>
                         <th width="15%">TUJUAN PTKP</th>
                         <th width="20%">SUMBER PTKP</th>
@@ -59,7 +59,8 @@
 									a.ptkp_tr_ptkp_sts,
 									c.ptkp_ms_sumber_nm,
 									d.sys_bagian_nm,
-									f.ptkp_ms_kategori_nm
+									f.ptkp_ms_kategori_nm,
+									a.ptkp_tr_ptkp_type
 									FROM ptkp_tr_ptkp a
 									INNER JOIN sys_role b ON a.ptkp_tr_ptkp_createdby=b.sys_role_id
 									INNER JOIN ptkp_ms_sumber c ON a.ptkp_ms_sumber_id=c.ptkp_ms_sumber_id
@@ -89,8 +90,8 @@
                             </label>
                         </td>
 						<td><div align="center"><?php echo $nomor ?></div></td>
-						<td><div align="center"><div align="center"><?php echo $data['ptkp_tr_ptkp_no']; ?></div></td>
-						<td><div align="center"><?php echo $data['ptkp_tr_ptkp_tgl']; ?></div></td>
+						<td><div align="center"><?php echo $data['ptkp_tr_ptkp_no']; ?></div></td>
+						<td><div align="center"><?php echo IndonesiaTgl2($data['ptkp_tr_ptkp_tgl']); ?></div></td>
 						<td><?php echo $data['sys_bagian_nm']; ?></td>
 						<td><?php echo $data['ptkp_ms_sumber_nm']; ?></td>
 						<td><?php echo $data['ptkp_ms_kategori_nm']; ?></td>

@@ -4,15 +4,6 @@
 		if (trim($_POST['txtTglMasuk'])=="") {
 			$message[] = "Tgl. Masuk tidak boleh kosong!";		
 		}
-		if (trim($_POST['cmbKendaraan'])=="") {
-			$message[] = "Jenis kendaraan tidak boleh kosong!";		
-		}
-		if (trim($_POST['txtNopol'])=="") {
-			$message[] = "No. kendaraan tidak boleh kosong!";		
-		}
-		if (trim($_POST['txtCard'])=="") {
-			$message[] = "No. Kartu tidak boleh kosong!";		
-		}
 				
 		$txtTglMasuk		= $_POST['txtTglMasuk'];
 		$txtKeterangan		= $_POST['txtKeterangan'];
@@ -33,7 +24,7 @@
 													load_tr_inout_nopol='$txtNopol',
 													load_tr_inout_berat='$txtBerat',
 													load_ms_jns_kend_id='$cmbKendaraan',
-													load_ms_petugas_id='$cmbPetugas',
+													load_ms_identitas_id='$cmbPetugas',
 													load_ms_klasifikasi_id='$cmbKlasifikasi',
 													load_tr_inout_supir='$txtSupir',
 													load_tr_inout_dokumen='$txtDokumen',
@@ -64,19 +55,7 @@
 	} 
 	
 	$KodeEdit			= isset($_GET['id']) ?  $_GET['id'] : $_POST['txtTglLibur']; 
-	$sqlShow 			= "SELECT 
-							convert(char(16),load_tr_inout_tgl_masuk,120) as load_tr_inout_tgl_masuk,
-							load_tr_inout_ket,
-							load_ms_jns_kend_id,
-							load_ms_petugas_id,
-							load_tr_inout_nopol,
-							load_tr_inout_berat,
-							load_ms_klasifikasi_id,
-							load_tr_inout_id,
-							load_tr_inout_card,
-							load_tr_inout_supir,
-							load_tr_inout_dokumen
-							FROM load_tr_inout WHERE load_tr_inout_id='$KodeEdit'";
+	$sqlShow 			= "SELECT * FROM load_tr_inout WHERE load_tr_inout_id='$KodeEdit'";
 	$qryShow 			= mysqli_query($koneksidb, $sqlShow)  or die ("Query ambil data libur salah : ".mysqli_errors());
 	$dataShow 			= mysqli_fetch_array($qryShow);		
 
@@ -84,7 +63,7 @@
 	$dataTglMasuk		= isset($_POST['txtTglMasuk']) ? $_POST['txtTglMasuk'] : $dataShow['load_tr_inout_tgl_masuk'];
 	$dataKeterangan		= isset($_POST['txtKeterangan']) ? $_POST['txtKeterangan'] : $dataShow['load_tr_inout_ket'];
 	$dataKendaraan		= isset($_POST['cmbKendaraan']) ? $_POST['cmbKendaraan'] : $dataShow['load_ms_jns_kend_id'];
-	$dataPetugas		= isset($_POST['cmbPetugas']) ? $_POST['cmbPetugas'] : $dataShow['load_ms_petugas_id'];
+	$dataPetugas		= isset($_POST['cmbPetugas']) ? $_POST['cmbPetugas'] : $dataShow['load_ms_identitas_id'];
 	$dataNopol			= isset($_POST['txtNopol']) ? $_POST['txtNopol'] : $dataShow['load_tr_inout_nopol'];
 	$dataBerat			= isset($_POST['txtBerat']) ? $_POST['txtBerat'] : $dataShow['load_tr_inout_berat'];
 	$dataKlasifikasi	= isset($_POST['cmbKlasifikasi']) ? $_POST['cmbKlasifikasi'] : $dataShow['load_ms_klasifikasi_id'];
@@ -94,7 +73,7 @@
 ?>
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Form Masuk Kendaraan</span></div>
+		<div class="caption"><span class="caption-subject uppercase">Form Masuk Kendaraan & Tamu</span></div>
 		<div class="tools">
 			<a href="javascript:;" class="collapse"></a>
 			<a href="javascript:;" class="reload"></a>
@@ -140,36 +119,18 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">No. Kendaraan :</label>
+					<label class="col-md-2 control-label">Nama Identitas :</label>
 					<div class="col-md-3">
-						<input class="form-control" type="text" name="txtNopol"  value="<?php echo $dataNopol; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Nama Supir :</label>
-					<div class="col-md-3">
-						<input class="form-control" type="text" name="txtSupir"  value="<?php echo $dataSupir; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">No. Dokumen :</label>
-					<div class="col-md-3">
-						<input class="form-control" type="text" name="txtDokumen"  value="<?php echo $dataDokumen; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Nama Petugas :</label>
-					<div class="col-md-3">
-						<select name="cmbPetugas" data-placeholder="- Pilih Petugas -" class="select2 form-control">
+						<select name="cmbPetugas" data-placeholder="- Pilih Identitas -" class="select2 form-control">
 							<option value=""></option> 
 							<?php
-								  $dataSql = "SELECT * FROM load_ms_petugas ORDER BY load_ms_petugas_id DESC";
+								  $dataSql = "SELECT * FROM load_ms_identitas ORDER BY load_ms_identitas_id DESC";
 								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
 								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataPetugas == $dataRow['load_ms_petugas_id']) {
+									if ($dataPetugas == $dataRow['load_ms_identitas_id']) {
 										$cek = " selected";
 									} else { $cek=""; }
-									echo "<option value='$dataRow[load_ms_petugas_id]' $cek>$dataRow[load_ms_petugas_nm]</option>";
+									echo "<option value='$dataRow[load_ms_identitas_id]' $cek>$dataRow[load_ms_identitas_nm]</option>";
 								  }
 								  $sqlData ="";
 							?>
@@ -177,7 +138,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Klasifikasi Muatan :</label>
+					<label class="col-md-2 control-label">Klasifikasi :</label>
 					<div class="col-md-3">
 						<select name="cmbKlasifikasi" data-placeholder="- Pilih Klasifikasi -" class="select2 form-control">
 							<option value=""></option> 
@@ -193,6 +154,24 @@
 								  $sqlData ="";
 							?>
 						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">No. Kendaraan :</label>
+					<div class="col-md-3">
+						<input class="form-control" type="text" name="txtNopol"  value="<?php echo $dataNopol; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Nama Tamu/Supir :</label>
+					<div class="col-md-3">
+						<input class="form-control" type="text" name="txtSupir"  value="<?php echo $dataSupir; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">No. Dokumen :</label>
+					<div class="col-md-3">
+						<input class="form-control" type="text" name="txtDokumen"  value="<?php echo $dataDokumen; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
 					</div>
 				</div>
 				<div class="form-group">

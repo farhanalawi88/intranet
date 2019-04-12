@@ -59,7 +59,7 @@
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Data Kategori Dokumen</span>
+            <span class="caption-subject uppercase">Form Data Kategori Dokumen</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>

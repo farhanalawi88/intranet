@@ -21,7 +21,7 @@
 	<div class="portlet box <?php echo $dataPanel; ?>">
 	    <div class="portlet-title">
 	        <div class="caption">
-	            <span class="caption-subject uppercase bold">Data Kategori Temuan PTKP</span>
+	            <span class="caption-subject uppercase">Data Kategori Temuan PTKP</span>
 	        </div>
 	        <div class="actions">
 				<a href="?page=<?php echo base64_encode(ptkpaddmskategori) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA </a>
@@ -29,7 +29,7 @@
 			</div>
 		</div>
     	<div class="portlet-body">
-           <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_2">
+           <table class="table table-striped table-hover table-checkable order-column" id="sample_2">
 				<thead>
                     <tr class="active">
        	  	  	  	  	<th class="table-checkbox">

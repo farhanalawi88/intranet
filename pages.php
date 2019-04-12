@@ -1,5 +1,6 @@
 
 <?php
+session_start();
 	$pg=$_GET['page'];
 		if($pg==base64_encode(homeload)){ include"modul/homeload.php"; }
 		elseif($pg==base64_encode(home)){ include"modul/home.php"; }
@@ -17,6 +18,10 @@
 		elseif($pg==base64_encode(dtgroup)){ include"modul/sys_group/sys_group_data.php"; }
 		elseif($pg==base64_encode(addgroup)){ include"modul/sys_group/sys_group_tambah.php"; }
 		elseif($pg==base64_encode(edtgroup)){ include"modul/sys_group/sys_group_ubah.php"; }
+	// DATA MAIN MENU
+		elseif($pg==base64_encode(dtmenu)){ include"modul/as_sys_menu/as_sys_menu_data.php"; }
+		elseif($pg==base64_encode(addmenu)){ include"modul/as_sys_menu/as_sys_menu_add.php"; }
+		elseif($pg==base64_encode(edtmenu)){ include"modul/as_sys_menu/as_sys_menu_edit.php"; }
 	// DATA EDUCATION CENTER
 		elseif($pg==base64_encode(dtsec)){ include"modul/as_ms_sec/as_ms_sec_data.php"; }
 		elseif($pg==base64_encode(addsec)){ include"modul/as_ms_sec/as_ms_sec_add.php"; }
@@ -65,9 +70,9 @@
 		elseif($pg==base64_encode(loadaddmsjnskend)){ include"modul/load_ms_jns_kend/load_ms_jns_kend_add.php"; }
 		elseif($pg==base64_encode(loadedtmsjnskend)){ include"modul/load_ms_jns_kend/load_ms_jns_kend_edit.php"; }
 	// DATA PETUGAS
-		elseif($pg==base64_encode(loaddtmspetugas)){ include"modul/load_ms_petugas/load_ms_petugas_data.php"; }
-		elseif($pg==base64_encode(loadaddmspetugas)){ include"modul/load_ms_petugas/load_ms_petugas_add.php"; }
-		elseif($pg==base64_encode(loadedtmspetugas)){ include"modul/load_ms_petugas/load_ms_petugas_edit.php"; }
+		elseif($pg==base64_encode(loaddtmspetugas)){ include"modul/load_ms_identitas/load_ms_identitas_data.php"; }
+		elseif($pg==base64_encode(loadaddmspetugas)){ include"modul/load_ms_identitas/load_ms_identitas_add.php"; }
+		elseif($pg==base64_encode(loadedtmspetugas)){ include"modul/load_ms_identitas/load_ms_identitas_edit.php"; }
 	// DATA STANDARD
 		elseif($pg==base64_encode(loaddtmsklasifikasi)){ include"modul/load_ms_klasifikasi/load_ms_klasifikasi_data.php"; }
 		elseif($pg==base64_encode(loadaddmsklasifikasi)){ include"modul/load_ms_klasifikasi/load_ms_klasifikasi_add.php"; }
@@ -139,21 +144,43 @@
 		elseif($pg==base64_encode(docreportperubahandoc)){ include"modul/ms_report/doc_report_perubahan_dokumen.php"; }
 
 	// FRONTEND
-		elseif($pg==base64_encode(ithelpdesk)){ include"ithelpdesk.php"; }
 		elseif($pg==base64_encode(standardglobal)){ include"standard_global.php"; }
 		elseif($pg==base64_encode(standardglobalview)){ include"standard_global_view.php"; }
 		elseif($pg==base64_encode(standarddepartemen)){ include"standard_bagian.php"; }
 		elseif($pg==base64_encode(standarddepartemenview)){ include"standard_bagian_view.php"; }
 		elseif($pg==base64_encode(sec)){ include"sec.php"; }
 		elseif($pg==base64_encode(secview)){ include"sec_view.php"; }
-			// DATA MASTER ROOM
-		elseif($pg==base64_encode(masterroomadd)){ include"modul/book_master_room/master_room_add.php"; }
-		elseif($pg==base64_encode(masterroomdata)){ include"modul/book_master_room/master_room_data.php"; }
-		elseif($pg==base64_encode(masterroomedit)){ include"modul/book_master_room/master_room_edit.php"; }
-	// DATA BOOKING MEETING ROOM
-		elseif($pg==base64_encode(bookmeetingroomadd)){ include"modul/book_meeting_room/meeting_room_add.php"; }
-		elseif($pg==base64_encode(bookmeetingroomdata)){ include"modul/book_meeting_room/meeting_room_data.php"; }
-		elseif($pg==base64_encode(bookmeetingroomedit)){ include"modul/book_meeting_room/meeting_room_edit.php"; }
+		elseif($pg==base64_encode(meetingschedule)){ include"meeting_schedule.php"; }
+		elseif($pg==base64_encode(meetingscheduleview)){ include"meeting_schedule_view.php"; }
+		elseif($pg==base64_encode(ticketing)){ include"ticketing.php"; }
+		elseif($pg==base64_encode(ticketingview)){ include"ticketing_view.php"; }
+		elseif($pg==base64_encode(extention)){ include"extention.php"; }
+	// DATA MASTER ROOM
+		elseif($pg==base64_encode(masterroomadd)){ include"modul/as_ms_room/as_ms_room_add.php"; }
+		elseif($pg==base64_encode(masterroomdata)){ include"modul/as_ms_room/as_ms_room_data.php"; }
+		elseif($pg==base64_encode(masterroomedit)){ include"modul/as_ms_room/as_ms_room_edit.php"; }
+	// DATA MEETING SCHEDULE
+		elseif($pg==base64_encode(addtrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_add.php"; }
+		elseif($pg==base64_encode(dttrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_data.php"; }
+		elseif($pg==base64_encode(edttrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_edit.php"; }
+		elseif($pg==base64_encode(notulentrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_notulen.php"; }
+		elseif($pg==base64_encode(edtnotulentrxmeetsch)){ include"modul/as_trx_meet_sch/as_trx_meet_sch_notulen_edit.php"; }
+	// DATA MASTER EMPLOYEE
+		elseif($pg==base64_encode(masteremployeeadd)){ include"modul/sys_master_employee/master_employee_add.php"; }
+		elseif($pg==base64_encode(masteremployeedata)){ include"modul/sys_master_employee/master_employee_data.php"; }
+		elseif($pg==base64_encode(masteremployeeedit)){ include"modul/sys_master_employee/master_employee_edit.php"; }
+	// DATA EXTENTION NUMBER
+		elseif($pg==base64_encode(extentionnumberadd)){ include"modul/as_ms_ext/as_ms_ext_add.php"; }
+		elseif($pg==base64_encode(extentionnumberdata)){ include"modul/as_ms_ext/as_ms_ext_data.php"; }
+		elseif($pg==base64_encode(extentionnumberedit)){ include"modul/as_ms_ext/as_ms_ext_edit.php"; }
+	// DATA IT NOTE
+		elseif($pg==base64_encode(itnoteadd)){ include"modul/it_note/it_note_add.php"; }
+		elseif($pg==base64_encode(itnotedata)){ include"modul/it_note/it_note_data.php"; }
+		elseif($pg==base64_encode(itnoteedit)){ include"modul/it_note/it_note_edit.php"; }
+	// DATA PEMERIKSAAN
+		elseif($pg==base64_encode(dttrperiksa)){ include"modul/as_trx_periksa/as_trx_periksa_data.php"; }
+		elseif($pg==base64_encode(addtrperiksa)){ include"modul/as_trx_periksa/as_trx_periksa_add.php"; }
+		elseif($pg==base64_encode(edttrperiksa)){ include"modul/as_trx_periksa/as_trx_periksa_edit.php"; }
 		else {
 		echo "<div class='alert alert-dismissable alert-danger'><i class='fa fa-times'></i> Belum ada modul / dalam tahap pengembangan</div>";
 		}

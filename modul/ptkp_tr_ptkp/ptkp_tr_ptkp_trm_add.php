@@ -96,9 +96,9 @@
 	$dataMasalah		= $dataShow['ptkp_tr_ptkp_masalah'];
 	$dataMasalah		= $dataShow['ptkp_tr_ptkp_masalah'];
 	$dataKoreksi		= isset($_POST['txtKoreksi']) ? $_POST['txtKoreksi'] : $dataShow['ptkp_tr_ptkp_koreksi'];
-	$dataTglKoreksi		= isset($_POST['txtTglKoreksi']) ? $_POST['txtTglKoreksi'] : $dataShow['ptkp_tr_ptkp_tgl_koreksi'];
+	$dataTglKoreksi		= isset($_POST['txtTglKoreksi']) ? $_POST['txtTglKoreksi'] : IndonesiaTgl($dataShow['ptkp_tr_ptkp_tgl_koreksi']);
 	$dataPencegahan		= isset($_POST['txtPencegahan']) ? $_POST['txtPencegahan'] : $dataShow['ptkp_tr_ptkp_pencegahan'];
-	$dataTglPencegahan	= isset($_POST['txtTglPencegahan']) ? $_POST['txtTglPencegahan'] : $dataShow['ptkp_tr_ptkp_tgl_pencegahan'];
+	$dataTglPencegahan	= isset($_POST['txtTglPencegahan']) ? $_POST['txtTglPencegahan'] : IndonesiaTgl($dataShow['ptkp_tr_ptkp_tgl_pencegahan']);
 ?>
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
@@ -190,13 +190,7 @@
 							?>
 						</select>
 					</div>
-				</div>				
-		        <div class="form-group">
-					<label class="col-lg-2 control-label">Deskripsi :</label>
-					<div class="col-lg-10">
-						<textarea type="text" disabled class="form-control" placeholder="Input Deskripsi Temuan"><?php echo $dataDeskripsi; ?></textarea>
-		             </div>
-				</div>
+				</div>	
 				<div class="form-group">
 					<label class="col-md-2 control-label">Dampak Temuan :</label>
 					<div class="col-md-4">
@@ -244,15 +238,9 @@
 		             </div>
 				</div>	
 				<div class="form-group">
-					<label class="col-lg-2 control-label">Akar Masalah :</label>
-					<div class="col-lg-10">
-						<textarea type="text" name="txtMasalah" rows="4" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" placeholder="Input Akar Masalah"><?php echo $dataMasalah; ?></textarea>
-		             </div>
-				</div>
-				<div class="form-group">
 					<label class="col-lg-2 control-label">Koreksi :</label>
 					<div class="col-lg-10">
-						<textarea type="text" name="txtKoreksi" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control"><?php echo $dataKoreksi; ?></textarea>
+						<textarea type="text" name="txtKoreksi" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control ckeditor"><?php echo $dataKoreksi; ?></textarea>
 		             </div>
 				</div>	
 				<div class="form-group">
@@ -264,7 +252,7 @@
 				<div class="form-group">
 					<label class="col-lg-2 control-label">Pencegahan :</label>
 					<div class="col-lg-10">
-						<textarea type="text" name="txtPencegahan" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control"><?php echo $dataPencegahan; ?></textarea>
+						<textarea type="text" name="txtPencegahan" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control ckeditor"><?php echo $dataPencegahan; ?></textarea>
 		             </div>
 				</div>	
 				<div class="form-group last">

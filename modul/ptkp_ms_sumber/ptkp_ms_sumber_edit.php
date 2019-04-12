@@ -8,16 +8,21 @@
 		if (trim($_POST['cmbStatus'])=="") {
 			$message[] = "<b>Status</b> tidak boleh kosong !";		
 		}
+		if (trim($_POST['txtKode'])=="") {
+			$message[] = "<b>Kode</b> tidak boleh kosong !";		
+		}
 		
 		$txtID			= $_POST['txtID'];
 		$txtNama		= $_POST['txtNama'];
 		$txtKeterangan	= $_POST['txtKeterangan'];
 		$cmbStatus		= $_POST['cmbStatus'];
+		$txtKode		= $_POST['txtKode'];
 		
 		if(count($message)==0){
 			$sqlSave	= "UPDATE ptkp_ms_sumber SET ptkp_ms_sumber_nm='$txtNama', 
 													ptkp_ms_sumber_ket='$txtKeterangan', 
 													ptkp_ms_sumber_sts='$cmbStatus',
+													ptkp_ms_sumber_kd='$txtKode',
 													ptkp_ms_sumber_updated='".date('Y-m-d H:i:s')."',
 													ptkp_ms_sumber_updatedby='".$_SESSION['sys_role_id']."'
 										WHERE ptkp_ms_sumber_id='$txtID'";
@@ -50,11 +55,12 @@
 	$dataNama			= isset($_POST['txtNama']) ? $_POST['txtNama'] : $dataShow['ptkp_ms_sumber_nm'];
 	$dataKeterangan		= isset($_POST['txtKeterangan']) ? $_POST['txtKeterangan'] : $dataShow['ptkp_ms_sumber_ket'];
 	$dataStatus			= isset($_POST['cmbStatus']) ? $_POST['cmbStatus'] : $dataShow['ptkp_ms_sumber_sts'];
+	$dataKode			= isset($_POST['txtKode']) ? $_POST['txtKode'] : $dataShow['ptkp_ms_sumber_kd'];
 ?>
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Data Sumber PTKP</span>
+            <span class="caption-subject uppercase">Form Data Sumber PTKP</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
@@ -67,6 +73,12 @@
         <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" class="form-horizontal form-bordered" autocomplete="off">
         	<div class="form-body">
 				<input type="hidden" name="txtID" value="<?php echo $dataID ?>">
+				<div class="form-group">
+					<label class="col-lg-2 control-label">Kode :</label>
+					<div class="col-lg-3">
+						<input type="text" name="txtKode" value="<?php echo $dataKode; ?>" class="form-control" placeholder="Enter Code" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
+		             </div>
+				</div>
 		        <div class="form-group">
 					<label class="col-lg-2 control-label">Nama Sumber :</label>
 					<div class="col-lg-4">

@@ -39,7 +39,14 @@
 		$cmbBagian		= $_POST['cmbBagian'];
 		$cmbJab			= $_POST['cmbJab'];
 				
-		if(count($message)==0){			
+		if(count($message)==0){	
+			if (trim($txtPassBaru)=="") {
+				$sqlSub = " sys_role_password='$txtPassLama'";
+			}
+			else {
+
+				$sqlSub = "  sys_role_password='".md5($txtPassBaru)."'";
+			}		
 			$sqlSave="UPDATE sys_role SET ad_user_id='$cmbID', 
 										sys_group_id='$cmbGroup', 
 										sys_role_sts='$cmbStatus',
@@ -347,7 +354,6 @@
     <!-- /.modal-dialog -->
 </div>
 
-<script src="./assets/scripts/jquery-1.11.2.min.js"></script>
 <script src="./assets/scripts/bootstrap.js"></script>
 <script type="text/javascript">
     $(document).on('click', '.pilihUser', function (e) {

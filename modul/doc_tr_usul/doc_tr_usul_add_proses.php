@@ -19,10 +19,10 @@
         if (trim($_POST['txtTanggal'])=="") {
             $message[] = "<b>Tgl. Pengesahan</b> tidak boleh kosong !";     
         }
-        if (empty($_FILES['txtFileAsli']['tmp_name'])) {
+        if (empty($_FILES['txtWord']['tmp_name'])) {
             $message[] = "<b>File Asli</b> tidak boleh kosong !";     
         }
-        if (empty($_FILES['txtFilePDF']['tmp_name'])) {
+        if (empty($_FILES['txtPDF']['tmp_name'])) {
             $message[] = "<b>File PDF</b> tidak boleh kosong !";     
         }
         
@@ -42,68 +42,48 @@
         if(count($message)==0){
             // CEK JENIS USULAN
             if($txtJnsUsul==2){
-                // UBAH STATUS DOKUMEN
-                $sqlupd     = "UPDATE doc_ms_file SET doc_ms_file_masa='A' WHERE doc_ms_doc_id='$txtIDDoc'";
-                $qryupd     = mysqli_query($koneksidb, $sqlupd) or die ("gagal insert". mysqli_errors());
 
-                if (! empty($_FILES['txtFileAsli']['tmp_name'])) {
-                    $tgl            = date('ymdhis');
-                    $file_asli      = $_FILES['txtFileAsli']['name'];
-                    $file_asli      = stripslashes($file_asli);
-                    $file_asli      = str_replace("'","",$file_asli);
-                    $txtExtAsli     = pathinfo($file_asli, PATHINFO_EXTENSION);
-                    $file_asli      = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtAsli;
-                    copy($_FILES['txtFileAsli']['tmp_name'],"file/".$file_asli);
-
-
-                    // INSERT FILE ASLI
-                    $sqlAsli        = "INSERT INTO doc_ms_file (doc_ms_file_upload,
-                                                                doc_ms_file_type,
-                                                                doc_ms_doc_id,
-                                                                doc_ms_file_created,
-                                                                doc_ms_file_createdby,
-                                                                doc_ms_file_sts,
-                                                                doc_ms_file_masa)
-                                                        VALUES('$file_asli',
-                                                                '$txtExtAsli',
-                                                                '$txtIDDoc',
-                                                                '".date('Y-m-d H:i:s')."',
-                                                                '".$_SESSION['sys_role_id']."',
-                                                                'Y',
-                                                                'B')";
-                    $qryAsli        = mysqli_query($koneksidb, $sqlAsli) or die ("gagal insert file asli". mysqli_errors());
+                $tgl         = date('ymdhis');
+                // UPLOAD FILE PDF
+                if (empty($_FILES['txtPDF']['tmp_name'])) {
+                    $file_pdf = $_POST['txtPDFLama'];
                 }
-                if (! empty($_FILES['txtFilePDF']['tmp_name'])) {
-                    $tgl            = date('ymdhis');
-                    $file_pdf       = $_FILES['txtFilePDF']['name'];
-                    $file_pdf       = stripslashes($file_pdf);
-                    $file_pdf       = str_replace("'","",$file_pdf);
-                    $txtExtPDF      = pathinfo($file_pdf, PATHINFO_EXTENSION);
-                    $file_pdf       = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtPDF;
-                    copy($_FILES['txtFilePDF']['tmp_name'],"file/".$file_pdf);
+                else  {
+                    if(! $_POST['txtPDFLama']=="") {
+                        if(file_exists("file/".$_POST['txtPDFLama'])) {
+                            unlink("file/".$_POST['txtPDFLama']);   
+                        }
+                    }
 
+                    $file_pdf = $_FILES['txtPDF']['name'];
+                    $file_pdf = stripslashes($file_pdf);
+                    $file_pdf = str_replace("'","",$file_pdf);
+                    
+                    $file_pdf = $tgl.".".$file_pdf;
+                    copy($_FILES['txtPDF']['tmp_name'],"file/".$file_pdf);                  
+                }
+                // UPLOAD FILE WORD
+                if (empty($_FILES['txtWord']['tmp_name'])) {
+                    $file_word = $_POST['txtWordLama'];
+                }
+                else  {
+                    if(! $_POST['txtWordLama']=="") {
+                        if(file_exists("file/".$_POST['txtWordLama'])) {
+                            unlink("file/".$_POST['txtWordLama']);  
+                        }
+                    }
 
-                    // INSERT FILE ASLI
-                    $sqlPDF         = "INSERT INTO doc_ms_file (doc_ms_file_upload,
-                                                                doc_ms_file_type,
-                                                                doc_ms_doc_id,
-                                                                doc_ms_file_created,
-                                                                doc_ms_file_createdby,
-                                                                doc_ms_file_sts,
-                                                                doc_ms_file_masa)
-                                                        VALUES('$file_pdf',
-                                                                '$txtExtPDF',
-                                                                '$txtIDDoc',
-                                                                '".date('Y-m-d H:i:s')."',
-                                                                '".$_SESSION['sys_role_id']."',
-                                                                'Y',
-                                                                'B')";
-                    $qryPDF         = mysqli_query($koneksidb, $sqlPDF) or die ("gagal insert file PDF". mysqli_errors());
+                    $file_word = $_FILES['txtWord']['name'];
+                    $file_word = stripslashes($file_word);
+                    $file_word = str_replace("'","",$file_word);
+                    
+                    $file_word = $tgl.".".$file_word;
+                    copy($_FILES['txtWord']['tmp_name'],"file/".$file_word);                    
                 }
 
                 $sqlSave="UPDATE doc_ms_doc SET doc_ms_doc_nm='$txtNama',
                                             doc_ms_doc_rev='$txtRevisi',
-                                            doc_ms_jns_doc_id='$cmbJenis',
+                                            doc_tr_usul_jns='$cmbJenis',
                                             sys_bagian_id='$cmbBagian',
                                             doc_ms_doc_tgl='$txtTanggal',
                                             doc_ms_kat_doc_id='$cmbKategori',
@@ -124,16 +104,42 @@
                 exit;
 
             }elseif($txtJnsUsul==1){
+                // GET KODE JENIS
+                $tgl         = date('ymdhis');
+                if (! empty($_FILES['txtPDF']['tmp_name'])) {
+                    $file_upload_pdf    = $_FILES['txtPDF']['name'];
+                    $file_upload_pdf    = stripslashes($file_upload_pdf);
+                    $file_upload_pdf    = str_replace("'","",$file_upload_pdf);
+                    $txtExtPDF          = pathinfo($file_upload_pdf, PATHINFO_EXTENSION);
+                    $file_upload_pdf    = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtPDF;
+                    copy($_FILES['txtPDF']['tmp_name'],"file/".$file_upload_pdf);
+                }
+                else {
+                    $file_upload_pdf    = "";
+                }   
+                if (! empty($_FILES['txtWord']['tmp_name'])) {
+                    $file_upload_word   = $_FILES['txtWord']['name'];
+                    $file_upload_word   = stripslashes($file_upload_word);
+                    $file_upload_word   = str_replace("'","",$file_upload_word);
+                    $txtExtWord         = pathinfo($file_upload_word, PATHINFO_EXTENSION);
+                    $file_upload_word   = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtWord;
+                    copy($_FILES['txtWord']['tmp_name'],"file/".$file_upload_word);
+                }
+                else {
+                    $file_upload_word   = "";
+                }   
                 $sqlSave="INSERT INTO doc_ms_doc (doc_ms_doc_nm,
                                                     doc_ms_doc_kd,
                                                     doc_ms_doc_rev,
-                                                    doc_ms_jns_doc_id,
+                                                    doc_ms_doc_type,
                                                     sys_bagian_id,
                                                     doc_ms_doc_sts,
                                                     doc_ms_kat_doc_id,
                                                     doc_ms_doc_created,
                                                     doc_ms_doc_createdby,
-                                                    doc_ms_doc_tgl)
+                                                    doc_ms_doc_tgl,
+                                                    doc_ms_doc_pdf,
+                                                    doc_ms_doc_word)
                                             VALUES('$txtNama',
                                                     '$txtNomor',
                                                     '$txtRevisi',
@@ -143,68 +149,11 @@
                                                     '$cmbKategori',
                                                     '".date('Y-m-d H:i:s')."',
                                                     '".$_SESSION['sys_role_id']."',
-                                                    '$txtTanggal')";
+                                                    '$txtTanggal',
+                                                    '$file_upload_pdf',
+                                                    '$file_upload_word')";
                 $qrySave    = mysqli_query($koneksidb, $sqlSave) or die ("gagal insert". mysqli_errors());
                 if($qrySave){
-                    $sqlCek         = "SELECT MAX(doc_ms_doc_id) as id_doc FROM doc_ms_doc WHERE doc_ms_doc_createdby='".$_SESSION['sys_role_id']."'";
-                    $qryCek         = mysqli_query($koneksidb, $sqlCek) or die ("Gagal cek value".mysqli_errors()); 
-                    $qryRow         = mysqli_fetch_array($qryCek);
-                    $dataID         = $qryRow['id_doc'];
-
-                    if (! empty($_FILES['txtFileAsli']['tmp_name'])) {
-                        $tgl            = date('ymdhis');
-                        $file_asli      = $_FILES['txtFileAsli']['name'];
-                        $file_asli      = stripslashes($file_asli);
-                        $file_asli      = str_replace("'","",$file_asli);
-                        $txtExtAsli     = pathinfo($file_asli, PATHINFO_EXTENSION);
-                        $file_asli      = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtAsli;
-                        copy($_FILES['txtFileAsli']['tmp_name'],"file/".$file_asli);
-
-
-                        // INSERT FILE ASLI
-                        $sqlAsli        = "INSERT INTO doc_ms_file (doc_ms_file_upload,
-                                                                    doc_ms_file_type,
-                                                                    doc_ms_doc_id,
-                                                                    doc_ms_file_created,
-                                                                    doc_ms_file_createdby,
-                                                                    doc_ms_file_sts,
-                                                                    doc_ms_file_masa)
-                                                            VALUES('$file_asli',
-                                                                    '$txtExtAsli',
-                                                                    '$dataID',
-                                                                    '".date('Y-m-d H:i:s')."',
-                                                                    '".$_SESSION['sys_role_id']."',
-                                                                    'Y',
-                                                                    'B')";
-                        $qryAsli        = mysqli_query($koneksidb, $sqlAsli) or die ("gagal insert file asli". mysqli_errors());
-                    }
-                    if (! empty($_FILES['txtFilePDF']['tmp_name'])) {
-                        $tgl            = date('ymdhis');
-                        $file_pdf       = $_FILES['txtFilePDF']['name'];
-                        $file_pdf       = stripslashes($file_pdf);
-                        $file_pdf       = str_replace("'","",$file_pdf);
-                        $txtExtPDF      = pathinfo($file_pdf, PATHINFO_EXTENSION);
-                        $file_pdf       = $tgl."_".$_POST['txtNomor']."_".$_POST['txtNama']."_"."".$_POST['txtRevisi'].".".$txtExtPDF;
-                        copy($_FILES['txtFilePDF']['tmp_name'],"file/".$file_pdf);
-
-
-                        // INSERT FILE ASLI
-                        $sqlPDF         = "INSERT INTO doc_ms_file (doc_ms_file_upload,
-                                                                    doc_ms_file_type,
-                                                                    doc_ms_doc_id,
-                                                                    doc_ms_file_created,
-                                                                    doc_ms_file_createdby,
-                                                                    doc_ms_file_sts,
-                                                                    doc_ms_file_masa)
-                                                            VALUES('$file_pdf',
-                                                                    '$txtExtPDF',
-                                                                    '$dataID',
-                                                                    '".date('Y-m-d H:i:s')."',
-                                                                    '".$_SESSION['sys_role_id']."',
-                                                                    'Y',
-                                                                    'B')";
-                        $qryPDF         = mysqli_query($koneksidb, $sqlPDF) or die ("gagal insert file PDF". mysqli_errors());
-                    }
 
                     $sqlupdate  ="UPDATE doc_tr_usul SET doc_tr_usul_sts='C',
                                                         doc_tr_usul_updated='".date('Y-m-d H:i:s')."',
@@ -243,18 +192,18 @@
                             a.sys_bagian_id,
                             b.sys_bagian_nm,
                             a.doc_tr_usul_jns,
-                            a.doc_ms_jns_doc_id,
-                            c.doc_ms_jns_doc_nm,
+                            a.doc_tr_usul_subject,
                             a.doc_ms_kat_doc_id,
                             d.doc_ms_kat_doc_nm,
                             a.doc_tr_usul_isi,
                             a.doc_tr_usul_alasan,
                             a.doc_tr_usul_usulan,
                             a.doc_ms_doc_id,
-                            e.doc_ms_doc_kd
+                            e.doc_ms_doc_kd,
+                            e.doc_ms_doc_pdf,
+                            e.doc_ms_doc_word
                             FROM doc_tr_usul a
                             INNER JOIN sys_bagian b ON a.sys_bagian_id=a.sys_bagian_id
-                            INNER JOIN doc_ms_jns_doc c ON a.doc_ms_jns_doc_id=c.doc_ms_jns_doc_id
                             INNER JOIN doc_ms_kat_doc d ON a.doc_ms_kat_doc_id=d.doc_ms_kat_doc_id
                             LEFT JOIN doc_ms_doc e ON a.doc_ms_doc_id=e.doc_ms_doc_id
                             WHERE a.doc_tr_usul_id='$KodeEdit'";
@@ -272,11 +221,11 @@
 
     $dataTanggal        = isset($_POST['txtTanggal']) ? $_POST['txtTanggal'] : '';
     $dataKategori       = isset($_POST['cmbKategori']) ? $_POST['cmbKategori'] : $showRow['doc_ms_kat_doc_id']; 
-    $dataJenis          = isset($_POST['cmbJenis']) ? $_POST['cmbJenis'] : $showRow['doc_ms_jns_doc_id']; 
+    $dataJenis          = isset($_POST['cmbJenis']) ? $_POST['cmbJenis'] : $showRow['doc_tr_usul_subject']; 
     $dataBagian         = isset($_POST['cmbBagian']) ? $_POST['cmbBagian'] : $showRow['sys_bagian_id']; 
     $dataNomor          = isset($_POST['txtNomor']) ? $_POST['txtNomor'] : $showRow['doc_ms_doc_kd']; 
 
-    $revSql             = "SELECT ISNULL(SUM(doc_ms_doc_rev), 0) as doc_ms_doc_rev FROM doc_ms_doc WHERE doc_ms_doc_id='$txtIDDoc'";
+    $revSql             = "SELECT IFNULL(SUM(doc_ms_doc_rev), 0) as doc_ms_doc_rev FROM doc_ms_doc WHERE doc_ms_doc_id='$txtIDDoc'";
     $revQry             = mysqli_query($koneksidb, $revSql) or die ("Gagal cek value".mysqli_errors()); 
     $revRow             = mysqli_fetch_array($revQry);
     // APABILA REVISI MENCAPAI 8 AKAN KEMBALI KE 0
@@ -293,11 +242,10 @@
 <div class="portlet box <?php echo $dataPanel; ?>">
     <div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Proses Perubahan Document</span>
+            <span class="caption-subject uppercase">Form Document Request Process</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
-            <a href="#portlet-config" data-toggle="modal" class="config"> </a>
             <a href="" class="reload"> </a>
             <a href="" class="remove"> </a>
         </div>
@@ -350,18 +298,16 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Jenis Dokumen :</label>
                     <div class="col-md-4">
-                        <select name="cmbJenis" data-placeholder="Select Type" class="select2 form-control">
-                            <option value=""></option> 
+                        <select class="form-control select2" data-placeholder="Select Subject" name="cmbJenis">
+                            <option value=""></option>
                             <?php
-                                  $dataSql = "SELECT * FROM doc_ms_jns_doc WHERE doc_ms_jns_doc_sts='Y' ORDER BY doc_ms_jns_doc_id DESC";
-                                  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-                                  while ($dataRow = mysqli_fetch_array($dataQry)) {
-                                    if ($dataJenis == $dataRow['doc_ms_jns_doc_id']) {
-                                        $cek = " selected";
-                                    } else { $cek=""; }
-                                    echo "<option value='$dataRow[doc_ms_jns_doc_id]' $cek>$dataRow[doc_ms_jns_doc_kd] - $dataRow[doc_ms_jns_doc_nm]</option>";
-                                  }
-                                  $sqlData ="";
+                              $pilihan  = array("PEDOMAN MUTU", "PROSEDUR","INSTRUKSI KERJA","RENCANA MUTU","STANDAR MUTU","FORMAT STANDAR");
+                              foreach ($pilihan as $nilai) {
+                                if ($dataJenis==$nilai) {
+                                    $cek=" selected";
+                                } else { $cek = ""; }
+                                echo "<option value='$nilai' $cek>$nilai</option>";
+                              }
                             ?>
                         </select>
                     </div>
@@ -404,51 +350,37 @@
                      </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-2">Dokumen Asli :</label>
+                    <label class="control-label col-md-2">Upload PDF :</label>
                     <div class="col-md-9">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
                             <span class="btn default btn-file">
-                                <span class="fileinput-new">
-                                     Select file
-                                </span>
-                                <span class="fileinput-exists">
-                                     Change
-                                </span>
-                                <input type="file" name="txtFileAsli">
+                                <span class="fileinput-new">Select file</span>
+                                <span class="fileinput-exists">Change</span>
+                                <input type="file" name="txtPDF">
+                                <input name="txtPDFLama" type="hidden" value="<?php echo $showRow['doc_ms_doc_pdf']; ?>" />
                             </span>
-                            <span class="fileinput-filename">
-                            </span>
-                             &nbsp;
+                            <span class="fileinput-filename"></span>&nbsp;
                             <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none"></a>
-
-                            
                         </div>
-                        
+                        <?php echo $showRow['doc_ms_doc_pdf']; ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-2">Dokumen PDF :</label>
+                    <label class="control-label col-md-2">Upload MS Word :</label>
                     <div class="col-md-9">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
                             <span class="btn default btn-file">
-                                <span class="fileinput-new">
-                                     Select file
-                                </span>
-                                <span class="fileinput-exists">
-                                     Change
-                                </span>
-                                <input type="file" name="txtFilePDF">
+                                <span class="fileinput-new">Select file</span>
+                                <span class="fileinput-exists">Change</span>
+                                <input type="file" name="txtWord">
+                                <input name="txtWordLama" type="hidden" value="<?php echo $showRow['doc_ms_doc_word']; ?>" />
                             </span>
-                            <span class="fileinput-filename">
-                            </span>
-                             &nbsp;
+                            <span class="fileinput-filename"></span>&nbsp;
                             <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none"></a>
-
-                            
                         </div>
-                        
+                        <?php echo $showRow['doc_ms_doc_word']; ?>
                     </div>
-                </div>
+                </div>  
             </div>
             <div class="form-actions">
                 <div class="row">

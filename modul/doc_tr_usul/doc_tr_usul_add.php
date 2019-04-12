@@ -14,6 +14,9 @@
 		if (trim($_POST['cmbJenis'])=="") {
 			$message[] = "<b>Jenis</b> tidak boleh kosong !";		
 		}
+		if (empty($userRow['sys_bagian_id'])) {
+			$message[] = "<b>Nama Bagian</b> tidak terdeteksi, silahkan hubungi IT support !";		
+		}
 		if (trim($_POST['txtDokumen'])=="" AND trim($_POST['cmbJenis'])==2) {
 			$message[] = "<b>Nomor dokumen</b> tidak boleh kosong !";		
 		}
@@ -48,7 +51,7 @@
 			$kodeTrans		= $IDTrans.$nomorTrans;
 			$sqlSave="INSERT INTO doc_tr_usul (doc_tr_usul_no,
 												doc_tr_usul_tgl,
-												doc_ms_jns_doc_id,
+												doc_tr_usul_subject,
 												doc_ms_kat_doc_id,
 												doc_ms_doc_id,
 												sys_org_id,
@@ -120,7 +123,7 @@ function submitform() {
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Data Usulan Perubahan</span>
+            <span class="caption-subject uppercase">Form Data Usulan Perubahan</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
@@ -162,20 +165,18 @@ function submitform() {
 				<div class="form-group">
 					<label class="col-md-2 control-label">Subjek Dokumen :</label>
 					<div class="col-md-4">
-						<select name="cmbSubject" data-placeholder="Select Subject" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM doc_ms_jns_doc WHERE doc_ms_jns_doc_sts='Y' ORDER BY doc_ms_jns_doc_id DESC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataSubject == $dataRow['doc_ms_jns_doc_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[doc_ms_jns_doc_id]' $cek>$dataRow[doc_ms_jns_doc_nm]</option>";
-								  }
-								  $sqlData ="";
+						<select class="form-control select2" data-placeholder="Select Subject" name="cmbSubject">
+		                	<option value=""></option>
+		               		<?php
+							  $pilihan	= array("PEDOMAN MUTU", "PROSEDUR","INSTRUKSI KERJA","RENCANA MUTU","STANDAR MUTU","FORMAT STANDAR");
+							  foreach ($pilihan as $nilai) {
+								if ($dataSubject==$nilai) {
+									$cek=" selected";
+								} else { $cek = ""; }
+								echo "<option value='$nilai' $cek>$nilai</option>";
+							  }
 							?>
-						</select>
+		              	</select>
 					</div>
 				</div>
 				<div class="form-group">
@@ -214,13 +215,13 @@ function submitform() {
 				<div class="form-group">
 					<label class="col-lg-2 control-label">Isi Dokumen :</label>
 					<div class="col-lg-8">
-						<input type="text" name="txtIsi" placeholder="Enter Value" class="form-control" id="doc_ms_doc_nm" onkeyup="javascript:this.value=this.value.toUpperCase();" value="<?php echo $dataIsi; ?>">
+						<input type="text" name="txtIsi" placeholder="Enter Document Name" class="form-control" id="doc_ms_doc_nm" onkeyup="javascript:this.value=this.value.toUpperCase();" value="<?php echo $dataIsi; ?>">
 		             </div>
 				</div>
 		        <div class="form-group">
 					<label class="col-lg-2 control-label">Usulan :</label>
 					<div class="col-lg-10">
-						<textarea type="text" name="txtUsulan" placeholder="Enter Revision" class="form-control"  onkeyup="javascript:this.value=this.value.toUpperCase();"><?php echo $dataUsulan; ?></textarea>
+						<textarea type="text" name="txtUsulan" placeholder="Enter Request" class="form-control"  onkeyup="javascript:this.value=this.value.toUpperCase();"><?php echo $dataUsulan; ?></textarea>
 		             </div>
 				</div>
 				<div class="form-group last">
@@ -238,7 +239,7 @@ function submitform() {
                             <h4 class="modal-title"><b>Daftar Distribusi Dokumen</b></h4>
                         </div>
                         <div class="modal-body"> 
-                            <table class="table table-striped table-bordered table-hover" id="sample_2">
+                            <table class="table table-striped table-condensed table-hover" id="sample_2">
 								<thead>
 				                    <tr class="active">
 										<th width="100"><div align="center">NO. DOCUMENT</div></th>
@@ -254,14 +255,13 @@ function submitform() {
 														a.doc_ms_doc_nm,
 														a.doc_ms_doc_sts,
 														b.doc_ms_kat_doc_nm,
-														c.doc_ms_jns_doc_nm,
+														a.doc_ms_doc_type,
 														d.sys_bagian_nm
 													FROM doc_ms_doc a
 													INNER JOIN doc_ms_kat_doc b ON a.doc_ms_kat_doc_id=b.doc_ms_kat_doc_id
-													INNER JOIN doc_ms_jns_doc c ON a.doc_ms_jns_doc_id=c.doc_ms_jns_doc_id
 													INNER JOIN sys_bagian d ON a.sys_bagian_id=d.sys_bagian_id
 													WHERE NOT a.doc_ms_doc_sts='D'
-													AND a.doc_ms_jns_doc_id='$dataSubject'
+													AND a.doc_ms_doc_type='$dataSubject'
 													AND a.doc_ms_kat_doc_id='$dataKategori'
 													AND a.sys_bagian_id='".$userRow['sys_bagian_id']."'
 													ORDER BY a.doc_ms_doc_id DESC";
@@ -300,7 +300,7 @@ function submitform() {
                 <div class="row">
                     <div class="col-md-offset-2 col-md-10">
 		                <button type="submit" name="btnSave" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Simpan Data</button>
-		                <a href="?page=<?php echo base64_encode(docdtmsdoc) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Batalkan</a>
+		                <a href="?page=<?php echo base64_encode(docdttrusul) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Batalkan</a>
 			        </div>
 			    </div>
 			</div>

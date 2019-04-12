@@ -19,13 +19,13 @@
 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
 	<div class="portlet box <?php echo $dataPanel; ?>">
 		<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Data Action Ticket</span></div>
+		<div class="caption"><span class="caption-subject uppercase">Data Action Ticket</span></div>
 			<div class="actions">
 				<button class="btn <?php echo $dataPanel; ?> active" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin membatalkan data penting ini !!')"><i class="icon-trash"></i> DELETE DATA</button>
 			</div>
 		</div>
 		<div class="portlet-body">
-		<table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_2">
+		<table class="table table-striped table-hover table-checkable order-column" id="sample_2">
 				<thead>
                     <tr class="active">
        	  	  	  	  	<th class="table-checkbox" width="3%">
@@ -38,8 +38,8 @@
                         <th width="10%"><div align="center">NO.TICKET</div></th>
                         <th width="15%"><div align="center">TGL.TICKET</div></th>
 						<th width="15%">DIMINTA</th>
-						<th width="5%">KATEGORI</th>
-						<th width="25%">TYPE</th>
+						<th width="20%">KATEGORI</th>
+						<th width="20%">TYPE</th>
 			  	  	  	<th width="5%"><div align="center">STATUS</div></th>
 			  	  	  	<th width="5%"><div align="center">AKSI</div></th>
                     </tr>
@@ -49,6 +49,7 @@
 						$dataSql = "SELECT * FROM tic_tr_ticket a
 									INNER JOIN tic_ms_kat b ON a.tic_ms_kat_id=b.tic_ms_kat_id
 									INNER JOIN tic_ms_modul d ON a.tic_ms_modul_id=d.tic_ms_modul_id
+									WHERE a.tic_tr_ticket_to='".$userRow['sys_bagian_id']."'
 									ORDER BY a.tic_tr_ticket_id DESC";
 						$dataQry = mysqli_query($koneksidb, $dataSql)  or die ("Query petugas salah : ".mysqli_error());
 						$nomor  = 0; 
@@ -83,7 +84,7 @@
 						<td><div align="center"><?php echo $dataStatus; ?></div></td>
 						<td><div align="center">
 							<div class="btn-group">
-								<a href="?page=<?php echo base64_encode(ticprosestic) ?>&amp;id=<?php echo $Kode; ?>" class="btn green btn-xs <?php echo $disabled ?>"><i class="fa fa-check"></i></a>
+								<a href="?page=<?php echo base64_encode(ticprosestic) ?>&amp;id=<?php echo $Kode; ?>" class="btn <?php echo $dataPanel; ?> btn-xs <?php echo $disabled ?>"><i class="fa fa-check"></i></a>
 							</div>
 
 							</div>

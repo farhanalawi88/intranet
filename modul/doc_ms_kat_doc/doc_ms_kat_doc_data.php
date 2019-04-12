@@ -21,7 +21,7 @@
 	<div class="portlet box <?php echo $dataPanel; ?>">
 	    <div class="portlet-title">
 	        <div class="caption">
-	            <span class="caption-subject uppercase bold">Data Kategori Dokumen</span>
+	            <span class="caption-subject uppercase">Data Kategori Dokumen</span>
 	        </div>
 	        <div class="actions">
 				<a href="?page=<?php echo base64_encode(docaddmskatdoc) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA </a>

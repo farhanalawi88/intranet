@@ -41,15 +41,25 @@
 
 		if(count($message)==0){
 			// MENGAMBIL KODE BAGIAN
-			$sqlBag			= "SELECT LTRIM(RTRIM(sys_bagian_kd)) as sys_bagian_kd FROM sys_bagian WHERE sys_bagian_id='$cmbBagian'";
+			$sqlBag			= "SELECT 
+									LTRIM(RTRIM(sys_bagian_kd)) as sys_bagian_kd 
+								FROM sys_bagian 
+								WHERE sys_bagian_id='$cmbBagian'";
 			$qryBag 		= mysqli_query($koneksidb,$sqlBag) or die ("gagal get kode bagian".mysqli_errors());
 			$rowBag			= mysqli_fetch_array($qryBag);
+			// MENGAMBIL KODE SUMBER
+			$sqlSum			= "SELECT 
+									LTRIM(RTRIM(ptkp_ms_sumber_kd)) as ptkp_ms_sumber_kd 
+								FROM ptkp_ms_sumber 
+								WHERE ptkp_ms_sumber_id='$cmbSumber'";
+			$qrySum 		= mysqli_query($koneksidb,$sqlSum) or die ("gagal get kode sumber".mysqli_errors());
+			$rowSum			= mysqli_fetch_array($qrySum);
 			// GET FORMAT PENOMORAN
 			$bulan			= substr($txtTanggal,5,2);
 			$romawi 		= getRomawi($bulan);
 			$tahun			= substr($txtTanggal,2,2);
 			$tahun2			= substr($txtTanggal,0,4);
-			$nomorTrans		= "/".$rowBag['sys_bagian_kd']."/".$romawi."/".$tahun;
+			$nomorTrans		= "/".$rowSum['ptkp_ms_sumber_kd']."/".$rowBag['sys_bagian_kd']."/".$romawi."/".$tahun;
 			$queryTrans		= "SELECT max(ptkp_tr_ptkp_no) as maxKode 
 								FROM ptkp_tr_ptkp 
 								WHERE YEAR(ptkp_tr_ptkp_tgl)='$tahun2' 
@@ -60,6 +70,7 @@
 			$noUrutTrans	= $noTrans + 1;
 			$IDTrans		=  sprintf("%03s", $noUrutTrans);
 			$kodeTrans		= $IDTrans.$nomorTrans;
+		
 			// INSERT DATA PTKP
 			$sqlSave="INSERT INTO ptkp_tr_ptkp (ptkp_tr_ptkp_tgl,
 												ptkp_tr_ptkp_no,
@@ -136,7 +147,7 @@ function submitform() {
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Pembuatan PTKP</span>
+            <span class="caption-subject uppercase">Form Pembuatan Temuan & PTKP</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
@@ -146,145 +157,110 @@ function submitform() {
         </div>
     </div>
 	<div class="portlet-body form">
-        <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" class="form-horizontal form-bordered" autocomplete="off" name="form1">
+        <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off" name="form1">
         	<div class="form-body">
-		        <div class="form-group">
-					<label class="col-lg-2 control-label">Tanggal :</label>
-					<div class="col-lg-3">
-						<input type="text" name="txtTanggal" value="<?php echo $dataTanggal; ?>" data-date-format="dd-mm-yyyy" class="form-control date-picker" placeholder="Pilih Tanggal"/>
-		             </div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Sumber :</label>
-					<div class="col-md-4">
-						<select name="cmbSumber" data-placeholder="Pilih Sumber" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM ptkp_ms_sumber WHERE ptkp_ms_sumber_sts='Y' ORDER BY ptkp_ms_sumber_id ASC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataSumber == $dataRow['ptkp_ms_sumber_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[ptkp_ms_sumber_id]' $cek>$dataRow[ptkp_ms_sumber_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Departemen :</label>
-					<div class="col-md-3">
-						<select name="cmbBagian" data-placeholder="Pilih Departemen" class="select2 form-control" onChange="javascript:submitform();">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM sys_bagian 
-								  				WHERE sys_bagian_sts='Y' 
-								  				AND NOT sys_bagian_id='".$userRow['sys_bagian_id']."'
-								  				ORDER BY sys_bagian_id ASC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataBagian == $dataRow['sys_bagian_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[sys_bagian_id]' $cek>$dataRow[sys_bagian_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>
-		        <div class="form-group">
-					<label class="col-lg-2 control-label">Kegiatan :</label>
-					<div class="col-lg-8">
-						<input type="text" name="txtKegiatan" value="<?php echo $dataKegiatan; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" placeholder="Input Kegiatan"/>
-		             </div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Kategori :</label>
-					<div class="col-md-4">
-						<select name="cmbKategori" data-placeholder="Pilih Kategori" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM ptkp_ms_kategori WHERE ptkp_ms_kategori_sts='Y' ORDER BY ptkp_ms_kategori_id ASC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataKategori == $dataRow['ptkp_ms_kategori_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[ptkp_ms_kategori_id]' $cek>$dataRow[ptkp_ms_kategori_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>				
-		        <div class="form-group">
-					<label class="col-lg-2 control-label">Deskripsi :</label>
-					<div class="col-lg-10">
-						<textarea type="text" name="txtDeskripsi" rows="4" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" placeholder="Input Deskripsi Temuan"><?php echo $dataDeskripsi; ?></textarea>
-		             </div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Dampak Temuan :</label>
-					<div class="col-md-4">
-						<select name="cmbDampak" data-placeholder="Pilih Dampak" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM ptkp_ms_dampak WHERE ptkp_ms_dampak_sts='Y' ORDER BY ptkp_ms_dampak_id ASC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataDampak == $dataRow['ptkp_ms_dampak_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[ptkp_ms_dampak_id]' $cek>$dataRow[ptkp_ms_dampak_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>	
-				<div class="form-group">
-					<label class="col-md-2 control-label">Keterkaitan :</label>
-					<div class="col-md-4">
-						<select name="cmbTerkait" data-placeholder="Pilih Keterkaitan" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM ptkp_ms_terkait WHERE ptkp_ms_terkait_sts='Y' ORDER BY ptkp_ms_terkait_id ASC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataTerkait == $dataRow['ptkp_ms_terkait_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[ptkp_ms_terkait_id]' $cek>$dataRow[ptkp_ms_terkait_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>	
-		        <div class="form-group last">
-					<label class="col-lg-2 control-label">Referensi :</label>
-					<div class="col-lg-3">
-
-						<div class="input-group">
-							<input type="text" name="txtReferensi" value="<?php echo $dataReferensi; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" placeholder="Input Referensi" id="doc_ms_doc_kd"/>
-	                        <input class="form-control" type="hidden" name="txtDokumen" id="doc_ms_doc_id" value="<?php echo $dataDokumen ?>" />
-	                        <span class="input-group-btn">
-	                            <a class="btn <?php echo $dataPanel; ?> btn-block" data-toggle="modal" data-target="#barang"><i class="icon-magnifier-add"></i></a>
-	                        </span>
-	                    </div>
-		             </div>
-				</div>		
+		       <div class="row">
+	        		<div class="col-lg-3">
+	        			<div class="form-group">
+							<label class="control-label">Tgl. Pembuatan :</label>
+							<input type="text" name="txtTanggal" value="<?php echo $dataTanggal; ?>" data-date-format="dd-mm-yyyy" class="form-control date-picker" placeholder="Pilih Tanggal"/>
+						</div>
+	        		</div>
+	        		<div class="col-lg-3">
+	        			<div class="form-group">
+							<label class="control-label">Sumber :</label>
+							<select name="cmbSumber" data-placeholder="Pilih Sumber" class="select2 form-control">
+								<option value=""></option> 
+								<?php
+									  $dataSql = "SELECT * FROM ptkp_ms_sumber WHERE ptkp_ms_sumber_sts='Y' ORDER BY ptkp_ms_sumber_id ASC";
+									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
+									  while ($dataRow = mysqli_fetch_array($dataQry)) {
+										if ($dataSumber == $dataRow['ptkp_ms_sumber_id']) {
+											$cek = " selected";
+										} else { $cek=""; }
+										echo "<option value='$dataRow[ptkp_ms_sumber_id]' $cek>$dataRow[ptkp_ms_sumber_nm]</option>";
+									  }
+									  $sqlData ="";
+								?>
+							</select>
+						</div>
+	        		</div>
+	        		<div class="col-lg-3">
+	        			<div class="form-group">
+							<label class="control-label">Departemen :</label>
+							<select name="cmbBagian" data-placeholder="Pilih Departemen" class="select2 form-control" onChange="javascript:submitform();">
+								<option value=""></option> 
+								<?php
+									  $dataSql = "SELECT * FROM sys_bagian 
+									  				WHERE sys_bagian_sts='Y' 
+									  				AND NOT sys_bagian_id='".$userRow['sys_bagian_id']."'
+									  				ORDER BY sys_bagian_id ASC";
+									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
+									  while ($dataRow = mysqli_fetch_array($dataQry)) {
+										if ($dataBagian == $dataRow['sys_bagian_id']) {
+											$cek = " selected";
+										} else { $cek=""; }
+										echo "<option value='$dataRow[sys_bagian_id]' $cek>$dataRow[sys_bagian_nm]</option>";
+									  }
+									  $sqlData ="";
+								?>
+							</select>
+						</div>
+	        		</div>
+	        		<div class="col-lg-3">
+	        			<div class="form-group">
+							<label class="control-label">Kategori Temuan :</label>
+							<select name="cmbKategori" data-placeholder="Pilih Kategori" class="select2 form-control">
+								<option value=""></option> 
+								<?php
+									  $dataSql = "SELECT * FROM ptkp_ms_kategori WHERE ptkp_ms_kategori_sts='Y' ORDER BY ptkp_ms_kategori_id ASC";
+									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
+									  while ($dataRow = mysqli_fetch_array($dataQry)) {
+										if ($dataKategori == $dataRow['ptkp_ms_kategori_id']) {
+											$cek = " selected";
+										} else { $cek=""; }
+										echo "<option value='$dataRow[ptkp_ms_kategori_id]' $cek>$dataRow[ptkp_ms_kategori_nm]</option>";
+									  }
+									  $sqlData ="";
+								?>
+							</select>
+						</div>	
+	        		</div>
+	        	</div> 
+				<div class="row">
+	        		<div class="col-lg-12">
+	        			<div class="form-group">
+							<label class="control-label">Kegiatan / Proses :</label>
+							<input type="text" name="txtKegiatan" value="<?php echo $dataKegiatan; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" placeholder="Input Kegiatan"/>
+						</div>
+	        		</div>
+	        	</div>
+				<div class="row">
+	        		<div class="col-lg-12">
+	        			<div class="form-group">
+							<label class="control-label">Deskripsi :</label>
+							<textarea type="text" name="txtDeskripsi" rows="4" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control ckeditor" placeholder="Input Deskripsi Temuan"><?php echo $dataDeskripsi; ?></textarea>
+						</div>
+	        		</div>
+	        	</div>
+		        <div class="row last">
+		        	<div class="col-lg-12">
+		        		<div class="form-group last">
+							<label class="control-label">Referensi :</label>
+							<div class="input-group">
+								<input type="text" name="txtReferensi" value="<?php echo $dataReferensi; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" placeholder="Input Referensi" id="doc_ms_doc_kd"/>
+		                        <input class="form-control" type="hidden" name="txtDokumen" id="doc_ms_doc_id" value="<?php echo $dataDokumen ?>" />
+		                        <span class="input-group-btn">
+		                            <a class="btn <?php echo $dataPanel; ?> btn-block" data-toggle="modal" data-target="#barang"><i class="icon-magnifier-add"></i></a>
+		                        </span>
+		                    </div>
+						</div>	
+		        	</div>
+		        </div>
 			</div>
 	    	<div class="form-actions">
-                <div class="row">
-                    <div class="col-md-offset-2 col-md-10">
-		                <button type="submit" name="btnSave" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Simpan Data</button>
-		                <a href="?page=<?php echo base64_encode(ptkpdttrptkp) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Batalkan</a>
-			        </div>
-			    </div>
+                <button type="submit" name="btnSave" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Simpan Data</button>
+                <a href="?page=<?php echo base64_encode(ptkpdttrptkp) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Batalkan</a>
 			</div>
 		</form>
 	</div>
@@ -298,7 +274,7 @@ function submitform() {
                 <h4 class="modal-title">DAFTAR DOKUMEN</h4>
             </div>
             <div class="modal-body"> 
-            	<table class="table table-hover table-bordered table-striped table-condensed" width="100%" id="sample_2">
+            	<table class="table table-hover table-condensed table-striped table-condensed" width="100%" id="sample_2">
 		            <thead>
 		                <tr class="active">
 		                  	<th width="5%"><div align="center">NO</div></th>
@@ -347,7 +323,7 @@ function submitform() {
 		        </table> 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn green" data-dismiss="modal">Close</button>
+                <button type="button" class="btn <?php echo $dataPanel; ?>" data-dismiss="modal">Close</button>
             </div>
         </div>
         <!-- /.modal-content -->

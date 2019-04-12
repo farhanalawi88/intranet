@@ -4,12 +4,12 @@
 		$txtID 		= $_POST['txtID'];
 		foreach ($txtID as $id_key) {
 				
-			$hapus=mysqli_query($koneksidb,"DELETE FROM book_master_room WHERE id_room='$id_key'") 
+			$hapus=mysqli_query($koneksidb,"DELETE FROM sys_employee WHERE id_employee='$id_key'") 
 				or die ("Gagal kosongkan tmp".mysqli_errors());
 			if($hapus){
 				$_SESSION['info'] = 'success';
-	            $_SESSION['pesan'] = 'Data Meeting Room Berhasil Dihapus';
-	            echo '<script>window.location="?page='.base64_encode(masterroomdata).'"</script>';
+	            $_SESSION['pesan'] = 'Data Employee Berhasil Dihapus';
+	            echo '<script>window.location="?page='.base64_encode(masteremployeedata).'"</script>';
           	}		
         }
 	}	
@@ -20,10 +20,10 @@
 	<div class="portlet box <?php echo $dataPanel; ?>">
 	    <div class="portlet-title">
 	        <div class="caption">
-	            <span class="caption-subject uppercase bold">Data Meeting Room</span>
+	            <span class="caption-subject uppercase bold">Data Employee</span>
 	        </div>
 	        <div class="actions">
-				<a href="?page=<?php echo base64_encode(masterroomadd) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA </a>
+				<a href="?page=<?php echo base64_encode(masteremployeeadd) ?>" class="btn <?php echo $dataPanel; ?> active"><i class="icon-plus"></i> ADD DATA </a>
 				<button class="btn <?php echo $dataPanel; ?> active" name="btnHapus" type="submit" onclick="return confirm('Anda yakin ingin menghapus data penting ini !!')"><i class="icon-trash"></i> DELETE DATA</button>
 			</div>
 		</div>
@@ -37,23 +37,24 @@
                                 <span></span>
                             </label>
                         </th>
-                        <th width="30%">NAMA RUANG MEETING</th>
-                        <th width="30%">KETERANGAN</th>
-                        <th width="20%">DIBUAT OLEH</th>
+                        <th width="15%">NIK</th>
+                        <th width="30%">NAMA KARYAWAN</th>
+                        <th width="20%">KETERANGAN</th>
+                        <th width="15%">DIBUAT OLEH</th>
 				  	  	<th width="10%"><div align="center">STATUS</div></th>
 				  	  	<th width="10%"><div align="center">ACTION</div></th>
                     </tr>
 				</thead>
 				<tbody>
                <?php
-						$dataSql = "SELECT * FROM book_master_room a
+						$dataSql = "SELECT * FROM sys_employee a
 									INNER JOIN sys_role b ON a.createdby=b.sys_role_id
-									ORDER BY a.id_room DESC";
+									ORDER BY a.id_employee DESC";
 						$dataQry = mysqli_query($koneksidb, $dataSql);
 						$nomor  = 0; 
 						while ($data = mysqli_fetch_array($dataQry)) {
 						$nomor++;
-						$Kode = $data['id_room'];
+						$Kode = $data['id_employee'];
 						if($data ['status']=='Y'){
 							$dataStatus= "<span class='badge badge-success badge-roundless'>ACTIVE</span>";
 						}else{
@@ -67,11 +68,12 @@
                                 <span></span>
                             </label>
                         </td>
-						<td><?php echo $data['nama_ruang_meeting']; ?></td>
+                        <td><?php echo $data['nik']; ?></td>
+						<td><?php echo $data['nama_karyawan']; ?></td>
 						<td><?php echo $data['keterangan']; ?></td>
 						<td><?php echo strtoupper($data['sys_role_nama']); ?></td>
 						<td><div align="center"><?php echo $dataStatus; ?></div></td>
-						<td><div align="center"><a href="?page=<?php echo base64_encode(masterroomedit) ?>&amp;id=<?php echo base64_encode($Kode); ?>" class="btn btn-xs <?php echo $dataPanel; ?>"><i class="fa fa-pencil"></i></a></div></td>
+						<td><div align="center"><a href="?page=<?php echo base64_encode(masteremployeeedit) ?>&amp;id=<?php echo base64_encode($Kode); ?>" class="btn btn-xs <?php echo $dataPanel; ?>"><i class="fa fa-pencil"></i></a></div></td>
                     </tr>
                     <?php
                         

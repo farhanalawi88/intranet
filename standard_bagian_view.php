@@ -14,9 +14,9 @@ $dataKode           = $showRow['doc_ms_doc_id'];
 $dataPDF            = $showRow['doc_ms_doc_pdf'];
 
 ?>
-<div class="portlet box grey-cascade">
+<div class="portlet box blue-chambray">
     <div class="portlet-title">
-        <div class="caption"><span class="caption-subject">Standard Depertemen Detail</span></div>
+        <div class="caption"><span class="caption-subject uppercase">Standard Depertemen Detail</span></div>
         <div class="tools">
             <a href="javascript:;" class="collapse"></a>
             <a href="javascript:;" class="reload"></a>

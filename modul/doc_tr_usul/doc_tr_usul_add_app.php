@@ -42,13 +42,12 @@ $showSql            = "SELECT
                         a.doc_tr_usul_isi,
                         b.sys_bagian_nm,
                         c.doc_ms_kat_doc_nm,
-                        d.doc_ms_jns_doc_nm,
+                        a.doc_tr_usul_subject,
                         a.doc_tr_usul_usulan,
                         a.doc_tr_usul_alasan
                         FROM doc_tr_usul a
                         INNER JOIN sys_bagian b ON a.sys_bagian_id=b.sys_bagian_id
                         INNER JOIN doc_ms_kat_doc c ON a.doc_ms_kat_doc_id=c.doc_ms_kat_doc_id
-                        INNER JOIN doc_ms_jns_doc d ON a.doc_ms_jns_doc_id=d.doc_ms_jns_doc_id
                         WHERE a.doc_tr_usul_id='$KodeEdit'";
 $showQry            = mysqli_query($koneksidb, $showSql)  or die ("Query ambil data department salah : ".mysqli_errors());
 $showRow            = mysqli_fetch_array($showQry);
@@ -65,7 +64,7 @@ if($showRow['doc_tr_usul_jns']==1){
 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off">
     <div class="portlet box <?php echo $dataPanel; ?>">
         <div class="portlet-title">
-            <div class="caption"><span class="caption-subject uppercase bold">Form View Document & Comment </span></div>
+            <div class="caption"><span class="caption-subject uppercase">Form View Document & Comment </span></div>
             <div class="tools">
                 <a href="javascript:;" class="collapse"> </a>
                 <a href="javascript:;" class="reload"> </a>
@@ -115,7 +114,7 @@ if($showRow['doc_tr_usul_jns']==1){
                                             <?php
                                                     $msgSql = "SELECT 
                                                                     a.doc_tr_usul_msg_pesan,
-                                                                    CONVERT(CHAR(17),a.doc_tr_usul_msg_created,113) as doc_tr_usul_msg_created,
+                                                                    a.doc_tr_usul_msg_created,
                                                                     b.sys_role_nama,
                                                                     a.doc_tr_usul_msg_createdby
                                                                 FROM doc_tr_usul_msg a
@@ -187,7 +186,7 @@ if($showRow['doc_tr_usul_jns']==1){
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Subject</label>
-                                            <input type="text" class="form-control" value="<?php echo $showRow['doc_ms_jns_doc_nm'] ?>" readonly/> 
+                                            <input type="text" class="form-control" value="<?php echo $showRow['doc_tr_usul_subject'] ?>" readonly/> 
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -208,6 +207,7 @@ if($showRow['doc_tr_usul_jns']==1){
                                 <hr>                                
                                 <div class="margin-top-10">
                                     <button type="submit" name="btnApprove" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Approve Data</button>
+                                    <a href="?page=<?php echo base64_encode(docdtapptrusul) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Kembali</a>
                                 </div>
                             </div>
                         </div>

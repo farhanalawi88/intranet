@@ -11,30 +11,21 @@
 		$txtNama		= $_POST['txtNama'];
 		$txtKeterangan	= $_POST['txtKeterangan'];
 		$cmbStatus		= $_POST['cmbStatus'];
-				
-		$sqlCek			= "SELECT COUNT(*) as total FROM load_ms_petugas WHERE load_ms_petugas_nm='$txtNama'";
-		$qryCek			= mysqli_query($koneksidb, $sqlCek) or die ("Gagal cek value".mysqli_errors()); 
-		$qryRow			= mysqli_fetch_array($qryCek);
-		if($qryRow['total']>=1){
-			$message[] = "Maaf, nama petugas <b> $txtNama </b> sudah ada, ganti dengan nama lain";
-		}
+		$txtKode 		= $_POST['txtKode'];
+		
 		
 		if(count($message)==0){		
-			$sqlSave	= "INSERT INTO load_ms_petugas (load_ms_petugas_nm,
-													load_ms_petugas_ket,
-													load_ms_petugas_sts,
-													load_ms_petugas_created,
-													load_ms_petugas_createdby) 
-											VALUES ('$txtNama',
-													'$txtKeterangan',
-													'$cmbStatus',
-													'".date('Y-m-d H:i:s')."',
-													'".$userRow['sys_role_id']."')";
+			$sqlSave	= "UPDATE load_ms_identitas SET load_ms_identitas_nm='$txtNama',
+													load_ms_identitas_ket='$txtKeterangan',
+													load_ms_identitas_sts='$cmbStatus',
+													load_ms_identitas_updated='".date('Y-m-d H:i:s')."',
+													load_ms_identitas_updatedby='".$userRow['sys_role_id']."'
+												WHERE load_ms_identitas_id='$txtKode'";
 			$qrySave	= mysqli_query($koneksidb, $sqlSave) or die ("gagal insert". mysqli_errors());
 
 			if($qrySave){
 				$_SESSION['info'] = 'success';
-				$_SESSION['pesan'] = 'Data petugas berhasil ditambahkan';
+				$_SESSION['pesan'] = 'Data petugas berhasil diperbaharui';
 				echo '<script>window.location="?page='.base64_encode(loaddtmspetugas).'"</script>';
 			}
 			exit;
@@ -51,14 +42,19 @@
 			echo "</div>"; 
 		}
 	} 
-			
-	$dataNama		= isset($_POST['txtNama']) ? $_POST['txtNama'] : '';
-	$dataKeterangan	= isset($_POST['txtKeterangan']) ? $_POST['txtKeterangan'] : '';
-	$dataStatus		= isset($_POST['cmbStatus']) ? $_POST['cmbStatus'] : '';
+	$KodeEdit		= isset($_GET['id']) ?  $_GET['id'] : $_POST['txtTglLibur']; 
+	$sqlShow 		= "SELECT * FROM load_ms_identitas WHERE load_ms_identitas_id='$KodeEdit'";
+	$qryShow 		= mysqli_query($koneksidb, $sqlShow)  or die ("Query ambil data libur salah : ".mysqli_errors());
+	$dataShow 		= mysqli_fetch_array($qryShow);		
+
+	$dataKode 		= $dataShow['load_ms_identitas_id'];
+	$dataNama		= isset($_POST['txtNama']) ? $_POST['txtNama'] : $dataShow['load_ms_identitas_nm'];
+	$dataKeterangan	= isset($_POST['txtKeterangan']) ? $_POST['txtKeterangan'] : $dataShow['load_ms_identitas_ket'];
+	$dataStatus		= isset($_POST['cmbStatus']) ? $_POST['cmbStatus'] : $dataShow['load_ms_identitas_sts'];
 ?>
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Form Petugas</span></div>
+		<div class="caption"><span class="caption-subject uppercase">Form Identitas</span></div>
 		<div class="tools">
 			<a href="javascript:;" class="collapse"></a>
 			<a href="javascript:;" class="reload"></a>
@@ -67,9 +63,10 @@
 	</div>
 	<div class="portlet-body form">
 		<form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" name="frmadd" class="form-horizontal form-bordered" autocomplete="off">
+			<input type="hidden" name="txtKode" value="<?php echo $dataKode ?>">
 			<div class="form-body">
 				<div class="form-group">
-					<label class="col-md-2 control-label">Nama Petugas :</label>
+					<label class="col-md-2 control-label">Nama Identitas :</label>
 					<div class="col-md-5">
 						<input class="form-control" type="text" name="txtNama"  value="<?php echo $dataNama; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
 					</div>

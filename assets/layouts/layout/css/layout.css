@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Abel';
-    src: url('../fonts/Inconsolata-Regular.ttf');
+    src: url('../fonts/OpenSansCondensed-Light.ttf');
 }
 @charset "UTF-8";
 /* Cubic Bezier Transition */
@@ -78,7 +78,7 @@ Page Header
       float: left; }
     .page-header.navbar .page-logo .logo-default {
       margin: 2px 0 0 0;
-      width: 180px; }
+      width: 190px; }
     .page-header.navbar .page-logo .logo-mini {
       display: none;
       margin-left: 5px; }
@@ -180,7 +180,7 @@ Page Header
       filter: alpha(opacity=100) ; }
     .page-header.navbar .menu-toggler.sidebar-toggler {
       float: right;
-      margin: 15.5px 0 0 0; }
+      margin: -30px -10px 0px 0px; }
       .page-sidebar-closed.page-sidebar-closed-hide-logo .page-header.navbar .menu-toggler.sidebar-toggler {
         margin-right: 13px; }
     .page-header.navbar .menu-toggler.responsive-toggler {
@@ -380,6 +380,7 @@ Page Header
         .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > .username {
           display: inline-block;
           font-size: 13px;
+          border-right: 15px;
           font-weight: 300; }
         .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
           float: left;
@@ -1480,7 +1481,7 @@ Page content
 /* Page title */
 .page-title {
   padding: 0px;
-  font-size: 28px;
+  font-size: 14px;
   letter-spacing: -1px;
   display: block;
   color: #666;
@@ -1949,13 +1950,8 @@ Page Quick Sidebar
 ******************/
 /* Quick sidebar toggler */
 .page-header .top-menu .dropdown-quick-sidebar-toggler > .dropdown-toggle {
-  padding: 19px 10px 10px 10px !important; }
-  .page-header .top-menu .dropdown-quick-sidebar-toggler > .dropdown-toggle i {
-    top: 0px; }
-    .page-header .top-menu .dropdown-quick-sidebar-toggler > .dropdown-toggle i:before {
-      content: ""/*rtl:""*/; }
-    .page-quick-sidebar-open .page-header .top-menu .dropdown-quick-sidebar-toggler > .dropdown-toggle i:before {
-      content: ""/*rtl:""*/; }
+  padding: 16px 10px 14px 10px !important; }
+
 
 /* Page Portlet Fullscreen */
 .page-portlet-fullscreen .page-quick-sidebar-wrapper,
@@ -1985,8 +1981,6 @@ Page Quick Sidebar
     font-size: 17px; }
     .page-quick-sidebar-toggler > i:hover {
       color: #fff !important; }
-    .page-quick-sidebar-open .page-quick-sidebar-toggler > i:before {
-      content: ""/*rtl:""*/; }
 
 /* Quick sidebar wrapper */
 .page-quick-sidebar-wrapper {
@@ -1995,16 +1989,16 @@ Page Quick Sidebar
   position: fixed;
   top: 0;
   bottom: 0;
-  width: 320px;
-  right: -320px;
+  width: 550px;
+  right: -550px;
   overflow: hidden;
   color: #99a8b5;
-  background: #21282e; }
+  background:#fff; }
   .page-quick-sidebar-open .page-quick-sidebar-wrapper {
     transition: right 0.3s;
     right: 0; }
   .page-quick-sidebar-wrapper .page-quick-sidebar {
-    background: #21282e;
+    background: #2b3643;
     /* Quick sidebar tabs content */
     /* Quick sidebar general list heading */
     /* Quick sidebar general list-items */

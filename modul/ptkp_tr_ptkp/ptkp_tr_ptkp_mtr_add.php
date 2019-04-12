@@ -45,7 +45,7 @@
 
 	$KodeEdit			= isset($_GET['id']) ?  base64_decode($_GET['id']) : $_POST['txtKode']; 
 	$sqlShow			= "SELECT 
-							CONVERT(VARCHAR,a.ptkp_tr_ptkp_tgl,103) as ptkp_tr_ptkp_tgl,
+							a.ptkp_tr_ptkp_tgl,
 							a.ptkp_tr_ptkp_no,
 							a.ptkp_ms_sumber_id,
 							a.sys_bagian_id,
@@ -60,9 +60,9 @@
 							a.ptkp_tr_ptkp_id,
 							a.ptkp_tr_ptkp_masalah,
 							a.ptkp_tr_ptkp_sts,
-							CONVERT(VARCHAR,a.ptkp_tr_ptkp_tgl_koreksi,105) as ptkp_tr_ptkp_tgl_koreksi,
-							CONVERT(VARCHAR,a.ptkp_tr_ptkp_tgl_pencegahan,105) as ptkp_tr_ptkp_tgl_pencegahan,
-							CONVERT(VARCHAR,a.ptkp_tr_ptkp_tgl_monitoring,105) as ptkp_tr_ptkp_tgl_monitoring,
+							a.ptkp_tr_ptkp_tgl_koreksi,
+							a.ptkp_tr_ptkp_tgl_pencegahan,
+							a.ptkp_tr_ptkp_tgl_monitoring,
 							a.ptkp_tr_ptkp_koreksi,
 							a.ptkp_tr_ptkp_pencegahan,
 							a.ptkp_tr_ptkp_monitoring
@@ -188,13 +188,7 @@
 							?>
 						</select>
 					</div>
-				</div>				
-		        <div class="form-group">
-					<label class="col-lg-2 control-label">Deskripsi :</label>
-					<div class="col-lg-10">
-						<textarea type="text" disabled class="form-control" placeholder="Input Deskripsi Temuan"><?php echo $dataDeskripsi; ?></textarea>
-		             </div>
-				</div>
+				</div>	
 				<div class="form-group">
 					<label class="col-md-2 control-label">Dampak Temuan :</label>
 					<div class="col-md-4">
@@ -232,49 +226,11 @@
 							?>
 						</select>
 					</div>
-				</div>	
-		        <div class="form-group">
-					<label class="col-lg-2 control-label">Referensi :</label>
-					<div class="col-lg-3">
-						<div class="input-group">
-							<input type="text" value="<?php echo $dataReferensi; ?>" class="form-control" disabled/>
-	                    </div>
-		             </div>
-				</div>	
-				<div class="form-group">
-					<label class="col-lg-2 control-label">Akar Masalah :</label>
-					<div class="col-lg-10">
-						<textarea type="text" disabled class="form-control"><?php echo $dataMasalah; ?></textarea>
-		             </div>
-				</div>
-				<div class="form-group">
-					<label class="col-lg-2 control-label">Koreksi :</label>
-					<div class="col-lg-10">
-						<textarea type="text" disabled class="form-control"><?php echo $dataKoreksi; ?></textarea>
-		             </div>
-				</div>	
-				<div class="form-group">
-					<label class="col-lg-2 control-label">Tgl. Koreksi :</label>
-					<div class="col-lg-3">
-						<input type="text" value="<?php echo $dataTglKoreksi; ?>" class="form-control" disabled/>
-		             </div>
-				</div>		
-				<div class="form-group">
-					<label class="col-lg-2 control-label">Pencegahan :</label>
-					<div class="col-lg-10">
-						<textarea type="text" disabled class="form-control"><?php echo $dataPencegahan; ?></textarea>
-		             </div>
-				</div>	
-				<div class="form-group">
-					<label class="col-lg-2 control-label">Tgl. Pencegahan :</label>
-					<div class="col-lg-3">
-						<input type="text" value="<?php echo $dataTglPencegahan; ?>" class="form-control" disabled/>
-		             </div>
 				</div>		
 				<div class="form-group">
 					<label class="col-lg-2 control-label">Monitoring :</label>
 					<div class="col-lg-10">
-						<textarea type="text" name="txtMonitoring" class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();"><?php echo $dataMonitoring; ?></textarea>
+						<textarea type="text" name="txtMonitoring" class="form-control ckeditor" onkeyup="javascript:this.value=this.value.toUpperCase();"><?php echo $dataMonitoring; ?></textarea>
 		             </div>
 				</div>	
 				<div class="form-group">

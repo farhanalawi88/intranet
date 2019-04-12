@@ -42,7 +42,7 @@
 													load_ms_jns_kend_id,
 													load_tr_inout_nopol,
 													load_tr_inout_berat,
-													load_ms_petugas_id,
+													load_ms_identitas_id,
 													load_ms_klasifikasi_id,
 													load_tr_inout_ket,
 													load_tr_inout_supir,
@@ -96,7 +96,7 @@
 ?>
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
-		<div class="caption"><span class="caption-subject uppercase bold">Form Masuk Kendaraan</span></div>
+		<div class="caption"><span class="caption-subject uppercase">Form Masuk Kendaraan & Tamu</span></div>
 		<div class="tools">
 			<a href="javascript:;" class="collapse"></a>
 			<a href="javascript:;" class="reload"></a>
@@ -104,113 +104,115 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" name="frmadd" class="form-horizontal form-bordered" autocomplete="off">
+		<form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off">
 			<div class="form-body">
-				<div class="form-group">
-					<label class="col-md-2 control-label">Tgl. Masuk :</label>
+				<div class="row">
 					<div class="col-md-3">
-						<div class="input-group">
-                            <input type="text" name="txtTglMasuk" class="form-control form_datetime" value="<?php echo $dataTglMasuk ?>">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        </div>
+						<div class="form-group">
+							<label class="control-label">Tgl. Masuk :</label>
+							<div class="input-group">
+	                            <input type="text" name="txtTglMasuk" class="form-control form_datetime" value="<?php echo $dataTglMasuk ?>">
+	                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+	                        </div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Nama Identitas :</label>
+							<select name="cmbPetugas" data-placeholder="- Pilih Identitas -" class="select2 form-control">
+								<option value=""></option> 
+								<?php
+									  $dataSql = "SELECT * FROM load_ms_identitas ORDER BY load_ms_identitas_id DESC";
+									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
+									  while ($dataRow = mysqli_fetch_array($dataQry)) {
+										if ($dataPetugas == $dataRow['load_ms_identitas_id']) {
+											$cek = " selected";
+										} else { $cek=""; }
+										echo "<option value='$dataRow[load_ms_identitas_id]' $cek>$dataRow[load_ms_identitas_nm]</option>";
+									  }
+									  $sqlData ="";
+								?>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Klasifikasi :</label>
+							<select name="cmbKlasifikasi" data-placeholder="- Pilih Klasifikasi -" class="select2 form-control">
+								<option value=""></option> 
+								<?php
+									  $dataSql = "SELECT * FROM load_ms_klasifikasi ORDER BY load_ms_klasifikasi_id DESC";
+									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
+									  while ($dataRow = mysqli_fetch_array($dataQry)) {
+										if ($dataKlasifikasi == $dataRow['load_ms_klasifikasi_id']) {
+											$cek = " selected";
+										} else { $cek=""; }
+										echo "<option value='$dataRow[load_ms_klasifikasi_id]' $cek>$dataRow[load_ms_klasifikasi_nm]</option>";
+									  }
+									  $sqlData ="";
+								?>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Jenis Kendaraan :</label>
+							<select name="cmbKendaraan" data-placeholder="- Pilih Kendaraan -" class="select2 form-control">
+								<option value=""></option> 
+								<?php
+									  $dataSql = "SELECT * FROM load_ms_jns_kend ORDER BY load_ms_jns_kend_id DESC";
+									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
+									  while ($dataRow = mysqli_fetch_array($dataQry)) {
+										if ($dataKendaraan == $dataRow['load_ms_jns_kend_id']) {
+											$cek = " selected";
+										} else { $cek=""; }
+										echo "<option value='$dataRow[load_ms_jns_kend_id]' $cek>$dataRow[load_ms_jns_kend_nm]</option>";
+									  }
+									  $sqlData ="";
+								?>
+							</select>
+						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Jenis Kendaraan :</label>
+				<div class="row">
 					<div class="col-md-3">
-						<select name="cmbKendaraan" data-placeholder="- Pilih Kendaraan -" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM load_ms_jns_kend ORDER BY load_ms_jns_kend_id DESC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataKendaraan == $dataRow['load_ms_jns_kend_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[load_ms_jns_kend_id]' $cek>$dataRow[load_ms_jns_kend_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
+						<div class="form-group">
+							<label class="control-label">No. Kendaraan :</label>
+							<input class="form-control" type="text" name="txtNopol"  value="<?php echo $dataNopol; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Dari Perusahaan :</label>
+							<input class="form-control" type="text" name="txtBerat"  value="<?php echo $dataBerat; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Nama Supir :</label>
+							<input class="form-control" type="text" name="txtSupir"  value="<?php echo $dataSupir; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">No. Dokumen :</label>
+							<input class="form-control" type="text" name="txtDokumen"  value="<?php echo $dataDokumen; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
+						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">No. Kendaraan :</label>
-					<div class="col-md-3">
-						<input class="form-control" type="text" name="txtNopol"  value="<?php echo $dataNopol; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Nama Supir :</label>
-					<div class="col-md-3">
-						<input class="form-control" type="text" name="txtSupir"  value="<?php echo $dataSupir; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">No. Dokumen :</label>
-					<div class="col-md-3">
-						<input class="form-control" type="text" name="txtDokumen"  value="<?php echo $dataDokumen; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Nama Petugas :</label>
-					<div class="col-md-3">
-						<select name="cmbPetugas" data-placeholder="- Pilih Petugas -" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM load_ms_petugas ORDER BY load_ms_petugas_id DESC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataPetugas == $dataRow['load_ms_petugas_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[load_ms_petugas_id]' $cek>$dataRow[load_ms_petugas_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Klasifikasi Muatan :</label>
-					<div class="col-md-3">
-						<select name="cmbKlasifikasi" data-placeholder="- Pilih Klasifikasi -" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM load_ms_klasifikasi ORDER BY load_ms_klasifikasi_id DESC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataKlasifikasi == $dataRow['load_ms_klasifikasi_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[load_ms_klasifikasi_id]' $cek>$dataRow[load_ms_klasifikasi_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Berat Muatan :</label>
-					<div class="col-md-3">
-						<input class="form-control" type="text" name="txtBerat"  value="<?php echo $dataBerat; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
-					</div>
-				</div>
-				<div class="form-group last">
-					<label class="col-md-2 control-label">Uraian Muatan :</label>
-					<div class="col-md-10">
-						<textarea class="form-control" type="text" name="txtKeterangan" onkeyup="javascript:this.value=this.value.toUpperCase();" ><?php echo $dataKeterangan; ?></textarea>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group last">
+							<label class="control-label">Tujuan / Uraian Muatan :</label>
+							<textarea class="form-control ckeditor" type="text" name="txtKeterangan" onkeyup="javascript:this.value=this.value.toUpperCase();" ><?php echo $dataKeterangan; ?></textarea>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="form-actions">
-			    <div class="row">
-		            <div class="col-lg-offset-2 col-lg-10">
-		                <button type="submit" name="btnSave" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Simpan Data</button> 
-		                <a href="?page=<?php echo base64_encode(loaddttrmasuk) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Batalkan</a>
-		            </div>
-			    </div>
-			</div>
+                <button type="submit" name="btnSave" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-save"></i> Simpan Data</button> 
+                <a href="?page=<?php echo base64_encode(loaddttrmasuk) ?>" class="btn <?php echo $dataPanel; ?>"><i class="fa fa-undo"></i> Batalkan</a>
+            </div>
 		</form>
 	</div>
 </div>

@@ -17,7 +17,7 @@ $dataWord           = $showRow['doc_ms_doc_word'];
 ?>
 <div class="portlet box <?php echo $dataPanel; ?>">
     <div class="portlet-title">
-        <div class="caption"><span class="caption-subject uppercase bold">Form View Document </span></div>
+        <div class="caption"><span class="caption-subject uppercase">Form View Document</span></div>
         <div class="tools">
             <a href="javascript:;" class="collapse"> </a>
             <a href="javascript:;" class="reload"> </a>

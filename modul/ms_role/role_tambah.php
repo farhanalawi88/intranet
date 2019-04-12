@@ -40,6 +40,15 @@
 		$cmbBagian		= $_POST['cmbBagian'];
 		$cmbJab			= $_POST['cmbJab'];
 
+		if(empty($cmbID)){
+			$txtPassword	= $_POST['txtPassword'];
+			$toutf8 		= utf8_encode($txtPassword);
+		  	$var 			= sha1($txtPassword,true);
+		  	$password       = base64_encode($var);
+		}else{
+			$password		= $_POST['txtPassword'];
+		}
+
 		
 		if(count($message)==0){					
 			$sqlSave="INSERT INTO sys_role (ad_user_id,
@@ -69,7 +78,7 @@
 											'$cmbJab',
 											'$cmbBagian',
 											'$cmbOrg',
-											'$txtPassword')";
+											'$password')";
 			$qrySave=mysqli_query($koneksidb, $sqlSave) or die ("Gagal query".mysqli_errors());
 			if($qrySave){
 				$_SESSION['info'] = 'success';
@@ -289,3 +298,79 @@
 		</form>
 	</div>
 </div>
+<div class="modal fade bs-modal-lg" id="user" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Data User</h4>
+            </div>
+            <div class="modal-body"> 
+            	<table class="table table-hover table-bordered table-striped table-condensed" width="100%" id="sample_2">
+		            <thead>
+		                <tr class="active">
+		                    <th width="50"><div align="center">PILIH</div></th>
+		                    <th width="50"><div align="center">NO</div></th>
+		                    <th width="300">NAMA USER</th>
+		                    <th width="200">USERNAME</th>
+		                    <th width="200">BAGIAN</th>
+		                    <th width="200">KETERANGAN</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		                <?php
+		                //Data mentah yang ditampilkan ke tabel    
+		                $query = pg_query($koneksipg, "SELECT 
+															a.ad_user_id,
+															a.name,
+															a.username,
+															b.name as bagian,
+															a.description,
+															a.password
+															FROM
+																ad_user a
+																LEFT JOIN gmm_departement b ON a.em_gmm_departement_id= b.gmm_departement_id 
+															WHERE
+																NOT a.username= '' 
+															ORDER BY
+																a.ad_user_id DESC");
+		               	$nomor = 0;
+		                while ($data = pg_fetch_array($query)) {
+		                	$nomor ++;
+		                    ?>
+		                    <tr class="pilihUser" data-dismiss="modal" aria-hidden="true" 
+								data-id="<?php echo $data['ad_user_id']; ?>"
+								data-nama="<?php echo $data['name']; ?>"
+								data-password="<?php echo $data['password']; ?>"
+								data-username="<?php echo $data['username']; ?>">
+		                        <td><div align="center"><button class="btn btn-xs red"><i class="icon-eye"></i></button></div></td>
+		                        <td><div align="center"><?php echo $nomor; ?></div></td>
+		                        <td><?php echo $data['name']; ?></td>
+		                        <td><?php echo $data['username']; ?></td>
+		                        <td><?php echo $data['bagian']; ?></td>
+		                        <td><?php echo $data['description']; ?></td>
+		                    </tr>
+		                    <?php
+		                }
+		                ?>
+		            </tbody>
+		        </table> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn <?php echo $dataPanel; ?>" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script src="./assets/scripts/bootstrap.js"></script>
+<script type="text/javascript">
+    $(document).on('click', '.pilihUser', function (e) {
+        document.getElementById("ad_user_id").value = $(this).attr('data-id');
+		document.getElementById("nama_user").value = $(this).attr('data-nama');
+		document.getElementById("username").value = $(this).attr('data-username');
+		document.getElementById("password").value = $(this).attr('data-password');
+    });
+</script>	

@@ -23,6 +23,23 @@ body {
  properly apply the media queries in Bootstrap's CSS. To address this, 
  you can optionally include the following CSS and JavaScript to work around this problem until Microsoft issues a fix.
 */
+
+
+.batas {
+  border-bottom: 1px solid #ddd; 
+  margin-top: 20px; 
+  margin-bottom: 20px; 
+  margin-left: -20px; 
+  margin-right: -20px
+}
+.batas2 {
+  border-bottom: 1px solid #ddd; 
+  margin-top: 20px; 
+  margin-bottom: 20px; 
+  margin-left: -10px; 
+  margin-right: -10px
+}
+
 @-webkit-viewport {
   width: device-width; }
 

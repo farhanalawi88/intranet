@@ -8,20 +8,26 @@
 		if (trim($_POST['cmbStatus'])=="") {
 			$message[] = "<b>Status</b> tidak boleh kosong !";		
 		}
+		if (trim($_POST['txtKode'])=="") {
+			$message[] = "<b>Kode</b> tidak boleh kosong !";		
+		}
 		
 		$txtNama		= $_POST['txtNama'];
 		$cmbStatus		= $_POST['cmbStatus'];
 		$txtKeterangan	= $_POST['txtKeterangan'];
+		$txtKode		= $_POST['txtKode'];
 
 		if(count($message)==0){
 			$sqlSave="INSERT INTO ptkp_ms_sumber (ptkp_ms_sumber_nm,
 												ptkp_ms_sumber_ket,
 												ptkp_ms_sumber_sts,
+												ptkp_ms_sumber_kd,
 												ptkp_ms_sumber_created,
 												ptkp_ms_sumber_createdby)
 										VALUES('$txtNama',
 												'$txtKeterangan', 
 												'$cmbStatus',
+												'$cmbKode',
 												'".date('Y-m-d H:i:s')."',
 												'".$_SESSION['sys_role_id']."')";
 			$qrySave	= mysqli_query($koneksidb, $sqlSave) or die ("gagal insert". mysqli_errors());
@@ -53,7 +59,7 @@
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase bold">Form Data Sumber PTKP</span>
+            <span class="caption-subject uppercase">Form Data Sumber PTKP</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
@@ -65,6 +71,12 @@
 	<div class="portlet-body form">
         <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" class="form-horizontal form-bordered" autocomplete="off">
         	<div class="form-body">
+		        <div class="form-group">
+					<label class="col-lg-2 control-label">Kode :</label>
+					<div class="col-lg-3">
+						<input type="text" name="txtKode" value="<?php echo $dataKode; ?>" class="form-control" placeholder="Enter Code" onkeyup="javascript:this.value=this.value.toUpperCase();"/>
+		             </div>
+				</div>
 		        <div class="form-group">
 					<label class="col-lg-2 control-label">Nama Sumber :</label>
 					<div class="col-lg-4">
