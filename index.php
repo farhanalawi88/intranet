@@ -56,36 +56,93 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING |E_DEPRECATED));
                     <!-- BEGIN LOGO -->
                     <div class="page-logo">
                         <a href="index.php">
-                            <img src="assets/pages/img/logo.png" alt="logo" class="logo-default" /> </a>
+                            <img src="assets/pages/img/logo.png" alt="logo" class="logo-default"/> </a>
+                        </div>
                     </div>
                     <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
                         <span></span>
                     </a>
+                    
                     <div class="top-menu">
                         <ul class="nav navbar-nav pull-right">
                             <!-- BEGIN NOTIFICATION DROPDOWN -->
                             <!-- DOC: Apply "dropdown-dark" class after "dropdown-extended" to change the dropdown styte -->
                             <!-- DOC: Apply "dropdown-hoverable" class after below "dropdown" and remove data-toggle="dropdown" data-hover="dropdown" data-close-others="true" attributes to enable hover dropdown mode -->
                             <!-- DOC: Remove "dropdown-hoverable" and add data-toggle="dropdown" data-hover="dropdown" data-close-others="true" attributes to the below A element with dropdown-toggle class -->
-                            
-                            
+                            <?php
+                              
+
+                                $sqlCek     = "SELECT * FROM as_trx_meet_sch 
+                                                WHERE date(as_trx_meet_sch_start)='".date('Y-m-d')."'";
+                                $qryCek     = mysqli_query($koneksidb, $sqlCek) or die ("Eror Query".mysqli_error()); 
+                                $jmlRow     = mysqli_num_rows($qryCek);
+                                  # code...
+                                
+                                
+                            ?>
+
+                            <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    <i class="icon-calendar"></i>
+                                    <?php 
+                                      if($jmlRow>=1){
+                                    ?>
+                                    <span class="badge badge-default"> <?php echo $jmlRow ?> </span>
+                                    <?php } ?>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <?php 
+                                      if($jmlRow>=1){
+                                    ?>
+                                    <li class="external">
+                                        <h3><span class="bold"><?php echo $jmlRow ?> </span> notifications</h3>
+                                    </li>
+                                    <?php }else{ ?>
+                                    <li class="external">
+                                        <h3>Empty notifications</h3>
+                                    </li>
+
+                                    <?php } ?>
+                                    <li>
+                                        <ul class="dropdown-menu-list fc-scroller" style="max-height: 250px;" data-handle-color="#637283">
+                                          <?php
+
+                                            while ($cekRow = mysqli_fetch_array($qryCek)) {
+                                                $ID = $cekRow['as_trx_meet_sch_id'];
+                                              
+
+                                          ?>
+                                            <li>
+                                                <a href="?page=<?php echo base64_encode(meetingscheduleview) ?>&amp;id=<?php echo base64_encode($ID); ?>">
+                                                    <span class="details">
+                                                        </span> <?php echo $cekRow['as_trx_meet_sch_start'] ?> | <?php echo $cekRow['as_trx_meet_sch_agenda'] ?> </span>
+                                                </a>
+                                            </li>
+                                          <?php } ?>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                           
                             <!-- END TODO DROPDOWN -->
                             <!-- BEGIN USER LOGIN DROPDOWN -->
                             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                             <li class="dropdown dropdown-user">
-                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <a href="login.php" class="dropdown-toggle">
                                     <i class="icon-user"></i>
-                                    <span class="username uppercase"> My Account</span>
-                                    <i class="fa fa-angle-down"></i>
+                                    <span class="username uppercase"> Login </span>
+                                    &nbsp;
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-default">
-                                    <li><a href="keluar.php"><i class="icon-login"></i> Login </a></li>
-                                </ul>
+                            </li>
+                            <li class="dropdown dropdown-user dropdown-quick-sidebar-toggler">
+                                <a href="javascript:;" class="dropdown-toggle">
+                                    <i class="icon-bell"></i>
+                                    <span class="username uppercase"> Extention </span>
+                                    &nbsp;
+                                </a>
                             </li>
                             <!-- END USER LOGIN DROPDOWN -->
                             <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-                            <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                            
                             <!-- END QUICK SIDEBAR TOGGLER -->
                         </ul>
                     </div>
@@ -106,11 +163,10 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING |E_DEPRECATED));
                     <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                     <div class="page-sidebar navbar-collapse collapse">
                         <!-- BEGIN SIDEBAR MENU -->
-                        <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
-                        <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
-                        <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
-                        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-                        <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+                        
+
+
+
                         <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                         <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-closed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" >
                             <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
@@ -152,9 +208,6 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING |E_DEPRECATED));
                                     </li>
                                     <li class="nav-item start ">
                                       <a href="?page=<?php echo base64_encode(meetingschedule) ?>" class="nav-link "><span class="title">Meeting Schedule</span></a>
-                                    </li>
-                                    <li class="nav-item start ">
-                                      <a href="?page=<?php echo base64_encode(extention) ?>" class="nav-link "><span class="title">User Extention</span></a>
                                     </li>
                                     <li class="nav-item start ">
                                       <a href="http://192.168.2.17" target="_BLANK" class="nav-link "><span class="title">ERP System</span></a>
@@ -206,6 +259,60 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING |E_DEPRECATED));
                 </div>
                 <!-- END CONTENT -->
                 <!-- END QUICK SIDEBAR -->
+                <a href="javascript:;" class="page-quick-sidebar-toggler">
+                    <i class="icon-call-in"></i>
+                </a>
+
+                <div class="page-quick-sidebar-wrapper" data-close-on-body-click="false">
+                    <div class="page-quick-sidebar">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="javascript:;"> Users Extention
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="portlet box">
+                            <div class="portlet-body">
+                                <table class="table table-striped table-hover table-checkable order-column" id="sample_2">
+                                    <thead>
+                                        <tr class="active">
+                                            <th class="table-checkbox">
+                                                <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                    <input type="checkbox" class="group-checkable" disabled data-set="#sample_2 .checkboxes" />
+                                                    <span></span>
+                                                </label>
+                                            </th>
+                                            <th width="40%">NAMA</th>
+                                            <th width="30%">DEPARTEMEN</th>
+                                            <th width="20%">LINE TELEPON</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                   <?php
+                                            $dataSql = "SELECT * FROM as_ms_ext a";
+                                            $dataQry = mysqli_query($koneksidb, $dataSql);
+                                            $nomor  = 0; 
+                                            while ($data = mysqli_fetch_array($dataQry)) {
+                                            $nomor++;
+                                    ?>
+                                        <tr class="odd gradeX">
+                                            <td>
+                                                <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                                    <input type="checkbox" disabled class="checkboxes" value="<?php echo $Kode; ?>" name="txtID[<?php echo $Kode; ?>]" />
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td><?php echo $data['as_ms_ext_nama']; ?></td>
+                                            <td><?php echo $data['as_ms_ext_ket']; ?></td>
+                                            <td><?php echo $data['as_ms_ext_line']; ?></td>
+                                        </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- END CONTAINER -->
             <!-- BEGIN FOOTER -->

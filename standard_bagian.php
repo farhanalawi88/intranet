@@ -10,7 +10,7 @@
         </div>
 	</div>
 	<div class="portlet-body">
-       <table class="table table-striped table-condensed table-hover" id="sample_2">
+       <table class="table table-striped table-condensed table-hover" id="sample_1">
 			<thead>
                 <tr class="active">
 			  	  	<th width="5%"><div align="center">LIHAT</div></th>

@@ -98,6 +98,13 @@ $mnRow    = mysqli_fetch_array($mnQry);
                             <!-- BEGIN USER LOGIN DROPDOWN -->
                             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                             <li class="dropdown dropdown-user">
+                                <a href="index.php" class="dropdown-toggle" target="_blank">
+                                    <i class="icon-pointer"></i>
+                                    <span class="username uppercase"> Frontend </span>
+                                    &nbsp;
+                                </a>
+                            </li>
+                            <li class="dropdown dropdown-user">
                                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                     <i class="icon-user"></i>
                                     <span class="username uppercase"> <?php echo $userRow['sys_role_nama'] ?></span>
@@ -108,6 +115,7 @@ $mnRow    = mysqli_fetch_array($mnQry);
                                     <li><a href="keluar.php"><i class="icon-power"></i> Log Out </a></li>
                                 </ul>
                             </li>
+
                             <!-- END USER LOGIN DROPDOWN -->
                             <!-- BEGIN QUICK SIDEBAR TOGGLER -->
                             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->

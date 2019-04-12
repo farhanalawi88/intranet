@@ -2,35 +2,37 @@
 
 	if(isset($_POST['btnSave'])){
 		$message = array();
-		if (trim($_POST['cmbNama'])=="") {
+		if (trim($_POST['txtNama'])=="") {
 			$message[] = "<b>Nama</b> tidak boleh kosong !";		
 		}
-		if (trim($_POST['cmbDepartemen'])=="") {
+		if (trim($_POST['txtKeterangan'])=="") {
 			$message[] = "<b>Departemen</b> tidak boleh kosong !";		
 		}
 		if (trim($_POST['txtLineTelepon'])=="") {
 			$message[] = "<b>Line Telepon</b> tidak boleh kosong !";		
 		}
 		
-		$cmbNama			= $_POST['cmbNama'];
-		$cmbDepartemen		= $_POST['cmbDepartemen'];
+		$txtNama			= $_POST['txtNama'];
+		$txtKeterangan		= $_POST['txtKeterangan'];
 		$txtLineTelepon		= $_POST['txtLineTelepon'];
 
 		if(count($message)==0){
 
 			// INSERT DATA EXTENTION TELEPON
-			$sqlSave="INSERT INTO ext_number (id_employee,
-												sys_bagian_id,
-												line_telepon,
-												created)
-										VALUES ('$cmbNama',
-												'$cmbDepartemen',
+			$sqlSave="INSERT INTO as_ms_ext (as_ms_ext_nama,
+												as_ms_ext_ket,
+												as_ms_ext_line,
+												as_ms_ext_created,
+												as_ms_ext_createdby)
+										VALUES ('$txtNama',
+												'$txtKeterangan',
 												'$txtLineTelepon',											
-												'".date('Y-m-d H:i:s')."')";
+												'".date('Y-m-d H:i:s')."',
+												'".$_SESSION['sys_role_id']."')";
 			$qrySave	= mysqli_query($koneksidb, $sqlSave) or die ("Gagal Insert Ext Telepon ". mysqli_errors());
 			if($qrySave){
 				$_SESSION['info'] = 'success';
-				$_SESSION['pesan'] = 'Data Pembuatan Ext Telepon Berhasil Ditambahkan';
+				$_SESSION['pesan'] = 'Data Pembuatan user extention Berhasil Ditambahkan';
 				echo '<script>window.location="?page='.base64_encode(extentionnumberdata).'"</script>';
 			}
 			exit;
@@ -48,20 +50,15 @@
 		}
 	} 
 	
-	$dataNama				= isset($_POST['cmbNama']) ? $_POST['cmbNama'] : '';
-	$dataDepartemen			= isset($_POST['cmbDepartemen']) ? $_POST['cmbDepartemen'] : '';
+	$dataNama				= isset($_POST['txtNama']) ? $_POST['txtNama'] : '';
+	$dataKeterangan			= isset($_POST['txtKeterangan']) ? $_POST['txtKeterangan'] : '';
 	$dataLineTelepon		= isset($_POST['txtLineTelepon']) ? $_POST['txtLineTelepon'] : ''; 
 ?>
 
-<SCRIPT language="JavaScript">
-function submitform() {
-	document.form1.submit();
-}
-</SCRIPT>
 <div class="portlet box <?php echo $dataPanel; ?>">
 	<div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject uppercase">Form Ext Telepon</span>
+            <span class="caption-subject uppercase">Form User Extention</span>
         </div>
         <div class="tools">
             <a href="" class="collapse"> </a>
@@ -74,48 +71,18 @@ function submitform() {
         <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" class="form-horizontal form-bordered" autocomplete="off" name="form1">
         	<div class="form-body">
         		<div class="form-group">
-					<label class="col-md-2 control-label">Nama :</label>
-					<div class="col-md-4">
-						<select name="cmbNama" data-placeholder="Pilih Nama" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM sys_employee
-								  			  WHERE status='Y'
-								  			  ORDER BY id_employee ASC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataNama == $dataRow['id_employee']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[id_employee]' $cek>$dataRow[nama_karyawan]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>
+					<label class="col-lg-2 control-label">Nama :</label>
+					<div class="col-lg-6">
+						<input type="text" name="txtNama" value="<?php echo $dataNama; ?>" class="form-control" placeholder="Input Nama"/>
+		             </div>
+				</div>	
 				<div class="form-group">
-					<label class="col-md-2 control-label">Departemen :</label>
-					<div class="col-md-4">
-						<select name="cmbDepartemen" data-placeholder="Pilih Departemen" class="select2 form-control">
-							<option value=""></option> 
-							<?php
-								  $dataSql = "SELECT * FROM sys_bagian
-								  			  WHERE sys_bagian_sts='Y'
-								  			  ORDER BY sys_bagian_id ASC";
-								  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-								  while ($dataRow = mysqli_fetch_array($dataQry)) {
-									if ($dataDepartemen == $dataRow['sys_bagian_id']) {
-										$cek = " selected";
-									} else { $cek=""; }
-									echo "<option value='$dataRow[sys_bagian_id]' $cek>$dataRow[sys_bagian_nm]</option>";
-								  }
-								  $sqlData ="";
-							?>
-						</select>
-					</div>
-				</div>
-		        <div class="form-group">
+					<label class="col-lg-2 control-label">Keterangan :</label>
+					<div class="col-lg-10">
+						<input type="text" name="txtKeterangan" value="<?php echo $dataKeterangan; ?>" class="form-control" placeholder="Input Keterangan"/>
+		             </div>
+				</div>	
+		        <div class="form-group last">
 					<label class="col-lg-2 control-label">Line Telepon :</label>
 					<div class="col-lg-3">
 						<input type="text" name="txtLineTelepon" value="<?php echo $dataLineTelepon; ?>" class="form-control" placeholder="Input Line Telepon"/>

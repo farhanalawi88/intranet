@@ -4,7 +4,7 @@
 		$txtID 		= $_POST['txtID'];
 		foreach ($txtID as $id_key) {
 				
-			$hapus=mysqli_query($koneksidb,"DELETE FROM ext_number WHERE id_ext_number='$id_key'") 
+			$hapus=mysqli_query($koneksidb,"DELETE FROM as_ms_ext WHERE as_ms_ext_id='$id_key'") 
 				or die ("Gagal kosongkan tmp".mysqli_errors());
 			if($hapus){
 				$_SESSION['info'] = 'success';
@@ -16,6 +16,7 @@
 	
 	
 ?>
+
 <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
 	<div class="portlet box <?php echo $dataPanel; ?>">
 	    <div class="portlet-title">
@@ -37,35 +38,22 @@
                                 <span></span>
                             </label>
                         </th>
+				  	  	<th width="5%"><div align="center">NO</div></th>
                         <th width="40%">NAMA</th>
-                        <th width="30%">DEPARTEMEN</th>
+                        <th width="30%">KETERANGAN</th>
                         <th width="20%">LINE TELEPON</th>
 				  	  	<th width="10%"><div align="center">ACTION</div></th>
                     </tr>
 				</thead>
 				<tbody>
                <?php
-						$dataSql = "SELECT 
-									a.id_ext_number,
-									a.line_telepon,
-									b.nama_karyawan,
-									c.sys_bagian_nm
-									FROM ext_number a
-									INNER JOIN sys_employee b ON a.id_employee=b.id_employee
-									INNER JOIN sys_bagian c ON a.sys_bagian_id=c.sys_bagian_id
-									ORDER BY a.id_ext_number DESC";
+						$dataSql = "SELECT * FROM as_ms_ext a
+									ORDER BY as_ms_ext_id DESC";
 						$dataQry = mysqli_query($koneksidb, $dataSql);
 						$nomor  = 0; 
 						while ($data = mysqli_fetch_array($dataQry)) {
 						$nomor++;
-						$Kode = $data['id_ext_number'];
-						//if($data ['ptkp_tr_ptkp_sts']=='Y'){
-							//$dataStatus= "<span class='badge badge-success badge-roundless'>CLOSE</span>";
-						//}elseif($data ['ptkp_tr_ptkp_sts']=='N'){
-							//$dataStatus= "<span class='badge badge-warning badge-roundless'>OPEN</span>";
-						//}elseif($data ['ptkp_tr_ptkp_sts']=='C'){
-							//$dataStatus= "<span class='badge badge-danger badge-roundless'>CANCEL</span>";
-						//}
+						$Kode = $data['as_ms_ext_id'];
 				?>
                     <tr class="odd gradeX">
                         <td>
@@ -74,9 +62,10 @@
                                 <span></span>
                             </label>
                         </td>
-                        <td><?php echo $data['nama_karyawan']; ?></td>
-						<td><?php echo $data['sys_bagian_nm']; ?></td>
-						<td><?php echo $data['line_telepon']; ?></td>
+                        <td><div align="center"><?php echo $nomor; ?></div></td>
+                        <td><?php echo $data['as_ms_ext_nama']; ?></td>
+						<td><?php echo $data['as_ms_ext_ket']; ?></td>
+						<td><?php echo $data['as_ms_ext_line']; ?></td>
 						<td><div align="center"><a href="?page=<?php echo base64_encode(extentionnumberedit) ?>&amp;id=<?php echo base64_encode($Kode); ?>" class="btn btn-xs <?php echo $dataPanel; ?>"><i class="fa fa-pencil"></i></a></div></td>
                     </tr>
                     <?php

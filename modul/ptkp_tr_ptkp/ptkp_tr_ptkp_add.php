@@ -228,45 +228,7 @@ function submitform() {
 	        		</div>
 	        	</div> 
 				<div class="row">
-	        		<div class="col-lg-3">
-	        			<div class="form-group">
-							<label class="control-label">Dampak Temuan :</label>
-							<select name="cmbDampak" data-placeholder="Pilih Dampak" class="select2 form-control">
-								<option value=""></option> 
-								<?php
-									  $dataSql = "SELECT * FROM ptkp_ms_dampak WHERE ptkp_ms_dampak_sts='Y' ORDER BY ptkp_ms_dampak_id ASC";
-									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-									  while ($dataRow = mysqli_fetch_array($dataQry)) {
-										if ($dataDampak == $dataRow['ptkp_ms_dampak_id']) {
-											$cek = " selected";
-										} else { $cek=""; }
-										echo "<option value='$dataRow[ptkp_ms_dampak_id]' $cek>$dataRow[ptkp_ms_dampak_nm]</option>";
-									  }
-									  $sqlData ="";
-								?>
-							</select>
-						</div>	
-	        		</div>
-	        		<div class="col-lg-3">
-	        			<div class="form-group">
-							<label class="control-label">Keterkaitan Temuan :</label>
-							<select name="cmbTerkait" data-placeholder="Pilih Keterkaitan" class="select2 form-control">
-								<option value=""></option> 
-								<?php
-									  $dataSql = "SELECT * FROM ptkp_ms_terkait WHERE ptkp_ms_terkait_sts='Y' ORDER BY ptkp_ms_terkait_id ASC";
-									  $dataQry = mysqli_query($koneksidb, $dataSql) or die ("Gagal Query".mysqli_errors());
-									  while ($dataRow = mysqli_fetch_array($dataQry)) {
-										if ($dataTerkait == $dataRow['ptkp_ms_terkait_id']) {
-											$cek = " selected";
-										} else { $cek=""; }
-										echo "<option value='$dataRow[ptkp_ms_terkait_id]' $cek>$dataRow[ptkp_ms_terkait_nm]</option>";
-									  }
-									  $sqlData ="";
-								?>
-							</select>
-						</div>	
-	        		</div>
-	        		<div class="col-lg-6">
+	        		<div class="col-lg-12">
 	        			<div class="form-group">
 							<label class="control-label">Kegiatan / Proses :</label>
 							<input type="text" name="txtKegiatan" value="<?php echo $dataKegiatan; ?>" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" placeholder="Input Kegiatan"/>

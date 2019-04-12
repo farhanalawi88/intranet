@@ -170,9 +170,9 @@ session_start();
 		elseif($pg==base64_encode(masteremployeedata)){ include"modul/sys_master_employee/master_employee_data.php"; }
 		elseif($pg==base64_encode(masteremployeeedit)){ include"modul/sys_master_employee/master_employee_edit.php"; }
 	// DATA EXTENTION NUMBER
-		elseif($pg==base64_encode(extentionnumberadd)){ include"modul/extention_number/extention_number_add.php"; }
-		elseif($pg==base64_encode(extentionnumberdata)){ include"modul/extention_number/extention_number_data.php"; }
-		elseif($pg==base64_encode(extentionnumberedit)){ include"modul/extention_number/extention_number_edit.php"; }
+		elseif($pg==base64_encode(extentionnumberadd)){ include"modul/as_ms_ext/as_ms_ext_add.php"; }
+		elseif($pg==base64_encode(extentionnumberdata)){ include"modul/as_ms_ext/as_ms_ext_data.php"; }
+		elseif($pg==base64_encode(extentionnumberedit)){ include"modul/as_ms_ext/as_ms_ext_edit.php"; }
 	// DATA IT NOTE
 		elseif($pg==base64_encode(itnoteadd)){ include"modul/it_note/it_note_add.php"; }
 		elseif($pg==base64_encode(itnotedata)){ include"modul/it_note/it_note_data.php"; }

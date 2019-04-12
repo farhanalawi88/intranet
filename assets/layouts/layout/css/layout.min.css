@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Abel';
-    src: url('../fonts/Inconsolata-Regular.ttf');
+    src: url('../fonts/OpenSansCondensed-Light.ttf');
 }
 @charset "UTF-8";
 /* Cubic Bezier Transition */
@@ -377,7 +377,7 @@ Page Header
         .page-header.navbar .top-menu .navbar-nav > li.dropdown-tasks .dropdown-menu .dropdown-menu-list > li .progress .progress-bar {
           box-shadow: none; }
       .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle {
-        padding: 16px 6px 13px 8px; }
+        padding: 16px 15px 13px 15px; }
         .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > .username {
           display: inline-block;
           font-size: 13px;
@@ -1953,10 +1953,6 @@ Page Quick Sidebar
   padding: 19px 10px 10px 10px !important; }
   .page-header .top-menu .dropdown-quick-sidebar-toggler > .dropdown-toggle i {
     top: 0px; }
-    .page-header .top-menu .dropdown-quick-sidebar-toggler > .dropdown-toggle i:before {
-      content: ""/*rtl:""*/; }
-    .page-quick-sidebar-open .page-header .top-menu .dropdown-quick-sidebar-toggler > .dropdown-toggle i:before {
-      content: ""/*rtl:""*/; }
 
 /* Page Portlet Fullscreen */
 .page-portlet-fullscreen .page-quick-sidebar-wrapper,
@@ -1986,8 +1982,6 @@ Page Quick Sidebar
     font-size: 17px; }
     .page-quick-sidebar-toggler > i:hover {
       color: #fff !important; }
-    .page-quick-sidebar-open .page-quick-sidebar-toggler > i:before {
-      content: ""/*rtl:""*/; }
 
 /* Quick sidebar wrapper */
 .page-quick-sidebar-wrapper {
